@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from sphinx.errors import ExtensionError
 
 
@@ -27,7 +25,7 @@ def html_collect_pages(app):
 
 
 def finalize_media(app, pagename, templatename, context, doctree):
-    """ Point media files at our media server. """
+    """Point media files at our media server."""
 
     # https://github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py#L1054-L1065
     def pathto(otheruri, resource=False, baseuri=None):
@@ -44,7 +42,8 @@ def finalize_media(app, pagename, templatename, context, doctree):
         if resource and '://' in otheruri:
             # allow non-local resources given by scheme
             return otheruri
-        elif not resource:
+
+        if not resource:
             otheruri = app.builder.get_target_uri(otheruri)
 
         if baseuri is None:

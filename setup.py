@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-
-import setuptools
 import notfound
+import setuptools
+
 
 with open('README.rst', 'r') as fh:
     long_description = fh.read()
