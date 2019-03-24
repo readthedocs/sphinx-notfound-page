@@ -1,4 +1,5 @@
 import docutils
+import os
 from sphinx.builders.html import TocTree
 from sphinx.errors import ExtensionError
 
@@ -82,8 +83,8 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
         for refnode in toc.traverse(docutils.nodes.reference):
             refuri = '/{language}/{version}/{filename}'.format(
-                language=app.config.notfound_default_language,
-                version=app.config.notfound_default_version,
+                language=app.config.language or 'en',
+                version=os.environ.get('READTHEDOCS_VERSION', 'latest'),
                 filename=refnode.attributes.get('refuri'),  # somepage.html
             )
             refnode.replace_attr('refuri', refuri)
