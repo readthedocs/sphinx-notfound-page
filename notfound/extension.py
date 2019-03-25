@@ -1,5 +1,6 @@
-import docutils
 import os
+
+import docutils
 from sphinx.builders.html import TocTree
 from sphinx.errors import ExtensionError
 
@@ -69,7 +70,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
         uri = otheruri or '#'
         return uri
 
-
     # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/builders/html.py#L1081
     def toctree(*args, **kwargs):
         toc = TocTree(app.env).get_toctree_for(
@@ -91,7 +91,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
         return app.builder.render_partial(toc)['fragment']
 
-
     # Apply our custom manipulation to 404.html page only
     if pagename == app.config.notfound_pagename:
         # Override the ``pathto`` helper function from the context to use a custom ones
@@ -103,7 +102,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # https://www.sphinx-doc.org/en/master/templating.html#toctree
         # NOTE: not used on ``singlehtml`` builder for RTD Sphinx theme
         context['toctree'] = toctree
-        # context['toctree'] = lambda *args, **kwargs: toctree(app, *args, **kwargs)
 
 
 def setup(app):
