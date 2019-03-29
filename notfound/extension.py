@@ -1,12 +1,5 @@
 import os
-
 import docutils
-from sphinx.builders.html import TocTree
-from sphinx.errors import ExtensionError
-
-
-class BaseURIError(ExtensionError):
-    pass
 
 
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-html-collect-pages
@@ -30,6 +23,14 @@ def html_collect_pages(app):
 
 def finalize_media(app, pagename, templatename, context, doctree):
     """Point media files at our media server."""
+
+    # Import these here so we can use ``app.require_sphinx`` method in the
+    # ``setup`` and limit to greater versions of Sphinx
+    from sphinx.environment.adapters.toctree import TocTree
+    from sphinx.errors import ExtensionError
+
+    class BaseURIError(ExtensionError):
+        pass
 
     # https://github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py#L1054-L1065
     def pathto(otheruri, resource=False, baseuri=None):
@@ -109,6 +110,8 @@ def setup(app):
         # TODO: improve the default ``body``
         'body': '<h1>Page not found</h1>\n\nThanks for trying.',
     }
+
+    app.require_sphinx('1.6')
 
     # https://github.com/sphinx-doc/sphinx/blob/master/sphinx/themes/basic/page.html
     app.add_config_value('notfound_template', 'page.html', 'html')
