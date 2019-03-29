@@ -84,7 +84,8 @@ def finalize_media(app, pagename, templatename, context, doctree):
             app.builder,
             collapse=kwargs.pop('collapse', False),
             includehidden=kwargs.pop('includehidden', False),
-            **kwargs,
+            **kwargs  # not using trailing comma here makes this compatible with
+                      # Python2 syntax
         )
 
         # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
