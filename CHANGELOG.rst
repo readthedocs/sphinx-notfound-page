@@ -7,6 +7,13 @@ Changelog
 :Date: under development
 
 
+0.2.1
+-----
+
+:Date: 2019/03/29
+
+* Fix release version issue
+
 0.2
 ---
 
