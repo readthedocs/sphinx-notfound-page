@@ -88,6 +88,10 @@ def finalize_media(app, pagename, templatename, context, doctree):
                       # Python2 syntax
         )
 
+        # If no TOC is found, just return ``None`` instead of failing here
+        if not toc:
+            return None
+
         # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
         for refnode in toc.traverse(docutils.nodes.reference):
             refuri = '/{language}/{version}/{filename}'.format(
