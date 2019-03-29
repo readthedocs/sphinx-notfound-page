@@ -23,6 +23,6 @@ setuptools.setup(
         'Operating System :: OS Independent',
     ],
     install_requires=[
-        'sphinx>=1.6',
+        'sphinx',
     ],
 )
