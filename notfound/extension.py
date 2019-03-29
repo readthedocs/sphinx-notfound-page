@@ -1,3 +1,6 @@
+import os
+import docutils
+
 from sphinx.errors import ExtensionError
 
 
@@ -66,11 +69,51 @@ def finalize_media(app, pagename, templatename, context, doctree):
         uri = otheruri or '#'
         return uri
 
+    # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/builders/html.py#L1081
+    def toctree(*args, **kwargs):
+        try:
+            # Sphinx >= 1.6
+            from sphinx.environment.adapters.toctree import TocTree
+            get_toctree_for = TocTree(app.env).get_toctree_for
+        except ImportError:
+            # Sphinx < 1.6
+            get_toctree_for = app.env.get_toctree_for
+
+        toc = get_toctree_for(
+            app.config.notfound_pagename,
+            app.builder,
+            collapse=kwargs.pop('collapse', False),
+            includehidden=kwargs.pop('includehidden', False),
+            **kwargs  # not using trailing comma here makes this compatible with
+                      # Python2 syntax
+        )
+
+        # If no TOC is found, just return ``None`` instead of failing here
+        if not toc:
+            return None
+
+        # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
+        for refnode in toc.traverse(docutils.nodes.reference):
+            refuri = '/{language}/{version}/{filename}'.format(
+                language=app.config.language or 'en',
+                version=os.environ.get('READTHEDOCS_VERSION', 'latest'),
+                filename=refnode.attributes.get('refuri'),  # somepage.html
+            )
+            refnode.replace_attr('refuri', refuri)
+
+        return app.builder.render_partial(toc)['fragment']
+
     # Apply our custom manipulation to 404.html page only
     if pagename == app.config.notfound_pagename:
         # Override the ``pathto`` helper function from the context to use a custom ones
         # https://www.sphinx-doc.org/en/master/templating.html#pathto
         context['pathto'] = pathto
+
+        # Override the ``toctree`` helper function from context to use a custom
+        # one and generate valid links on not found page.
+        # https://www.sphinx-doc.org/en/master/templating.html#toctree
+        # NOTE: not used on ``singlehtml`` builder for RTD Sphinx theme
+        context['toctree'] = toctree
 
 
 def setup(app):
