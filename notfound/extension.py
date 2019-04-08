@@ -49,13 +49,14 @@ def finalize_media(app, pagename, templatename, context, doctree):
         if not resource:
             otheruri = app.builder.get_target_uri(otheruri)
 
-        if baseuri is None and not app.config.notfound_no_urls_prefix:
-            baseuri = '/{language}/{version}/'.format(
-                language=app.config.notfound_default_language,
-                version=app.config.notfound_default_version,
-            )
-        elif baseuri is None:
-            baseuri = '/'
+        if baseuri is None:
+            if app.config.notfound_no_urls_prefix:
+                baseuri = '/'
+            else:
+                baseuri = '/{language}/{version}/'.format(
+                    language=app.config.notfound_default_language,
+                    version=app.config.notfound_default_version,
+                )
 
         if not baseuri.startswith('/'):
             raise BaseURIError('"baseuri" must be absolute')
