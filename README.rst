@@ -41,6 +41,8 @@ notfound_default_language (str)
     Default: ``'en'``
 notfound_default_version (str)
     Default: ``'latest'``
+notfound_no_urls_prefix (bool)
+    Default: ``False``
 
 Thanks
 ------

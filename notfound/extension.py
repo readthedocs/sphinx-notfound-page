@@ -50,10 +50,13 @@ def finalize_media(app, pagename, templatename, context, doctree):
             otheruri = app.builder.get_target_uri(otheruri)
 
         if baseuri is None:
-            baseuri = '/{language}/{version}/'.format(
-                language=app.config.notfound_default_language,
-                version=app.config.notfound_default_version,
-            )
+            if app.config.notfound_no_urls_prefix:
+                baseuri = '/'
+            else:
+                baseuri = '/{language}/{version}/'.format(
+                    language=app.config.notfound_default_language,
+                    version=app.config.notfound_default_version,
+                )
 
         if not baseuri.startswith('/'):
             raise BaseURIError('"baseuri" must be absolute')
@@ -94,11 +97,16 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
         # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
         for refnode in toc.traverse(docutils.nodes.reference):
-            refuri = '/{language}/{version}/{filename}'.format(
-                language=app.config.language or 'en',
-                version=os.environ.get('READTHEDOCS_VERSION', 'latest'),
-                filename=refnode.attributes.get('refuri'),  # somepage.html
-            )
+            if app.config.notfound_no_urls_prefix:
+                refuri = '/{filename}'.format(
+                    filename=refnode.attributes.get('refuri'),  # somepage.html
+                )
+            else:
+                refuri = '/{language}/{version}/{filename}'.format(
+                    language=app.config.language or 'en',
+                    version=os.environ.get('READTHEDOCS_VERSION', 'latest'),
+                    filename=refnode.attributes.get('refuri'),  # somepage.html
+                )
             refnode.replace_attr('refuri', refuri)
 
         return app.builder.render_partial(toc)['fragment']
@@ -130,6 +138,7 @@ def setup(app):
     # TODO: get these values from Project's settings
     app.add_config_value('notfound_default_language', 'en', 'html')
     app.add_config_value('notfound_default_version', 'latest', 'html')
+    app.add_config_value('notfound_no_urls_prefix', False, 'html')
 
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)
