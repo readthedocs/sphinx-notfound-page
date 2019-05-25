@@ -6,6 +6,8 @@ Changelog
 
 :Date: under development
 
+* Better documentation
+* `#13 <https://github.com/rtfd/sphinx-notfound-page/pull/13>`_ Added ``notfound_no_urls_prefix`` configuration
 
 0.2.1
 -----

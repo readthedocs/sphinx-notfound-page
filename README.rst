@@ -26,23 +26,10 @@ Add this extension in your ``conf.py`` file as:
    ]
 
 
-Customization
+Documentation
 -------------
 
-There are some configs that you can modify in your ``conf.py`` file,
-
-notfound_template (str)
-    Default: ``'page.html'``
-notfound_context (dict)
-    Default: ``{'body': '<h1>Page not found</h1>\n\nThanks for trying.'}``
-notfound_pagename (str)
-    Default: ``'404'``
-notfound_default_language (str)
-    Default: ``'en'``
-notfound_default_version (str)
-    Default: ``'latest'``
-notfound_no_urls_prefix (bool)
-    Default: ``False``
+Check out the full documentation at https://sphinx-notfound-page.readthedocs.io/
 
 Thanks
 ------
