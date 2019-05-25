@@ -46,6 +46,11 @@ extensions = [
     'sphinxemoji.sphinxemoji',
 ]
 
+notfound_context = {
+    'body': '<h1>Page not found</h1>\n\nThanks for trying.',
+    'title': 'Page not found',
+}
+
 # autoapi_dirs = ['../notfound']
 
 # Add any paths that contain templates here, relative to this directory.
