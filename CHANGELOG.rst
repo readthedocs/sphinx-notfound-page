@@ -1,10 +1,15 @@
 Changelog
 =========
 
-0.3
+0.4
 ---
 
 :Date: under development
+
+0.3
+---
+
+:Date: 2019/05/25
 
 * Better documentation
 * `#13 <https://github.com/rtfd/sphinx-notfound-page/pull/13>`_ Added ``notfound_no_urls_prefix`` configuration
