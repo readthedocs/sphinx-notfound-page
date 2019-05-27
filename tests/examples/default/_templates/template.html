@@ -1,0 +1,8 @@
+{# https://github.com/sphinx-doc/sphinx/blob/master/sphinx/themes/basic/page.html #}
+{%- extends "layout.html" %}
+
+{% block body %}
+  {{ body }}
+  <p>This is rendered using a custom template</p>
+  <p>... which has a custom context as well: {{ special_setting }}</p>
+{% endblock %}

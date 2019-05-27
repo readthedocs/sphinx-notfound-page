@@ -223,3 +223,32 @@ def test_default_version_language_setting(app, status, warning):
 
     for chunk in chunks:
         assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_template': 'template.html',
+        'notfound_context': {
+            'body': 'The body goes here',
+            'title': 'Custom title',
+            'special_setting': 'a special value',
+        },
+    },
+)
+def test_template_setting(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        'Custom title',
+        'The body goes here',
+        '<p>This is rendered using a custom template</p>',
+        '<p>... which has a custom context as well: a special value</p>',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
