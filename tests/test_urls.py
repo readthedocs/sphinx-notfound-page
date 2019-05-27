@@ -8,6 +8,12 @@ srcdir = os.path.join(
     'default',
 )
 
+rstsrcdir = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    'examples',
+    '404rst',
+)
+
 
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
@@ -248,6 +254,41 @@ def test_template_setting(app, status, warning):
         'The body goes here',
         '<p>This is rendered using a custom template</p>',
         '<p>... which has a custom context as well: a special value</p>',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=rstsrcdir,
+    confoverrides={
+        'version': '2.5.1',
+    },
+)
+def test_custom_404_rst_source(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        # custom 404.rst file content
+        '<title>Oh, oh - Page not found &#8212; Python  documentation</title>',
+        '<p>This is a custom 404.rst file.</p>',
+        '<p>This file should be rendered instead of the default one.</p>',
+        "<p>Variables Sphinx substitution should be allowed here.\nExample, version: 2.5.1.</p>",
+
+        # sidebar URLs
+        '<h1 class="logo"><a href="/en/latest/index.html">Python</a></h1>',
+        '<form class="search" action="/en/latest/search.html" method="get">',
+        '<li><a href="/en/latest/index.html">Documentation overview</a><ul>',
+
+        # resources
+        '<link rel="stylesheet" href="/en/latest/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
 
     for chunk in chunks:

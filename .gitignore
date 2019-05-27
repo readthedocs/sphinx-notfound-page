@@ -103,3 +103,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 /tests/examples/default/_build
+/tests/examples/404rst/_build

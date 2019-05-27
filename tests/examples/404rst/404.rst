@@ -1,0 +1,10 @@
+==========================
+ Oh, oh - Page not found
+==========================
+
+This is a custom 404.rst file.
+
+This file should be rendered instead of the default one.
+
+Variables Sphinx substitution should be allowed here.
+Example, version: |version|.

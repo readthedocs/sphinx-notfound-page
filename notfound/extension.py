@@ -20,6 +20,11 @@ def html_collect_pages(app):
 
        The most important key from the context is ``body``.
     """
+    if app.config.notfound_pagename in app.env.titles:
+        # There is already a ``404.rst`` file rendered.
+        # Skip generating our default one.
+        return []
+
     return [(
         app.config.notfound_pagename,
         app.config.notfound_context,
