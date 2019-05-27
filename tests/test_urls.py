@@ -433,3 +433,46 @@ def test_toctree_urls_notfound_default(app, status, warning):
 
     for chunk in chunks:
         assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+)
+def test_toctree_links(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        '<h3>Navigation</h3>',
+        '<li class="toctree-l1"><a class="reference internal" href="/en/latest/chapter-i.html">Chapter I</a></li>',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'language': 'pt-br',
+    },
+)
+def test_toctree_links_language_setting_version_environment(app, status, warning):
+    with mock.patch('notfound.extension.os.environ', {'READTHEDOCS_VERSION': 'v2.0.5'}):
+        app.build()
+
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        '<h3>Navigation</h3>',
+        '<li class="toctree-l1"><a class="reference internal" href="/pt-br/v2.0.5/chapter-i.html">Chapter I</a></li>',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
