@@ -25,8 +25,8 @@ def test_default_settings(app, status, warning):
 
     chunks = [
         '<h1>Page not found</h1>',
-        'Thanks for trying',
-        '<title> &#8212; Python  documentation</title>',
+        'Thanks for trying.',
+        '<title>Page not found &#8212; Python  documentation</title>',
 
         # sidebar URLs
         '<h1 class="logo"><a href="/en/latest/index.html">Python</a></h1>',

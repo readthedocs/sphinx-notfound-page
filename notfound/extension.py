@@ -126,7 +126,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
 def setup(app):
     default_context = {
-        # TODO: improve the default ``body``
+        'title': 'Page not found',
         'body': '<h1>Page not found</h1>\n\nThanks for trying.',
     }
 
