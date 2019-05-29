@@ -311,7 +311,6 @@ def test_image_on_404_rst_source(app, status, warning):
     chunks = [
         # .. image::
         '<img alt="An image" src="/en/latest/test.png" />',
-
     ]
 
     # .. figure::
