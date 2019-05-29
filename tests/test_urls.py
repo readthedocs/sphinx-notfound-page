@@ -16,6 +16,8 @@ rstsrcdir = os.path.join(
 )
 
 
+# NOTE: ``SphinxTestApp`` unfortunately does not accept ``outdir`` to use a
+# different one per test run
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()
@@ -290,6 +292,61 @@ def test_custom_404_rst_source(app, status, warning):
         '<link rel="stylesheet" href="/en/latest/_static/alabaster.css" type="text/css" />',
         '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    buildername='dirhtml',
+)
+def test_urls_for_dirhtml_builder(app, status, warning):
+    app.build()
+    path = app.outdir / '404' / 'index.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        # sidebar URLs
+        '<form class="search" action="/en/latest/search/" method="get">',
+        '<li class="toctree-l1"><a class="reference internal" href="/en/latest/chapter/">Chapter</a></li>',
+
+        # resources
+        '<link rel="stylesheet" href="/en/latest/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    buildername='dirhtml',
+    confoverrides={
+        'notfound_no_urls_prefix': True,
+    },
+)
+def test_no_prefix_urls_for_dirhtml_builder(app, status, warning):
+    app.build()
+    path = app.outdir / '404' / 'index.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        # sidebar URLs
+        '<form class="search" action="/search/" method="get">',
+        '<li class="toctree-l1"><a class="reference internal" href="/chapter/">Chapter</a></li>',
+
+        # resources
+        '<link rel="stylesheet" href="/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
     ]
 
     for chunk in chunks:
