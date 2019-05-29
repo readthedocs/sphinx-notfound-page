@@ -14,6 +14,7 @@ def replace_uris(app, doctree, nodetype, nodeattr):
     :param nodeattr: node attribute to be replaced
     :type nodeattr: str
     """
+    # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
     for node in doctree.traverse(nodetype):
         if app.config.notfound_no_urls_prefix:
             uri = '/{filename}'.format(

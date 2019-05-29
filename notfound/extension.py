@@ -137,7 +137,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
         if not toc:
             return None
 
-        # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
         replace_uris(app, toc, docutils.nodes.reference, 'refuri')
         return app.builder.render_partial(toc)['fragment']
 
