@@ -25,13 +25,20 @@ and let the extension handle these URLs properly for you.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Contents
 
    installation
    configuration
    get-involved
    who-is-using-it
    faq
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: API Reference
+
+   autoapi/notfound/index
 
 
 .. _Sphinx: https://www.sphinx-doc.org/

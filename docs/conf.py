@@ -40,18 +40,14 @@ release = '0.2.1'
 # ones.
 extensions = [
     'notfound.extension',
-    # 'autoapi.extension',
+    'autoapi.extension',
     'sphinx_tabs.tabs',
     'sphinx-prompt',
     'sphinxemoji.sphinxemoji',
 ]
 
-notfound_context = {
-    'body': '<h1>Page not found</h1>\n\nThanks for trying.',
-    'title': 'Page not found',
-}
-
-# autoapi_dirs = ['../notfound']
+autoapi_dirs = ['../notfound']
+autoapi_add_toctree_entry = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
