@@ -24,9 +24,9 @@ copyright = '2019, Manuel Kaufmann'
 author = 'Manuel Kaufmann'
 
 # The short X.Y version
-version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.2.1'
+import notfound
+version = release = notfound.version
 
 
 # -- General configuration ---------------------------------------------------
