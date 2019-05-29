@@ -1,5 +1,6 @@
 import os
 import pytest
+import sphinx
 
 
 srcdir = os.path.join(
@@ -290,6 +291,30 @@ def test_custom_404_rst_source(app, status, warning):
         '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(srcdir=srcdir)
+def test_sphinx_resource_urls(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        # Sphinx's resources URLs
+        '<script type="text/javascript" src="/en/latest/_static/jquery.js"></script>',
+        '<script type="text/javascript" src="/en/latest/_static/underscore.js"></script>',
+        '<script type="text/javascript" src="/en/latest/_static/doctools.js"></script>',
+    ]
+
+    if sphinx.version_info >= (1, 8):
+        chunks.append(
+            '<script type="text/javascript" src="/en/latest/_static/language_data.js"></script>',
+        )
 
     for chunk in chunks:
         assert chunk in content
