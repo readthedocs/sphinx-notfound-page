@@ -13,3 +13,10 @@ Including an image using ``.. image::`` directive,
 should also make the extension to fix the URIs.
 
 .. image:: test.png
+
+
+Also, using ``.. figure::`` should work as well.
+
+.. figure:: test.png
+
+   Description.

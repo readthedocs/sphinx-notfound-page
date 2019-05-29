@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import pytest
 import sphinx
@@ -307,9 +309,20 @@ def test_image_on_404_rst_source(app, status, warning):
     content = open(path).read()
 
     chunks = [
-        # image
+        # .. image::
         '<img alt="/en/latest/test.png" src="/en/latest/test.png" />',
+
     ]
+
+    # .. figure::
+    if sphinx.version_info < (2, 0):
+        chunks.append(
+            '<div class="figure" id="id1">\n<img alt="/en/latest/test.png" src="/en/latest/test.png" />\n<p class="caption"><span class="caption-text">Description.</span></p>\n</div>'
+        )
+    else:
+        chunks.append(
+            u'<div class="figure align-center" id="id1">\n<img alt="/en/latest/test.png" src="/en/latest/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
+        )
 
     for chunk in chunks:
         assert chunk in content
