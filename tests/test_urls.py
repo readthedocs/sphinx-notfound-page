@@ -298,6 +298,23 @@ def test_custom_404_rst_source(app, status, warning):
         assert chunk in content
 
 
+@pytest.mark.sphinx(srcdir=rstsrcdir)
+def test_image_on_404_rst_source(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        # image
+        '<img alt="/en/latest/test.png" src="/en/latest/test.png" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
 @pytest.mark.sphinx(
     srcdir=srcdir,
     buildername='dirhtml',
