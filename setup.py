@@ -12,6 +12,7 @@ setuptools.setup(
     author_email='humitos@gmail.com',
     description='Sphinx extension to build a 404 page with absolute URLs',
     url='https://github.com/rtfd/sphinx-notfound-page',
+    license='MIT',
     packages=setuptools.find_packages(),
     long_description=long_description,
     long_description_content_type='text/x-rst',
