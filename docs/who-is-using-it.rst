@@ -27,3 +27,11 @@ Write the Docs
 * https://github.com/writethedocs/www
 * `Example URL <https://www.writethedocs.org/404/>`__
 * `Configuration file <https://github.com/writethedocs/www/blob/master/docs/conf.py>`__
+
+
+The Carpentries
+---------------
+
+* https://github.com/carpentries/handbook
+* `Example URL <https://docs.carpentries.org/404/>`__
+* `Configuration file <https://github.com/carpentries/handbook/blob/master/conf.py>`__
