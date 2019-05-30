@@ -404,3 +404,32 @@ def test_sphinx_resource_urls(app, status, warning):
 
     for chunk in chunks:
         assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_default_version': 'default',
+        'notfound_default_language': 'ja',
+    },
+)
+def test_toctree_urls_notfound_default(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        # sidebar URLs
+        '<form class="search" action="/ja/default/search.html" method="get">',
+        '<li class="toctree-l1"><a class="reference internal" href="/ja/default/chapter.html">Chapter</a></li>',
+
+        # resources
+        '<link rel="stylesheet" href="/ja/default/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/ja/default/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/ja/default/_static/custom.css" type="text/css" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
