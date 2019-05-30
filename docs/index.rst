@@ -5,6 +5,15 @@ Welcome to sphinx-notfound-page!
 
 This extension was originally developed to be used on `Read the Docs`_ but it can be used in other hosting services as well.
 
+Online documentation:
+    https://sphinx-notfound-page.readthedocs.io/
+
+Source code repository (and issue tracker):
+    https://github.com/rtfd/sphinx-notfound-page/
+
+License:
+    MIT
+
 
 Why I need this extension?
 --------------------------
