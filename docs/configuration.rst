@@ -30,7 +30,7 @@ notfound_default_version (str)
     Default ``'latest'``.
 
     All the links generated will have this prefix (e.g. ``/latest/``).
-    This configuration works together with ``notfound_default_version``.
+    This configuration works together with ``notfound_default_language``.
 
     .. tip::
 
