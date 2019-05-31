@@ -5,6 +5,7 @@ from sphinx.errors import ExtensionError
 
 
 class BaseURIError(ExtensionError):
+    """Exception for malformed base URI."""
     pass
 
 
@@ -14,11 +15,14 @@ def html_collect_pages(app):
     Create a ``404.html`` page.
 
     Uses ``notfound_template`` as a template to be rendered with
-    ``notfound_context`` for its context.
+    ``notfound_context`` for its context. The resulting file generated is
+    ``notfound_pagename``.html.
 
-    .. note::
+    If the user already defined a page with pagename title
+    ``notfound_pagename``, we don't generate this page.
 
-       The most important key from the context is ``body``.
+    :param app: Sphinx Application
+    :type app: sphinx.application.Sphinx
     """
     if app.config.notfound_pagename in app.env.titles:
         # There is already a ``404.rst`` file rendered.
@@ -33,7 +37,35 @@ def html_collect_pages(app):
 
 
 def finalize_media(app, pagename, templatename, context, doctree):
-    """Point media files at our media server."""
+    """
+    Point media files at our media server.
+
+    Generate absolute URLs for resources (js, images, css, etc) to point to the
+    right. For example, if a URL in the page is ``_static/js/custom.js`` it will
+    be replaced by ``/<notfound_default_language>/<notfound_default_version>/_static/js/custom.js``.
+
+    On the other hand, if ``notfound_no_urls_prefix`` is set, it will be
+    replaced by ``/_static/js/custom.js``.
+
+    Also, all the links from the sidebar (toctree) are replaced with their
+    absolute version. For example, ``../section/pagename.html`` will be replaced
+    by ``/section/pagename.html``.
+
+    :param app: Sphinx Application
+    :type app: sphinx.application.Sphinx
+
+    :param pagename: name of the page being rendered
+    :type pagename: str
+
+    :param templatename: template used to render the page
+    :type templatename: str
+
+    :param context: context used to render the page
+    :type context: dict
+
+    :param doctree: doctree of the page being rendered
+    :type doctree: docutils.nodes.document
+    """
 
     # https://github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py#L1054-L1065
     def pathto(otheruri, resource=False, baseuri=None):
@@ -130,6 +162,13 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
 
 def setup(app):
+    """
+    Entry point to register a Sphinx extension.
+
+    :param app: Sphinx Application
+    :type app: sphinx.application.Sphinx
+    """
+
     default_context = {
         'title': 'Page not found',
         'body': '<h1>Page not found</h1>\n\nThanks for trying.',
