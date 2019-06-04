@@ -1,9 +1,9 @@
-import os
 import docutils
 import sphinx
 
-from sphinx.builders.html import DirectoryHTMLBuilder
 from sphinx.errors import ExtensionError
+
+from .utils import replace_uris
 
 
 class BaseURIError(ExtensionError):
@@ -38,6 +38,7 @@ def html_collect_pages(app):
     )]
 
 
+# https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-html-page-context
 def finalize_media(app, pagename, templatename, context, doctree):
     """
     Point media files at our media server.
@@ -134,29 +135,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
         if not toc:
             return None
 
-        # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
-        for refnode in toc.traverse(docutils.nodes.reference):
-            refuri = refnode.attributes.get('refuri')  # somepage.html (or ../sompage.html)
-
-            if isinstance(app.builder, DirectoryHTMLBuilder):
-                # When the builder is ``DirectoryHTMLBuilder``, refuri will be
-                # ``../somepage.html``. In that case, we want to remove the
-                # initial ``../`` to make valid links
-                if refuri.startswith('../'):
-                    refuri = refuri.replace('../', '')
-
-            if app.config.notfound_no_urls_prefix:
-                refuri = '/{filename}'.format(
-                    filename=refuri,
-                )
-            else:
-                refuri = '/{language}/{version}/{filename}'.format(
-                    language=app.config.language or 'en',
-                    version=os.environ.get('READTHEDOCS_VERSION', 'latest'),
-                    filename=refuri,
-                )
-            refnode.replace_attr('refuri', refuri)
-
+        replace_uris(app, toc, docutils.nodes.reference, 'refuri')
         return app.builder.render_partial(toc)['fragment']
 
     # Apply our custom manipulation to 404.html page only
@@ -172,14 +151,28 @@ def finalize_media(app, pagename, templatename, context, doctree):
         context['toctree'] = toctree
 
 
-def setup(app):
+# https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-doctree-resolved
+def doctree_resolved(app, doctree, docname):
     """
-    Entry point to register a Sphinx extension.
+    Generate and override URLs for ``.. image::`` Sphinx directive.
+
+    When ``.. image::`` is used in the ``404.rst`` file, this function will
+    override the URLs to point to the right place.
 
     :param app: Sphinx Application
     :type app: sphinx.application.Sphinx
+    :param doctree: doctree representing the document
+    :type doctree: docutils.nodes.document
+    :param docname: name of the document
+    :type docname: str
     """
 
+    if docname == app.config.notfound_pagename:
+        # Replace image ``uri`` to its absolute version
+        replace_uris(app, doctree, docutils.nodes.image, 'uri')
+
+
+def setup(app):
     default_context = {
         'title': 'Page not found',
         'body': '<h1>Page not found</h1>\n\nThanks for trying.',
@@ -197,6 +190,7 @@ def setup(app):
 
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)
+    app.connect('doctree-resolved', doctree_resolved)
 
     # Sphinx injects some javascript files using ``add_js_file``. The path for
     # this file is rendered in the template using ``js_tag`` instead of

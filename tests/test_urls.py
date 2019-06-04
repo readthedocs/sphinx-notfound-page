@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import pytest
 import sphinx
@@ -293,6 +295,33 @@ def test_custom_404_rst_source(app, status, warning):
         '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(srcdir=rstsrcdir)
+def test_image_on_404_rst_source(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        # .. image::
+        '<img alt="An image" src="/en/latest/test.png" />',
+    ]
+
+    # .. figure::
+    if sphinx.version_info < (2, 0):
+        chunks.append(
+            '<div class="figure" id="id1">\n<img alt="/en/latest/test.png" src="/en/latest/test.png" />\n<p class="caption"><span class="caption-text">Description.</span></p>\n</div>'
+        )
+    else:
+        chunks.append(
+            u'<div class="figure align-center" id="id1">\n<img alt="/en/latest/test.png" src="/en/latest/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
+        )
 
     for chunk in chunks:
         assert chunk in content

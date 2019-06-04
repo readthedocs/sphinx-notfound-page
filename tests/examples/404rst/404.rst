@@ -8,3 +8,16 @@ This file should be rendered instead of the default one.
 
 Variables Sphinx substitution should be allowed here.
 Example, version: |version|.
+
+Including an image using ``.. image::`` directive,
+should also make the extension to fix the URIs.
+
+.. image:: test.png
+   :alt: An image
+
+
+Also, using ``.. figure::`` should work as well.
+
+.. figure:: test.png
+
+   Description.
