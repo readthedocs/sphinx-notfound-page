@@ -1,8 +1,6 @@
-import os
 import docutils
 import sphinx
 
-from sphinx.builders.html import DirectoryHTMLBuilder
 from sphinx.errors import ExtensionError
 
 from .utils import replace_uris
