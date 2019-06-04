@@ -1,5 +1,6 @@
 import os
 import docutils
+import sphinx
 
 from sphinx.errors import ExtensionError
 
@@ -186,3 +187,12 @@ def setup(app):
 
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)
+
+    # Sphinx injects some javascript files using ``add_js_file``. The path for
+    # this file is rendered in the template using ``js_tag`` instead of
+    # ``pathto``. The ``js_tag`` uses ``pathto`` internally to resolve these
+    # paths, we call again the setup function for this tag *after* the context
+    # was overriden by our extension with the patched ``pathto`` function.
+    if sphinx.version_info >= (1, 8):
+        from sphinx.builders.html import setup_js_tag_helper
+        app.connect('html-page-context', setup_js_tag_helper)
