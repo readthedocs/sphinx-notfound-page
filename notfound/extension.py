@@ -2,6 +2,7 @@ import os
 import docutils
 import sphinx
 
+from sphinx.builders.html import DirectoryHTMLBuilder
 from sphinx.errors import ExtensionError
 
 
@@ -135,15 +136,24 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
         # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
         for refnode in toc.traverse(docutils.nodes.reference):
+            refuri = refnode.attributes.get('refuri')  # somepage.html (or ../sompage.html)
+
+            if isinstance(app.builder, DirectoryHTMLBuilder):
+                # When the builder is ``DirectoryHTMLBuilder``, refuri will be
+                # ``../somepage.html``. In that case, we want to remove the
+                # initial ``../`` to make valid links
+                if refuri.startswith('../'):
+                    refuri = refuri.replace('../', '')
+
             if app.config.notfound_no_urls_prefix:
                 refuri = '/{filename}'.format(
-                    filename=refnode.attributes.get('refuri'),  # somepage.html
+                    filename=refuri,
                 )
             else:
                 refuri = '/{language}/{version}/{filename}'.format(
                     language=app.config.language or 'en',
                     version=os.environ.get('READTHEDOCS_VERSION', 'latest'),
-                    filename=refnode.attributes.get('refuri'),  # somepage.html
+                    filename=refuri,
                 )
             refnode.replace_attr('refuri', refuri)
 
