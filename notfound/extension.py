@@ -1,4 +1,5 @@
 import docutils
+import os
 import sphinx
 
 from sphinx.errors import ExtensionError
@@ -184,8 +185,10 @@ def setup(app):
     app.add_config_value('notfound_pagename', '404', 'html')
 
     # TODO: get these values from Project's settings
+    default_version = os.environ.get('READTHEDOCS_VERSION', 'latest')
+
     app.add_config_value('notfound_default_language', 'en', 'html')
-    app.add_config_value('notfound_default_version', 'latest', 'html')
+    app.add_config_value('notfound_default_version', default_version, 'html')
     app.add_config_value('notfound_no_urls_prefix', False, 'html')
 
     app.connect('html-collect-pages', html_collect_pages)
