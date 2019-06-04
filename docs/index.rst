@@ -29,6 +29,7 @@ and let the extension handle these URLs properly for you.
 
    installation
    configuration
+   how-it-works
    get-involved
    who-is-using-it
    faq
