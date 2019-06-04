@@ -4,7 +4,14 @@ Changelog
 0.4
 ---
 
-:Date: under development
+:Date: 2019/06/06
+
+* More versions of Sphinx supported
+* Allow rendering a ``404.rst`` for the custom page
+* Allow the usage of ``.. image::`` and ``.. figure::`` directive
+* Fix links for toctree when using htmldir Sphinx builder
+* Respect ``notfound_version`` and ``notfound_language`` on toctree links
+* Better docs
 
 0.3
 ---
