@@ -4,7 +4,6 @@ import os
 import pytest
 import sphinx
 
-
 srcdir = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'examples',
@@ -457,12 +456,39 @@ def test_toctree_links(app, status, warning):
 @pytest.mark.sphinx(
     srcdir=srcdir,
     confoverrides={
-        'language': 'pt-br',
+        'notfound_default_language': 'pt-br',
+        'notfound_default_version': 'stable',
     },
 )
-def test_toctree_links_language_setting_version_environment(app, status, warning):
-    with mock.patch('notfound.extension.os.environ', {'READTHEDOCS_VERSION': 'v2.0.5'}):
-        app.build()
+def test_toctree_links_custom_settings(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists() == True
+
+    content = open(path).read()
+
+    chunks = [
+        '<h3>Navigation</h3>',
+        '<li class="toctree-l1"><a class="reference internal" href="/pt-br/stable/chapter-i.html">Chapter I</a></li>',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason='Our setup() function is called before the mock is executed.',
+)
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_default_language': 'pt-br',
+    },
+)
+def test_toctree_links_language_setting_version_environment(app, status, warning, monkeypatch):
+    monkeypatch.setenv('READTHEDOCS_VERSION', 'v2.0.5')
+    app.build()
 
     path = app.outdir / '404.html'
     assert path.exists() == True
