@@ -206,7 +206,7 @@ def setup(app):
         app.connect('html-page-context', setup_js_tag_helper)
 
     return {
-        'version': str(version),
+        'version': version,
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
