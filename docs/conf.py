@@ -48,6 +48,9 @@ extensions = [
 
 autoapi_dirs = ['../notfound']
 autoapi_add_toctree_entry = False
+def setup(app):
+  app.add_description_unit('confval', 'confval',
+    'pair: %s; configuration value')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
