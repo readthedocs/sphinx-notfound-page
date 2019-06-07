@@ -48,9 +48,6 @@ extensions = [
 
 autoapi_dirs = ['../notfound']
 autoapi_add_toctree_entry = False
-def setup(app):
-  app.add_description_unit('confval', 'confval',
-    'pair: %s; configuration value')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -182,3 +179,9 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
+
+# -- Setup for 'confval' used in docs/configuration.rst ----------------------
+
+def setup(app):
+  app.add_object_type('confval', 'confval',
+    'pair: %s; configuration value')
