@@ -35,7 +35,7 @@ def replace_uris(app, doctree, nodetype, nodeattr):
                 uri = uri.replace('../', '')
 
         imagedir = ''
-        if nodetype == docutils.nodes.image:
+        if nodetype is docutils.nodes.image:
             # Prefix the URL with ``Builder.imagedir`` to use the internal's
             # Sphinx image handling if the node is an image
             imagedir = '{imagedir}/'.format(
@@ -61,7 +61,7 @@ def replace_uris(app, doctree, nodetype, nodeattr):
         # We need to do this at this point because ``Builder.post_process_images``
         # does not add it automatically as the path does not match.
         # https://github.com/sphinx-doc/sphinx/blob/5ce5c2c3156c53c1f1b758c38150e48080138b15/sphinx/builders/__init__.py#L189
-        if nodetype == docutils.nodes.image:
+        if nodetype is docutils.nodes.image:
             if all([
                     not olduri.startswith('data:'),
                     '://' not in olduri,
