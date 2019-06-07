@@ -62,4 +62,8 @@ def replace_uris(app, doctree, nodetype, nodeattr):
         # does not add it automatically as the path does not match.
         # https://github.com/sphinx-doc/sphinx/blob/5ce5c2c3156c53c1f1b758c38150e48080138b15/sphinx/builders/__init__.py#L189
         if nodetype == docutils.nodes.image:
-            app.builder.images[olduri] = olduri
+            if all([
+                    not olduri.startswith('data:'),
+                    '://' not in olduri,
+            ]):
+                app.builder.images[olduri] = olduri

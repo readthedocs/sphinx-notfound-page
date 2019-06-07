@@ -303,6 +303,10 @@ def test_custom_404_rst_source(app, status, warning):
 def test_image_on_404_rst_source(app, status, warning):
     app.build()
 
+    # Check the image was added to the builder/environment images
+    assert 'test.png' in app.builder.images
+    assert 'test.png' in app.env.images
+
     # Check the image was copied into the output dir
     path = app.outdir / '_images' / 'test.png'
     assert path.exists() == True
