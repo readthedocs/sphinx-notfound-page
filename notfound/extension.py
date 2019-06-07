@@ -4,6 +4,7 @@ import sphinx
 
 from sphinx.errors import ExtensionError
 
+from . import version
 from .utils import replace_uris
 
 
@@ -203,3 +204,9 @@ def setup(app):
     if sphinx.version_info >= (1, 8):
         from sphinx.builders.html import setup_js_tag_helper
         app.connect('html-page-context', setup_js_tag_helper)
+
+    return {
+        'version': version,
+        'parallel_read_safe': True,
+        'parallel_write_safe': True,
+    }
