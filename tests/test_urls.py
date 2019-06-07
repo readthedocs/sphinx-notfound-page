@@ -23,14 +23,14 @@ rstsrcdir = os.path.join(
 def test_404_page_created(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
 
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_default_settings(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
     content = open(path).read()
 
     chunks = [
@@ -62,7 +62,7 @@ def test_default_settings(app, status, warning):
 def test_context_settings(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
     content = open(path).read()
 
     chunks = [
@@ -84,7 +84,7 @@ def test_context_settings(app, status, warning):
 def test_pagename_setting(app, status, warning):
     app.build()
     path = app.outdir / '500.html'
-    assert path.exists() == True
+    assert path.exists()
 
 
 @pytest.mark.sphinx(
@@ -96,7 +96,7 @@ def test_pagename_setting(app, status, warning):
 def test_default_language_setting(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -125,7 +125,7 @@ def test_default_language_setting(app, status, warning):
 def test_default_version_setting(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -154,7 +154,7 @@ def test_default_version_setting(app, status, warning):
 def test_no_urls_prefix_setting(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -185,7 +185,7 @@ def test_no_urls_prefix_setting(app, status, warning):
 def test_no_urls_prefix_setting_preference(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -215,7 +215,7 @@ def test_no_urls_prefix_setting_preference(app, status, warning):
 def test_default_version_language_setting(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -249,7 +249,7 @@ def test_default_version_language_setting(app, status, warning):
 def test_template_setting(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -273,7 +273,7 @@ def test_template_setting(app, status, warning):
 def test_custom_404_rst_source(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -309,10 +309,10 @@ def test_image_on_404_rst_source(app, status, warning):
 
     # Check the image was copied into the output dir
     path = app.outdir / '_images' / 'test.png'
-    assert path.exists() == True
+    assert path.exists()
 
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -346,7 +346,7 @@ def test_image_on_404_rst_source(app, status, warning):
 def test_urls_for_dirhtml_builder(app, status, warning):
     app.build()
     path = app.outdir / '404' / 'index.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -375,7 +375,7 @@ def test_urls_for_dirhtml_builder(app, status, warning):
 def test_no_prefix_urls_for_dirhtml_builder(app, status, warning):
     app.build()
     path = app.outdir / '404' / 'index.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -398,7 +398,7 @@ def test_no_prefix_urls_for_dirhtml_builder(app, status, warning):
 def test_sphinx_resource_urls(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -428,7 +428,7 @@ def test_sphinx_resource_urls(app, status, warning):
 def test_toctree_urls_notfound_default(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -453,7 +453,7 @@ def test_toctree_urls_notfound_default(app, status, warning):
 def test_toctree_links(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -476,7 +476,7 @@ def test_toctree_links(app, status, warning):
 def test_toctree_links_custom_settings(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
@@ -504,7 +504,7 @@ def test_toctree_links_language_setting_version_environment(app, status, warning
     app.build()
 
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists()
 
     content = open(path).read()
 
