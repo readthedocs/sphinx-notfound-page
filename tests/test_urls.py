@@ -302,6 +302,11 @@ def test_custom_404_rst_source(app, status, warning):
 @pytest.mark.sphinx(srcdir=rstsrcdir)
 def test_image_on_404_rst_source(app, status, warning):
     app.build()
+
+    # Check the image was copied into the output dir
+    path = app.outdir / '_images' / 'test.png'
+    assert path.exists() == True
+
     path = app.outdir / '404.html'
     assert path.exists() == True
 
@@ -309,21 +314,21 @@ def test_image_on_404_rst_source(app, status, warning):
 
     chunks = [
         # .. image::
-        '<img alt="An image" src="/en/latest/test.png" />',
+        '<img alt="An image" src="/en/latest/_images/test.png" />',
     ]
 
     # .. figure::
     if sphinx.version_info < (2, 0):
         chunks.append(
-            '<div class="figure" id="id1">\n<img alt="/en/latest/test.png" src="/en/latest/test.png" />\n<p class="caption"><span class="caption-text">Description.</span></p>\n</div>'
+            '<div class="figure" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span></p>\n</div>'
         )
     elif sphinx.version_info < (2, 1):
         chunks.append(
-            u'<div class="figure align-center" id="id1">\n<img alt="/en/latest/test.png" src="/en/latest/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
+            u'<div class="figure align-center" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
         )
     else:
         chunks.append(
-            u'<div class="figure align-default" id="id1">\n<img alt="/en/latest/test.png" src="/en/latest/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
+            u'<div class="figure align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
         )
 
     for chunk in chunks:
