@@ -322,6 +322,7 @@ def test_image_on_404_rst_source(app, status, warning):
     chunks = [
         # .. image::
         '<img alt="An image" src="/en/latest/_images/test.png" />',
+        '<img alt="Image from folder" src="/en/latest/_images/loudly-crying-face.png" />',
     ]
 
     # .. figure::

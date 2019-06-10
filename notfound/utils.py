@@ -42,6 +42,11 @@ def replace_uris(app, doctree, nodetype, nodeattr):
                 imagedir=app.builder.imagedir,
             )
 
+            # The image is copied into ``app.builder.imagedir`` without keeping
+            # the directory structure, so we need only the filename for the
+            # correct link
+            uri = olduri.split('/')[-1]
+
         if app.config.notfound_no_urls_prefix:
             uri = '/{imagedir}{filename}'.format(
                 filename=uri,
