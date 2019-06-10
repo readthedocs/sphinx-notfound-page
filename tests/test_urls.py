@@ -311,6 +311,9 @@ def test_image_on_404_rst_source(app, status, warning):
     path = app.outdir / '_images' / 'test.png'
     assert path.exists()
 
+    path = app.outdir / '_images' / 'loudly-crying-face.png'
+    assert path.exists()
+
     path = app.outdir / '404.html'
     assert path.exists()
 

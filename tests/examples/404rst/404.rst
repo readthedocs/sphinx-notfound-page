@@ -16,6 +16,10 @@ should also make the extension to fix the URIs.
    :alt: An image
 
 
+.. image:: images/loudly-crying-face.png
+   :alt: Image from folder
+
+
 Also, using ``.. figure::`` should work as well.
 
 .. figure:: test.png

@@ -66,4 +66,4 @@ def replace_uris(app, doctree, nodetype, nodeattr):
                     not olduri.startswith('data:'),
                     '://' not in olduri,
             ]):
-                app.builder.images[olduri] = olduri
+                app.builder.images[olduri] = olduri.split('/')[-1]
