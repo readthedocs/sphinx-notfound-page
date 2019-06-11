@@ -1,4 +1,5 @@
 import docutils
+import re
 from sphinx.builders.html import DirectoryHTMLBuilder
 
 
@@ -33,6 +34,10 @@ def replace_uris(app, doctree, nodetype, nodeattr):
             # initial ``../`` to make valid links
             if uri.startswith('../'):
                 uri = uri.replace('../', '')
+
+        if re.match('^https?://', uri):
+            # allow non-local URLs for resources
+            continue
 
         imagedir = ''
         if nodetype is docutils.nodes.image:

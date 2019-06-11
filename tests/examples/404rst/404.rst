@@ -27,3 +27,13 @@ Also, using ``.. figure::`` should work as well.
 .. figure:: test.png
 
    Description.
+
+
+Including an image using an absolute URL should not be modified by the extension:
+
+.. image:: https://read-the-docs-guidelines.readthedocs-hosted.com/_images/logo-dark.png
+   :alt: Read the Docs Logo
+
+
+.. image:: https.png
+   :alt: PATH looking as an URL
