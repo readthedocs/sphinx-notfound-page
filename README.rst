@@ -1,3 +1,5 @@
+|PyPI version| |Docs badge| |License|
+
 sphinx-notfound-page
 ====================
 
@@ -36,3 +38,11 @@ Thanks
 ------
 
 **Strongly** based on @ericholscher's solution from https://github.com/rtfd/readthedocs.org/issues/353
+
+.. |PyPI version| https://img.shields.io/pypi/v/sphinx-notfound-page.svg
+   :target: https://pypi.org/project/sphinx-notfound-page
+.. |Docs badge| image:: https://img.shields.io/badge/docs-latest-brightgreen.svg
+   :target: https://sphinx-notfound-page.readthedocs.io/en/latest/
+.. |License| image:: https://img.shields.io/github/license/rtfd/sphinx-notfound-page.svg
+   :target: LICENSE
+   :alt: Repository License
