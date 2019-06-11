@@ -344,6 +344,25 @@ def test_image_on_404_rst_source(app, status, warning):
 
 
 @pytest.mark.sphinx(srcdir=rstsrcdir)
+def test_image_looks_like_absolute_url(app, status, warning):
+    app.build()
+
+    path = app.outdir / '_images' / 'https.png'
+    assert path.exists()
+
+    path = app.outdir / '404.html'
+    assert path.exists()
+    content = open(path).read()
+
+    chunks = [
+        '<img alt="PATH looking as an URL" src="/en/latest/_images/https.png" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(srcdir=rstsrcdir)
 def test_image_absolute_url(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
