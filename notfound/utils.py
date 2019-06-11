@@ -37,7 +37,7 @@ def replace_uris(app, doctree, nodetype, nodeattr):
 
         if re.match('^https?://', uri):
             # allow non-local URLs for resources
-            return
+            continue
 
         imagedir = ''
         if nodetype is docutils.nodes.image:
