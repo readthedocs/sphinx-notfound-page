@@ -1,3 +1,5 @@
+|Build| |PyPI version| |License|
+
 Welcome to sphinx-notfound-page!
 ================================
 
@@ -53,3 +55,13 @@ and let the extension handle these URLs properly for you.
 
 .. _Sphinx: https://www.sphinx-doc.org/
 .. _Read the Docs: https://readthedocs.org
+
+.. |Build| image:: https://travis-ci.org/rtfd/sphinx-notfound-page.svg?branch=master
+   :target: https://travis-ci.org/rtfd/sphinx-notfound-page
+   :alt: Build status
+.. |PyPI version| image:: https://img.shields.io/pypi/v/sphinx-notfound-page.svg
+   :target: https://pypi.org/project/sphinx-notfound-page
+   :alt: Current PyPI version
+.. |License| image:: https://img.shields.io/github/license/rtfd/sphinx-notfound-page.svg
+   :target: LICENSE
+   :alt: Repository license
