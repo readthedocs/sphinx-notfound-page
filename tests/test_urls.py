@@ -26,8 +26,6 @@ def remove_sphinx_build_output():
             shutil.rmtree(build_path)
 
 
-# NOTE: ``SphinxTestApp`` unfortunately does not accept ``outdir`` to use a
-# different one per test run
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()
