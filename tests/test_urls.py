@@ -3,6 +3,7 @@
 import os
 import pytest
 import sphinx
+import shutil
 
 srcdir = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -16,9 +17,15 @@ rstsrcdir = os.path.join(
     '404rst',
 )
 
+@pytest.fixture(autouse=True, scope='function')
+def remove_sphinx_build_output():
+    """Remove _build/ folder, if exist."""
+    for path in (srcdir, rstsrcdir):
+        build_path = os.path.join(path, '_build')
+        if os.path.exists(build_path):
+            shutil.rmtree(build_path)
 
-# NOTE: ``SphinxTestApp`` unfortunately does not accept ``outdir`` to use a
-# different one per test run
+
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()
