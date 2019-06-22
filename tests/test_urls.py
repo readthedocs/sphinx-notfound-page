@@ -560,3 +560,11 @@ def test_toctree_links_language_setting_version_environment(app, status, warning
 
     for chunk in chunks:
         assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=rstsrcdir,
+)
+def test_automatic_orphan(app, status, warning):
+    app.build()
+    assert app.env.metadata['404'] == {'orphan': True}
