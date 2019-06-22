@@ -30,6 +30,10 @@ If you want to remove this warning, you need to add ``:orphan:`` (see `full docs
 
 .. _full docs: https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html#file-wide-metadata
 
+.. note::
+
+   Version 0.5 automatically adds this metadata value to remove this warning message.
+
 
 The answer I'm looking for is not here
 --------------------------------------
