@@ -22,15 +22,6 @@ You may want to set ``notfound_no_urls_prefix`` to ``True`` and then add ``perma
 .. _YAML front matter: http://jekyllrb.com/docs/frontmatter/
 
 
-WARNING: document isn't included in any toctree
------------------------------------------------
-
-This warning is risen by Sphinx when building the docs because the ``404.rst`` is not included in any toctree.
-If you want to remove this warning, you need to add ``:orphan:`` (see `full docs`_) at the top of the ``404.rst`` file.
-
-.. _full docs: https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html#file-wide-metadata
-
-
 The answer I'm looking for is not here
 --------------------------------------
 

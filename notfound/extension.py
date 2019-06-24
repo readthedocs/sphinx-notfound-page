@@ -2,6 +2,7 @@ import docutils
 import os
 import sphinx
 
+from sphinx.environment.collectors import EnvironmentCollector
 from sphinx.errors import ExtensionError
 
 from . import version
@@ -174,6 +175,23 @@ def doctree_resolved(app, doctree, docname):
         replace_uris(app, doctree, docutils.nodes.image, 'uri')
 
 
+class OrphanMetadataCollector(EnvironmentCollector):
+    """
+    Force the 404 page to be ``orphan``.
+
+    This way we remove the WARNING that Sphinx raises saying the page is not
+    included in any toctree.
+
+    This collector has the same effect than ``:orphan:`` at the top of the page.
+    """
+
+    def clear_doc(self, app, env, docname):
+        return None
+
+    def process_doc(self, app, doctree):
+        app.env.metadata[app.config.notfound_pagename].update({'orphan': True})
+
+
 def setup(app):
     default_context = {
         'title': 'Page not found',
@@ -204,6 +222,8 @@ def setup(app):
     if sphinx.version_info >= (1, 8):
         from sphinx.builders.html import setup_js_tag_helper
         app.connect('html-page-context', setup_js_tag_helper)
+
+    app.add_env_collector(OrphanMetadataCollector)
 
     return {
         'version': version,
