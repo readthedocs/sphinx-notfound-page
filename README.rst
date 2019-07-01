@@ -37,10 +37,10 @@ Check out the full documentation at https://sphinx-notfound-page.readthedocs.io/
 Thanks
 ------
 
-**Strongly** based on @ericholscher's solution from https://github.com/rtfd/readthedocs.org/issues/353
+**Strongly** based on @ericholscher's solution from https://github.com/readthedocs/readthedocs.org/issues/353
 
-.. |Build| image:: https://travis-ci.org/rtfd/sphinx-notfound-page.svg?branch=master
-   :target: https://travis-ci.org/rtfd/sphinx-notfound-page
+.. |Build| image:: https://travis-ci.org/readthedocs/sphinx-notfound-page.svg?branch=master
+   :target: https://travis-ci.org/readthedocs/sphinx-notfound-page
    :alt: Build status
 .. |PyPI version| image:: https://img.shields.io/pypi/v/sphinx-notfound-page.svg
    :target: https://pypi.org/project/sphinx-notfound-page
@@ -48,6 +48,6 @@ Thanks
 .. |Docs badge| image:: https://readthedocs.org/projects/sphinx-notfound-page/badge/?version=latest
    :target: https://sphinx-notfound-page.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation status
-.. |License| image:: https://img.shields.io/github/license/rtfd/sphinx-notfound-page.svg
+.. |License| image:: https://img.shields.io/github/license/readthedocs/sphinx-notfound-page.svg
    :target: LICENSE
    :alt: Repository license

@@ -8,9 +8,9 @@ that you can take a look at to understand how they are configured and what's the
 Read the Docs
 -------------
 
-* https://github.com/rtfd/readthedocs.org
+* https://github.com/readthedocs/readthedocs.org
 * `Example URL <https://docs.readthedocs.io/en/stable/not/found.html>`__
-* `Configuration file <https://github.com/rtfd/readthedocs.org/blob/master/docs/conf.py>`__
+* `Configuration file <https://github.com/readthedocs/readthedocs.org/blob/master/docs/conf.py>`__
 
 
 PyVista

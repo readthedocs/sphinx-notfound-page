@@ -29,4 +29,4 @@ The answer I'm looking for is not here
 
 Please, `open an issue in our issue tracker`_ and let us know what's the problem you are having.
 
-.. _open an issue in our issue tracker: https://github.com/rtfd/sphinx-notfound-page/issues/new
+.. _open an issue in our issue tracker: https://github.com/readthedocs/sphinx-notfound-page/issues/new
