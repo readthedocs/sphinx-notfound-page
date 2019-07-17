@@ -15,7 +15,7 @@ Install the package
 
       .. prompt:: bash
 
-         pip install git+https://github.com/rtfd/sphinx-notfound-page@master
+         pip install git+https://github.com/readthedocs/sphinx-notfound-page@master
 
 
 Once we have the package installed,

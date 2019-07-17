@@ -9,7 +9,7 @@ Online documentation:
     https://sphinx-notfound-page.readthedocs.io/
 
 Source code repository (and issue tracker):
-    https://github.com/rtfd/sphinx-notfound-page/
+    https://github.com/readthedocs/sphinx-notfound-page/
 
 Badges:
     |Build| |PyPI version| |Docs badge| |License|
@@ -55,8 +55,8 @@ and let the extension handle these URLs properly for you.
 .. _Read the Docs: https://readthedocs.org
 
 
-.. |Build| image:: https://travis-ci.org/rtfd/sphinx-notfound-page.svg?branch=master
-   :target: https://travis-ci.org/rtfd/sphinx-notfound-page
+.. |Build| image:: https://travis-ci.org/readthedocs/sphinx-notfound-page.svg?branch=master
+   :target: https://travis-ci.org/readthedocs/sphinx-notfound-page
    :alt: Build status
 .. |PyPI version| image:: https://img.shields.io/pypi/v/sphinx-notfound-page.svg
    :target: https://pypi.org/project/sphinx-notfound-page
@@ -64,6 +64,6 @@ and let the extension handle these URLs properly for you.
 .. |Docs badge| image:: https://readthedocs.org/projects/sphinx-notfound-page/badge/?version=latest
    :target: https://sphinx-notfound-page.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation status
-.. |License| image:: https://img.shields.io/github/license/rtfd/sphinx-notfound-page.svg
+.. |License| image:: https://img.shields.io/github/license/readthedocs/sphinx-notfound-page.svg
    :target: LICENSE
    :alt: Repository license
