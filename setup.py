@@ -19,8 +19,20 @@ setuptools.setup(
     include_package_data=True,
     zip_safe=False,
     classifiers=[
-        'Programming Language :: Python :: 3',
+        'Development Status :: 5 - Production/Stable',
+        'Framework :: Sphinx',
+        'Framework :: Sphinx :: Extension',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Topic :: Documentation :: Sphinx',
+        'Topic :: Software Development :: Documentation',
     ],
+    keywords='notfound 404 page sphinx',
+    project_urls={
+        'Documentation': 'https://sphinx-notfound-page.readthedocs.io/',
+        'Source': 'https://github.com/readthedocs/sphinx-notfound-page',
+        'Tracker': 'https://github.com/readthedocs/sphinx-notfound-page/issues',
+    },
 )
