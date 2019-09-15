@@ -1,7 +1,7 @@
 Installation
 ============
 
-Install the package
+1. Install the package:
 
 .. tabs::
 
@@ -18,9 +18,8 @@ Install the package
          pip install git+https://github.com/readthedocs/sphinx-notfound-page@master
 
 
-Once we have the package installed,
-we have to configure it on our Sphinx documentation.
-To do this, add this extension to your Sphinx's extensions in the ``conf.py`` file.
+2. After installing the package,
+configure it by adding the following extension to the ``conf.py`` file:
 
 .. code-block:: python
 
@@ -31,23 +30,20 @@ To do this, add this extension to your Sphinx's extensions in the ``conf.py`` fi
    ]
 
 
-After installing the package and adding the extension in the ``conf.py`` file,
-you can build your documentation again and you will see a new file called ``404.html`` in your documentation's build output.
+3. Build your documentation again.
+.. result:: A new ``404.html``file is created in the build output of your documentation.
+
+.. note:important::
+
+   If you open the ``404.html`` file in a browser, the images and css do not display properly.
+   The URLs are absolute and the resources cannot be found at ``file://``.
+
+   It is an expected behavior and those resources appear once the docs are deployed.
 
 
-.. warning::
+.. info::
 
-   If you open the ``404.html`` file on the browser,
-   you will see that all of the images and css does not display properly.
-   This is because all the URLs are absolute and since the file is being rendered from ``file://`` in the browser,
-   it does not know where to find those resources.
-
-   Do not worry too much about this, this is the expected behavior and those resources will appear once the docs are deployed.
-
-
-.. note::
-
-   This extension requires,
+   This extension requires:
 
    * Python 2.7+ or 3.x
    * Sphinx 1.5+ or 2.x
