@@ -534,9 +534,8 @@ def test_toctree_links_custom_settings(app, status, warning):
         assert chunk in content
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason='Our setup() function is called before the mock is executed.',
+@pytest.mark.environ(
+    READTHEDOCS_VERSION='v2.0.5',
 )
 @pytest.mark.sphinx(
     srcdir=srcdir,
@@ -544,8 +543,7 @@ def test_toctree_links_custom_settings(app, status, warning):
         'notfound_default_language': 'pt-br',
     },
 )
-def test_toctree_links_language_setting_version_environment(app, status, warning, monkeypatch):
-    monkeypatch.setenv('READTHEDOCS_VERSION', 'v2.0.5')
+def test_toctree_links_language_setting_version_environment(environ, app, status, warning):
     app.build()
 
     path = app.outdir / '404.html'
