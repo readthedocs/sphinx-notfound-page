@@ -104,7 +104,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
         if not baseuri.startswith('/'):
             raise BaseURIError('"baseuri" must be absolute')
 
-        if otheruri and not otheruri.startswith('/'):
+        if not otheruri.startswith('/'):
             otheruri = '/' + otheruri
 
         if otheruri:
