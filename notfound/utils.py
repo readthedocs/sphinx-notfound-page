@@ -1,6 +1,6 @@
 import docutils
 import re
-from sphinx.builders.html import DirectoryHTMLBuilder
+from sphinx.builders.dirhtml import DirectoryHTMLBuilder
 
 
 def replace_uris(app, doctree, nodetype, nodeattr):
