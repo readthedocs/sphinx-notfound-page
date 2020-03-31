@@ -3,7 +3,7 @@ import re
 import sphinx
 
 # Sphinx <2 Compatibility
-if int(sphinx.__version__[0]) >= 2:
+if sphinx.version_info >= (2, 0):
     from sphinx.builders.dirhtml import DirectoryHTMLBuilder
 else:
     from sphinx.builders.html import DirectoryHTMLBuilder
