@@ -238,7 +238,9 @@ def setup(app):
     # This config should replace the previous three
     app.add_config_value('notfound_urls_prefix', f'/en/{default_version}/', 'html')
 
-    app.connect('config-inited', handle_config)
+    if sphinx.version_info > (1, 8, 0):
+        app.connect('config-inited', handle_config)
+
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)
     app.connect('doctree-resolved', doctree_resolved)
