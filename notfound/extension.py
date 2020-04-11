@@ -192,7 +192,7 @@ class OrphanMetadataCollector(EnvironmentCollector):
         app.env.metadata[app.config.notfound_pagename].update({'orphan': True})
 
 
-def handle_config(app, config):
+def handle_config(app, *args, **kwargs):
     """
     Handle deprecated configurations.
 
@@ -251,6 +251,8 @@ def setup(app):
 
     if sphinx.version_info > (1, 8, 0):
         app.connect('config-inited', handle_config)
+    else:
+        app.connect('builder-inited', handle_config)
 
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)
