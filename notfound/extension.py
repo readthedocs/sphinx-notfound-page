@@ -203,7 +203,10 @@ def handle_config(app, config):
     if app.config.notfound_urls_prefix == default:
         language = app.config.notfound_default_language
         version = app.config.notfound_default_version
-        app.config.notfound_urls_prefix = f'/{language}/{version}/'
+        app.config.notfound_urls_prefix = '/{language}/{version}/'.format(
+            language=language,
+            version=version,
+        )
 
     deprecated_configs = [
         'notfound_default_language',
@@ -213,7 +216,9 @@ def handle_config(app, config):
     for config in deprecated_configs:
         default, rebuild, types = app.config.values.get(config)
         if getattr(app.config, config) != default:
-            message = f'{config} is deprecated. Use "notfound_urls_prefix" instead.'
+            message = '{config} is deprecated. Use "notfound_urls_prefix" instead.'.format(
+                config=config,
+            )
             warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 
@@ -236,7 +241,13 @@ def setup(app):
     app.add_config_value('notfound_no_urls_prefix', False, 'html')
 
     # This config should replace the previous three
-    app.add_config_value('notfound_urls_prefix', f'/en/{default_version}/', 'html')
+    app.add_config_value(
+        'notfound_urls_prefix',
+        '/en/{default_version}/'.format(
+            default_version=default_version,
+        ),
+        'html',
+    )
 
     if sphinx.version_info > (1, 8, 0):
         app.connect('config-inited', handle_config)
