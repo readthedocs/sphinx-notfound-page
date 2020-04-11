@@ -4,6 +4,7 @@ import os
 import pytest
 import sphinx
 import shutil
+import warnings
 
 srcdir = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -159,6 +160,64 @@ def test_default_version_setting(app, status, warning):
     },
 )
 def test_no_urls_prefix_setting(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+
+    chunks = [
+        # sidebar URLs
+        '<h1 class="logo"><a href="/index.html">Python</a></h1>',
+        '<form class="search" action="/search.html" method="get">',
+        '<li><a href="/index.html">Documentation overview</a><ul>',
+
+        # resources
+        '<link rel="stylesheet" href="/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_urls_prefix': '/language/version/',
+    },
+)
+def test_urls_prefix_setting(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+
+    chunks = [
+        # sidebar URLs
+        '<h1 class="logo"><a href="/language/version/index.html">Python</a></h1>',
+        '<form class="search" action="/language/version/search.html" method="get">',
+        '<li><a href="/language/version/index.html">Documentation overview</a><ul>',
+
+        # resources
+        '<link rel="stylesheet" href="/language/version/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/language/version/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/language/version/_static/custom.css" type="text/css" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_urls_prefix': None,
+    },
+)
+def test_urls_prefix_setting_none(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
     assert path.exists()
@@ -580,3 +639,32 @@ def test_toctree_links_language_setting_version_environment(environ, app, status
 def test_automatic_orphan(app, status, warning):
     app.build()
     assert app.env.metadata['404'] == {'orphan': True}
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_default_language': 'ja',
+        'notfound_default_version': 'stable',
+        'notfound_no_urls_prefix': True,
+    },
+)
+@pytest.mark.xfail(reason='Not sure how to capture warnings from events')
+def test_deprecation_warnings(app, status, warning):
+    messages = [
+        'notfound_default_language is deprecated. Use "notfound_urls_prefix" instead.',
+        'notfound_default_version is deprecated. Use "notfound_urls_prefix" instead.',
+        'notfound_no_urls_prefix is deprecated. Use "notfound_urls_prefix" instead.',
+    ]
+
+    with warnings.catch_warnings(record=True) as warn:
+        warnings.simplefilter('always')
+        app.build()
+
+        assert len(warn) == 3
+        assert issubclass(warn[-1].category, DeprecationWarning)
+        for w in warn:
+            assert w.message in messages
+
+    path = app.outdir / '404.html'
+    assert path.exists()
