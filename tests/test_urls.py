@@ -447,17 +447,31 @@ def test_sphinx_resource_urls(app, status, warning):
 
     content = open(path).read()
 
-    chunks = [
-        # Sphinx's resources URLs
-        '<script type="text/javascript" src="/en/latest/_static/jquery.js"></script>',
-        '<script type="text/javascript" src="/en/latest/_static/underscore.js"></script>',
-        '<script type="text/javascript" src="/en/latest/_static/doctools.js"></script>',
-    ]
+    if sphinx.version_info < (2, 4, 0):
+        chunks = [
+            # Sphinx's resources URLs
+            '<script type="text/javascript" src="/en/latest/_static/jquery.js"></script>',
+            '<script type="text/javascript" src="/en/latest/_static/underscore.js"></script>',
+            '<script type="text/javascript" src="/en/latest/_static/doctools.js"></script>',
+        ]
+    else:
+        # #6925: html: Remove redundant type="text/javascript" from <script> elements
+        chunks = [
+            # Sphinx's resources URLs
+            '<script src="/en/latest/_static/jquery.js"></script>',
+            '<script src="/en/latest/_static/underscore.js"></script>',
+            '<script src="/en/latest/_static/doctools.js"></script>',
+        ]
 
     if sphinx.version_info >= (1, 8):
-        chunks.append(
-            '<script type="text/javascript" src="/en/latest/_static/language_data.js"></script>',
-        )
+        if sphinx.version_info < (2, 4, 0):
+            chunks.append(
+                '<script type="text/javascript" src="/en/latest/_static/language_data.js"></script>',
+            )
+        else:
+            chunks.append(
+                '<script src="/en/latest/_static/language_data.js"></script>',
+            )
 
     for chunk in chunks:
         assert chunk in content
