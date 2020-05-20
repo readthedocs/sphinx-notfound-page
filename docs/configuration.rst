@@ -21,7 +21,7 @@ For other use cases, you can customize these configuration options in your ``con
 
    Type: dict
 
-   Notes: If you prefer, you can create a file called ``404.rst`` and use reStructuredText to create the context of your ``404.html`` page.
+   Notes: If you prefer, you can create a file called ``404.rst`` and use reStructuredText to create the context of your ``404.html`` page. Add the ``:orphan:`` `metadata <https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html#metadata>`__ to the top of ``404.rst``, to silence the spurious ``document isn't included in any toctree`` warning.
 
 .. confval:: notfound_pagename
 
