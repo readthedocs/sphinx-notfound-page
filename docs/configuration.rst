@@ -62,3 +62,13 @@ For other use cases, you can customize these configuration options in your ``con
    Type: bool
 
    Notes: If this option is set to ``True``, the extension omits any prefix values from the URLs, including explicit values for ``notfound_default_language`` and ``notfound_default_version``.
+
+.. confval:: notfound_url_prefix
+
+   Global URL prefix to be included as is (for ex. set ``/REPO_NAME`` to host on github pages with address YOUR_NAME.github.io/REPO_NAME/).
+
+   Default: `` `` (empty).
+
+   Type: string
+
+   Notes: this prefix will be included as is before anything else.

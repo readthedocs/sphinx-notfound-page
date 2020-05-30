@@ -59,12 +59,14 @@ def replace_uris(app, doctree, nodetype, nodeattr):
             uri = olduri.split('/')[-1]
 
         if app.config.notfound_no_urls_prefix:
-            uri = '/{imagedir}{filename}'.format(
+            uri = '{prefix}/{imagedir}{filename}'.format(
+                prefix=app.config.notfound_url_prefix,
                 filename=uri,
                 imagedir=imagedir,
             )
         else:
-            uri = '/{language}/{version}/{imagedir}{filename}'.format(
+            uri = '{prefix}/{language}/{version}/{imagedir}{filename}'.format(
+                prefix=app.config.notfound_url_prefix,
                 language=app.config.notfound_default_language,
                 version=app.config.notfound_default_version,
                 imagedir=imagedir,

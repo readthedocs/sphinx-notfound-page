@@ -19,6 +19,8 @@ Yes.
 
 You may want to set ``notfound_no_urls_prefix`` to ``True`` and then add ``permalink: /404.html`` in the `YAML front matter`_.
 
+If you didn't set paid domain - you should set ``notfound_url_prefix`` with ``/REPO_NAME``.
+
 .. _YAML front matter: http://jekyllrb.com/docs/frontmatter/
 
 

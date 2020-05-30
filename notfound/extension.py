@@ -94,9 +94,10 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
         if baseuri is None:
             if app.config.notfound_no_urls_prefix:
-                baseuri = '/'
+                baseuri = app.config.notfound_url_prefix + '/'
             else:
-                baseuri = '/{language}/{version}/'.format(
+                baseuri = '{prefix}/{language}/{version}/'.format(
+                    prefix=app.config.notfound_url_prefix,
                     language=app.config.notfound_default_language,
                     version=app.config.notfound_default_version,
                 )
@@ -212,6 +213,7 @@ def setup(app):
     app.add_config_value('notfound_default_language', 'en', 'html')
     app.add_config_value('notfound_default_version', default_version, 'html')
     app.add_config_value('notfound_no_urls_prefix', False, 'html')
+    app.add_config_value('notfound_url_prefix', '', 'html')
 
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)

@@ -583,3 +583,66 @@ def test_automatic_orphan(app, status, warning):
         assert app.env.metadata['404'] == {'orphan': True, 'nosearch': True}
     else:
         assert app.env.metadata['404'] == {'orphan': True}
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_no_urls_prefix': True,
+        'notfound_url_prefix': '/prefix'
+    },
+)
+def test_url_prefix_with_no_urls_prefix_setting(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+
+    chunks = [
+        # sidebar URLs
+        '<h1 class="logo"><a href="/prefix/index.html">Python</a></h1>',
+        '<form class="search" action="/prefix/search.html" method="get">',
+        '<li><a href="/prefix/index.html">Documentation overview</a><ul>',
+
+        # resources
+        '<link rel="stylesheet" href="/prefix/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/prefix/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/prefix/_static/custom.css" type="text/css" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_url_prefix': '/prefix'
+    },
+)
+@pytest.mark.sphinx(srcdir=srcdir)
+def test_url_prefix_with_default_settings(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+    content = open(path).read()
+
+    chunks = [
+        '<h1>Page not found</h1>',
+        'Thanks for trying.',
+        '<title>Page not found &#8212; Python  documentation</title>',
+
+        # sidebar URLs
+        '<h1 class="logo"><a href="/prefix/en/latest/index.html">Python</a></h1>',
+        '<form class="search" action="/prefix/en/latest/search.html" method="get">',
+        '<li><a href="/prefix/en/latest/index.html">Documentation overview</a><ul>',
+
+        # resources
+        '<link rel="stylesheet" href="/prefix/en/latest/_static/alabaster.css" type="text/css" />',
+        '<link rel="stylesheet" href="/prefix/en/latest/_static/pygments.css" type="text/css" />',
+        '<link rel="stylesheet" href="/prefix/en/latest/_static/custom.css" type="text/css" />',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
