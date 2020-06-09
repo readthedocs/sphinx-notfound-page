@@ -21,6 +21,15 @@ You may want to set ``notfound_no_urls_prefix`` to ``True`` and then add ``perma
 
 .. _YAML front matter: http://jekyllrb.com/docs/frontmatter/
 
+Why is my local web server not showing a 404.html?
+--------------------------------------------------
+
+Simple web servers, such as ``http.server``, don't have a default handler for 404
+codes, so it doesn't know to point to the generated ``404.html``.
+
+To see an example of adding a custom request handler for 404 codes, see:
+https://stackoverflow.com/questions/22467908/python-simplehttpserver-404-page
+
 
 The answer I'm looking for is not here
 --------------------------------------
