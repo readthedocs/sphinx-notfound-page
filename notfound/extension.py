@@ -189,7 +189,10 @@ class OrphanMetadataCollector(EnvironmentCollector):
         return None
 
     def process_doc(self, app, doctree):
-        app.env.metadata[app.config.notfound_pagename].update({'orphan': True})
+        metadata = app.env.metadata[app.config.notfound_pagename]
+        metadata.update({'orphan': True})
+        if sphinx.version_info >= (3, 0, 0):
+            metadata.update({'nosearch': True})
 
 
 def handle_deprecated_configs(app, *args, **kwargs):

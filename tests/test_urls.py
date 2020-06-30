@@ -638,7 +638,10 @@ def test_toctree_links_language_setting_version_environment(environ, app, status
 )
 def test_automatic_orphan(app, status, warning):
     app.build()
-    assert app.env.metadata['404'] == {'orphan': True}
+    if sphinx.version_info >= (3, 0, 0):
+        assert app.env.metadata['404'] == {'orphan': True, 'nosearch': True}
+    else:
+        assert app.env.metadata['404'] == {'orphan': True}
 
 
 @pytest.mark.sphinx(
