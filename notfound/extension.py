@@ -222,6 +222,22 @@ def handle_deprecated_configs(app, *args, **kwargs):
             warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 
+def validate_configs(app, *args, **kwargs):
+    """
+    Validate configs.
+
+    Shows a warning if one of the configs is not valid.
+    """
+    default, rebuild, types = app.config.values.get('notfound_urls_prefix')
+    if app.config.notfound_urls_prefix != default:
+        if not all([
+                app.config.notfound_urls_prefix.startswith('/'),
+                app.config.notfound_urls_prefix.endswith('/'),
+        ]):
+            message = 'notfound_urls_prefix should start and end with "/" (slash)'
+            warnings.warn(message, UserWarning, stacklevel=2)
+
+
 def setup(app):
     default_context = {
         'title': 'Page not found',
@@ -251,8 +267,10 @@ def setup(app):
 
     if sphinx.version_info > (1, 8, 0):
         app.connect('config-inited', handle_deprecated_configs)
+        app.connect('config-inited', validate_configs)
     else:
         app.connect('builder-inited', handle_deprecated_configs)
+        app.connect('builder-inited', validate_configs)
 
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)

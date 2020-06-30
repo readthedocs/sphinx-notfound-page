@@ -99,6 +99,11 @@ For other use cases, you can customize these configuration options in your ``con
 
    Type: string
 
+   .. warning::
+
+      Make sure this config starts and ends with a ``/``.
+      Otherwise, you may have unexpected behaviours.
+
    .. tip::
 
       The prefix can be completely removed by setting it to ``None``.
