@@ -17,11 +17,22 @@ For other use cases, you can customize these configuration options in your ``con
 
    Context passed to the template defined by ``notfound_template``.
 
-   Default: ``{'title': 'Page not found', 'body': '<h1>Page not found</h1>\n\nThanks for trying.'}``
+   Default:
+
+   .. code-block:: python
+
+      {
+          'title': 'Page not found',
+          'body': '<h1>Page not found</h1>\n\nThanks for trying.',
+      }
 
    Type: dict
 
-   Notes: If you prefer, you can create a file called ``404.rst`` and use reStructuredText to create the context of your ``404.html`` page. Add the ``:orphan:`` `metadata <https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html#metadata>`__ to the top of ``404.rst``, to silence the spurious ``document isn't included in any toctree`` warning.
+   .. note::
+
+      If you prefer, you can create a file called ``404.rst`` and use reStructuredText to create the context of your ``404.html`` page.
+      Add the ``:orphan:`` `metadata <https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html#metadata>`__ to the top of ``404.rst``,
+      to silence the spurious ``document isn't included in any toctree`` warning.
 
 .. confval:: notfound_pagename
 
@@ -39,8 +50,14 @@ For other use cases, you can customize these configuration options in your ``con
 
    Type: string
 
-   Notes: All links generated will have this prefix (e.g. ``/en/``).
-   This setting works with ``notfound_default_version`` to create a prefix for all URLs.
+   .. note::
+
+      All links generated will have this prefix (e.g. ``/en/``).
+      This setting works with ``notfound_default_version`` to create a prefix for all URLs.
+
+   .. deprecated:: 0.5
+
+      ``notfound_default_language`` is deprecated.  Use :confval:`notfound_urls_prefix` instead
 
 .. confval:: notfound_default_version
 
@@ -50,8 +67,14 @@ For other use cases, you can customize these configuration options in your ``con
 
    Type: string
 
-   Notes: All links generated will have this prefix (e.g. ``/latest/``).
-   This setting works with ``notfound_default_language`` to create a prefix for all URLs.
+   .. note::
+
+      All links generated will have this prefix (e.g. ``/latest/``).
+      This setting works with ``notfound_default_language`` to create a prefix for all URLs.
+
+   .. deprecated:: 0.5
+
+      ``notfound_default_version`` is deprecated.  Use :confval:`notfound_urls_prefix` instead
 
 .. confval:: notfound_no_urls_prefix
 
@@ -61,4 +84,28 @@ For other use cases, you can customize these configuration options in your ``con
 
    Type: bool
 
-   Notes: If this option is set to ``True``, the extension omits any prefix values from the URLs, including explicit values for ``notfound_default_language`` and ``notfound_default_version``.
+   .. note::
+
+      If this option is set to ``True``, the extension omits any prefix values from the URLs,
+      including explicit values for ``notfound_default_language`` and ``notfound_default_version``.
+
+   .. deprecated:: 0.5
+
+      ``notfound_no_urls_prefix`` is deprecated.  Use :confval:`notfound_urls_prefix` instead
+
+.. confval:: notfound_urls_prefix
+
+   Prefix added to all the URLs generated in the 404 page.
+
+   Default: ``'/en/latest/'``
+
+   Type: string
+
+   .. warning::
+
+      Make sure this config starts and ends with a ``/``.
+      Otherwise, you may have unexpected behaviours.
+
+   .. tip::
+
+      The prefix can be completely removed by setting it to ``None``.

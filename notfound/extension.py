@@ -1,6 +1,7 @@
 import docutils
 import os
 import sphinx
+import warnings
 
 from sphinx.environment.collectors import EnvironmentCollector
 from sphinx.errors import ExtensionError
@@ -48,7 +49,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
     Generate absolute URLs for resources (js, images, css, etc) to point to the
     right. For example, if a URL in the page is ``_static/js/custom.js`` it will
-    be replaced by ``/<notfound_default_language>/<notfound_default_version>/_static/js/custom.js``.
+    be replaced by ``<notfound_urls_prefix>/_static/js/custom.js``.
 
     On the other hand, if ``notfound_no_urls_prefix`` is set, it will be
     replaced by ``/_static/js/custom.js``.
@@ -96,9 +97,8 @@ def finalize_media(app, pagename, templatename, context, doctree):
             if app.config.notfound_no_urls_prefix:
                 baseuri = '/'
             else:
-                baseuri = '/{language}/{version}/'.format(
-                    language=app.config.notfound_default_language,
-                    version=app.config.notfound_default_version,
+                baseuri = '{prefix}'.format(
+                    prefix=app.config.notfound_urls_prefix or '/',
                 )
 
         if not baseuri.startswith('/'):
@@ -195,6 +195,52 @@ class OrphanMetadataCollector(EnvironmentCollector):
             metadata.update({'nosearch': True})
 
 
+def handle_deprecated_configs(app, *args, **kwargs):
+    """
+    Handle deprecated configurations.
+
+    Looks for old deprecated configurations, define the new ones and triggers
+    warnings for old configs.
+    """
+    default, rebuild, types = app.config.values.get('notfound_urls_prefix')
+    if app.config.notfound_urls_prefix == default:
+        language = app.config.notfound_default_language
+        version = app.config.notfound_default_version
+        app.config.notfound_urls_prefix = '/{language}/{version}/'.format(
+            language=language,
+            version=version,
+        )
+
+    deprecated_configs = [
+        'notfound_default_language',
+        'notfound_default_version',
+        'notfound_no_urls_prefix',
+    ]
+    for config in deprecated_configs:
+        default, rebuild, types = app.config.values.get(config)
+        if getattr(app.config, config) != default:
+            message = '{config} is deprecated. Use "notfound_urls_prefix" instead.'.format(
+                config=config,
+            )
+            warnings.warn(message, DeprecationWarning, stacklevel=2)
+
+
+def validate_configs(app, *args, **kwargs):
+    """
+    Validate configs.
+
+    Shows a warning if one of the configs is not valid.
+    """
+    default, rebuild, types = app.config.values.get('notfound_urls_prefix')
+    if app.config.notfound_urls_prefix != default:
+        if app.config.notfound_urls_prefix and not all([
+                app.config.notfound_urls_prefix.startswith('/'),
+                app.config.notfound_urls_prefix.endswith('/'),
+        ]):
+            message = 'notfound_urls_prefix should start and end with "/" (slash)'
+            warnings.warn(message, UserWarning, stacklevel=2)
+
+
 def setup(app):
     default_context = {
         'title': 'Page not found',
@@ -212,6 +258,22 @@ def setup(app):
     app.add_config_value('notfound_default_language', 'en', 'html')
     app.add_config_value('notfound_default_version', default_version, 'html')
     app.add_config_value('notfound_no_urls_prefix', False, 'html')
+
+    # This config should replace the previous three
+    app.add_config_value(
+        'notfound_urls_prefix',
+        '/en/{default_version}/'.format(
+            default_version=default_version,
+        ),
+        'html',
+    )
+
+    if sphinx.version_info > (1, 8, 0):
+        app.connect('config-inited', handle_deprecated_configs)
+        app.connect('config-inited', validate_configs)
+    else:
+        app.connect('builder-inited', handle_deprecated_configs)
+        app.connect('builder-inited', validate_configs)
 
     app.connect('html-collect-pages', html_collect_pages)
     app.connect('html-page-context', finalize_media)
