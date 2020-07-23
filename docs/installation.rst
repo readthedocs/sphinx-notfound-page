@@ -44,6 +44,9 @@ you can build your documentation again and you will see a new file called ``404.
 
    Do not worry too much about this, this is the expected behavior and those resources will appear once the docs are deployed.
 
+   If you can't see the 404.html file using a local simple web server, it is
+   most likely because they often don't support requests for 404 codes. Refer to
+   the :doc:`faq` for more information.
 
 .. note::
 
