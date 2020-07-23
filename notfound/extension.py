@@ -233,7 +233,7 @@ def validate_configs(app, *args, **kwargs):
     """
     default, rebuild, types = app.config.values.get('notfound_urls_prefix')
     if app.config.notfound_urls_prefix != default:
-        if not all([
+        if app.config.notfound_urls_prefix and not all([
                 app.config.notfound_urls_prefix.startswith('/'),
                 app.config.notfound_urls_prefix.endswith('/'),
         ]):
