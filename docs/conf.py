@@ -44,6 +44,7 @@ extensions = [
     'sphinx_tabs.tabs',
     'sphinx-prompt',
     'sphinxemoji.sphinxemoji',
+    'sphinxhypothesis.extension',
 ]
 
 autoapi_dirs = ['../notfound']
