@@ -30,6 +30,8 @@ def remove_sphinx_build_output():
 
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_parallel_build():
+    # TODO: migrate to `app.build(..., parallel=2)` after merging
+    # https://github.com/sphinx-doc/sphinx/pull/8257
     subprocess.check_call('sphinx-build -j 2 -W -b html tests/examples/parallel-build build', shell=True)
     
 @pytest.mark.sphinx(srcdir=srcdir)
