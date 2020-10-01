@@ -194,6 +194,13 @@ class OrphanMetadataCollector(EnvironmentCollector):
         if sphinx.version_info >= (3, 0, 0):
             metadata.update({'nosearch': True})
 
+    def merge_other(self, app, env, docnames, other):
+        """Merge in specified data regarding docnames from a different `BuildEnvironment`
+        object which coming from a subprocess in parallel builds."""
+        # TODO: find an example about why this is strictly required for parallel read
+        # https://github.com/readthedocs/sphinx-notfound-page/pull/112/files#r498219556
+        env.metadata.update(other.metadata)
+            
 
 def handle_deprecated_configs(app, *args, **kwargs):
     """
