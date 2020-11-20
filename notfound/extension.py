@@ -1,5 +1,9 @@
 import docutils
-import html
+try:
+    from html import escape
+except ImportError:
+    from sphinx.util.pycompat import htmlescape as escape
+
 import os
 import sphinx
 import warnings
@@ -124,7 +128,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
         for key in sorted(css.attributes):
             value = css.attributes[key]
             if value is not None:
-                attrs.append('%s="%s"' % (key, html.escape(value, True)))
+                attrs.append('%s="%s"' % (key, escape(value, True)))
         attrs.append('href="%s"' % pathto(css.filename, resource=True))
         return '<link %s />' % ' '.join(attrs)
 
