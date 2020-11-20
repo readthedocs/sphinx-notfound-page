@@ -1,4 +1,5 @@
 import docutils
+import html
 import os
 import sphinx
 import warnings
@@ -115,6 +116,18 @@ def finalize_media(app, pagename, templatename, context, doctree):
         uri = otheruri or '#'
         return uri
 
+    # https: // github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py# L1067-L1076
+    def css_tag(css):
+        pathto = context.get("pathto")
+        # type: (Stylesheet) -> str
+        attrs = []
+        for key in sorted(css.attributes):
+            value = css.attributes[key]
+            if value is not None:
+                attrs.append('%s="%s"' % (key, html.escape(value, True)))
+        attrs.append('href="%s"' % pathto(css.filename, resource=True))
+        return '<link %s />' % ' '.join(attrs)
+
     # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/builders/html.py#L1081
     def toctree(*args, **kwargs):
         try:
@@ -152,6 +165,9 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # https://www.sphinx-doc.org/en/master/templating.html#toctree
         # NOTE: not used on ``singlehtml`` builder for RTD Sphinx theme
         context['toctree'] = toctree
+
+        # Override the ``css_tag`` helper function to use the custom pathto
+        context['css_tag'] = css_tag
 
 
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-doctree-resolved
@@ -200,7 +216,7 @@ class OrphanMetadataCollector(EnvironmentCollector):
         # TODO: find an example about why this is strictly required for parallel read
         # https://github.com/readthedocs/sphinx-notfound-page/pull/112/files#r498219556
         env.metadata.update(other.metadata)
-            
+
 
 def handle_deprecated_configs(app, *args, **kwargs):
     """
