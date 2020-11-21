@@ -120,7 +120,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
         uri = otheruri or '#'
         return uri
 
-    # https: // github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py# L1067-L1076
+    # https://github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py#L1067-L1076
     def css_tag(css):
         pathto = context.get("pathto")
         # type: (Stylesheet) -> str
