@@ -19,6 +19,7 @@ rstsrcdir = os.path.join(
     '404rst',
 )
 
+
 @pytest.fixture(autouse=True, scope='function')
 def remove_sphinx_build_output():
     """Remove _build/ folder, if exist."""
@@ -32,8 +33,10 @@ def remove_sphinx_build_output():
 def test_parallel_build():
     # TODO: migrate to `app.build(..., parallel=2)` after merging
     # https://github.com/sphinx-doc/sphinx/pull/8257
-    subprocess.check_call('sphinx-build -j 2 -W -b html tests/examples/parallel-build build', shell=True)
-    
+    subprocess.check_call(
+        'sphinx-build -j 2 -W -b html tests/examples/parallel-build build', shell=True)
+
+
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()
@@ -678,3 +681,19 @@ def test_deprecation_warnings(app, status, warning):
 
     path = app.outdir / '404.html'
     assert path.exists()
+
+
+@pytest.mark.sphinx(srcdir=srcdir)
+def test_sphinx_custom_css(app, status, warning):
+    if sphinx.version_info >= (1, 8):
+        app.add_css_file("test_custom.css")
+    else:
+        app.add_stylesheet("test_custom.css")
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+
+    css = '<link rel="stylesheet" type="text/css" href="/en/latest/_static/test_custom.css" />'
+    assert css in content
