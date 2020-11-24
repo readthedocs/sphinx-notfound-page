@@ -687,13 +687,15 @@ def test_deprecation_warnings(app, status, warning):
 def test_sphinx_custom_css(app, status, warning):
     if sphinx.version_info >= (1, 8):
         app.add_css_file("test_custom.css")
+        expected = '<link rel="stylesheet" type="text/css" href="/en/latest/_static/test_custom.css" />'
     else:
         app.add_stylesheet("test_custom.css")
+        expected = '<link rel="stylesheet" href="/en/latest/_static/test_custom.css" type="text/css" />'
+
     app.build()
     path = app.outdir / '404.html'
     assert path.exists()
 
     content = open(path).read()
 
-    css = '<link rel="stylesheet" type="text/css" href="/en/latest/_static/test_custom.css" />'
-    assert css in content
+    assert expected in content
