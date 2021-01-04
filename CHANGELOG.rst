@@ -1,3 +1,26 @@
+Version 0.6
+-----------
+
+:Date: January 04, 2021
+
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx to 3.4.1 (`#122 <https://github.com/readthedocs/sphinx-notfound-page/pull/122>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx to 3.4.0 (`#121 <https://github.com/readthedocs/sphinx-notfound-page/pull/121>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx to 3.3.1 (`#119 <https://github.com/readthedocs/sphinx-notfound-page/pull/119>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx to 3.3.0 (`#118 <https://github.com/readthedocs/sphinx-notfound-page/pull/118>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinxemoji to 0.1.8 (`#116 <https://github.com/readthedocs/sphinx-notfound-page/pull/116>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinxemoji to 0.1.7 (`#115 <https://github.com/readthedocs/sphinx-notfound-page/pull/115>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-autoapi to 1.5.1 (`#113 <https://github.com/readthedocs/sphinx-notfound-page/pull/113>`__)
+* `@rscohn2 <https://github.com/rscohn2>`__: fix parallel read error and add test (`#112 <https://github.com/readthedocs/sphinx-notfound-page/pull/112>`__)
+* `@sbraz <https://github.com/sbraz>`__: Include tests and docs in source distributions (`#110 <https://github.com/readthedocs/sphinx-notfound-page/pull/110>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-prompt to 1.3.0 (`#109 <https://github.com/readthedocs/sphinx-notfound-page/pull/109>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-tabs to 1.3.0 (`#108 <https://github.com/readthedocs/sphinx-notfound-page/pull/108>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-autoapi to 1.5.0 (`#107 <https://github.com/readthedocs/sphinx-notfound-page/pull/107>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-tabs to 1.2.1 (`#105 <https://github.com/readthedocs/sphinx-notfound-page/pull/105>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-tabs to 1.2.0 (`#104 <https://github.com/readthedocs/sphinx-notfound-page/pull/104>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx to 3.2.1 (`#103 <https://github.com/readthedocs/sphinx-notfound-page/pull/103>`__)
+* `@humitos <https://github.com/humitos>`__: Update Sphinx==3.1.2 (`#99 <https://github.com/readthedocs/sphinx-notfound-page/pull/99>`__)
+* `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-rtd-theme to 0.5.0 (`#98 <https://github.com/readthedocs/sphinx-notfound-page/pull/98>`__)
+
 Changelog
 =========
 
