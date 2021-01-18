@@ -529,6 +529,9 @@ def test_sphinx_resource_urls(app, status, warning):
             '<script src="/en/latest/_static/doctools.js"></script>',
         ]
 
+    # This file was added to all the HTML pages in Sphinx>=1.8. However, it was
+    # only required for search page. Sphinx>=3.4 fixes this and only adds it on
+    # search. See (https://github.com/sphinx-doc/sphinx/blob/v3.4.0/CHANGES#L87)
     if (1, 8) <= sphinx.version_info < (3, 4, 0):
         if sphinx.version_info < (2, 4, 0):
             chunks.append(
