@@ -33,7 +33,7 @@ def test_parallel_build():
     # TODO: migrate to `app.build(..., parallel=2)` after merging
     # https://github.com/sphinx-doc/sphinx/pull/8257
     subprocess.check_call('sphinx-build -j 2 -W -b html tests/examples/parallel-build build', shell=True)
-    
+
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()
@@ -529,7 +529,10 @@ def test_sphinx_resource_urls(app, status, warning):
             '<script src="/en/latest/_static/doctools.js"></script>',
         ]
 
-    if sphinx.version_info >= (1, 8):
+    # This file was added to all the HTML pages in Sphinx>=1.8. However, it was
+    # only required for search page. Sphinx>=3.4 fixes this and only adds it on
+    # search. See (https://github.com/sphinx-doc/sphinx/blob/v3.4.0/CHANGES#L87)
+    if (1, 8) <= sphinx.version_info < (3, 4, 0):
         if sphinx.version_info < (2, 4, 0):
             chunks.append(
                 '<script type="text/javascript" src="/en/latest/_static/language_data.js"></script>',
