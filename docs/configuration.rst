@@ -42,6 +42,23 @@ For other use cases, you can customize these configuration options in your ``con
 
    Type: string
 
+.. confval:: notfound_urls_prefix
+
+   Prefix added to all the URLs generated in the 404 page.
+
+   Default: ``'/en/latest/'``
+
+   Type: string
+
+   .. warning::
+
+      Make sure this config starts and ends with a ``/``.
+      Otherwise, you may have unexpected behaviours.
+
+   .. tip::
+
+      The prefix can be completely removed by setting it to ``None``.
+
 .. confval:: notfound_default_language
 
    Language used as default to generate all links to the resources.
@@ -92,20 +109,3 @@ For other use cases, you can customize these configuration options in your ``con
    .. deprecated:: 0.5
 
       ``notfound_no_urls_prefix`` is deprecated.  Use :confval:`notfound_urls_prefix` instead
-
-.. confval:: notfound_urls_prefix
-
-   Prefix added to all the URLs generated in the 404 page.
-
-   Default: ``'/en/latest/'``
-
-   Type: string
-
-   .. warning::
-
-      Make sure this config starts and ends with a ``/``.
-      Otherwise, you may have unexpected behaviours.
-
-   .. tip::
-
-      The prefix can be completely removed by setting it to ``None``.
