@@ -9,7 +9,7 @@ Create a custom 404 page with absolute URLs hardcoded.
 Installation
 ------------
 
-::
+.. code-block:: bash
 
    pip install sphinx-notfound-page
 
@@ -39,8 +39,8 @@ Thanks
 
 **Strongly** based on @ericholscher's solution from https://github.com/readthedocs/readthedocs.org/issues/353
 
-.. |Build| image:: https://travis-ci.org/readthedocs/sphinx-notfound-page.svg?branch=master
-   :target: https://travis-ci.org/readthedocs/sphinx-notfound-page
+.. |Build| image:: https://circleci.com/gh/readthedocs/sphinx-notfound-page.svg?style=svg
+   :target: https://circleci.com/gh/readthedocs/sphinx-notfound-page
    :alt: Build status
 .. |PyPI version| image:: https://img.shields.io/pypi/v/sphinx-notfound-page.svg
    :target: https://pypi.org/project/sphinx-notfound-page
