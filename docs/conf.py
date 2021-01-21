@@ -26,7 +26,7 @@ author = 'Manuel Kaufmann'
 # The short X.Y version
 # The full version, including alpha/beta/rc tags
 import notfound
-version = release = notfound.version
+version = release = notfound.__version__
 
 
 # -- General configuration ---------------------------------------------------

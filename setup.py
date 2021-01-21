@@ -7,7 +7,7 @@ with open('README.rst', 'r') as fh:
 
 setuptools.setup(
     name='sphinx-notfound-page',
-    version=notfound.version,
+    version=notfound.__version__,
     author='Manuel Kaufmann',
     author_email='humitos@gmail.com',
     description='Sphinx extension to build a 404 page with absolute URLs',

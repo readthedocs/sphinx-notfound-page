@@ -6,7 +6,7 @@ import warnings
 from sphinx.environment.collectors import EnvironmentCollector
 from sphinx.errors import ExtensionError
 
-from . import version
+from . import __version__
 from .utils import replace_uris
 
 
@@ -298,7 +298,7 @@ def setup(app):
     app.add_env_collector(OrphanMetadataCollector)
 
     return {
-        'version': version,
+        'version': __version__,
         'parallel_read_safe': True,
         'parallel_write_safe': True,
     }
