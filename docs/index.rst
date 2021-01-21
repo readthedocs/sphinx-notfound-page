@@ -55,8 +55,8 @@ and let the extension handle these URLs properly for you.
 .. _Read the Docs: https://readthedocs.org
 
 
-.. |Build| image:: https://travis-ci.org/readthedocs/sphinx-notfound-page.svg?branch=master
-   :target: https://travis-ci.org/readthedocs/sphinx-notfound-page
+.. |Build| image:: https://circleci.com/gh/readthedocs/sphinx-notfound-page.svg?style=svg
+   :target: https://circleci.com/gh/readthedocs/sphinx-notfound-page
    :alt: Build status
 .. |PyPI version| image:: https://img.shields.io/pypi/v/sphinx-notfound-page.svg
    :target: https://pypi.org/project/sphinx-notfound-page
