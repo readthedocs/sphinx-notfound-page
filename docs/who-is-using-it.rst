@@ -37,8 +37,6 @@ The Carpentries
 * `Configuration file <https://github.com/carpentries/handbook/blob/master/conf.py>`__
 
 
-
-
 attrs
 -----
 
