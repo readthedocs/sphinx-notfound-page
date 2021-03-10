@@ -35,3 +35,13 @@ The Carpentries
 * https://github.com/carpentries/handbook
 * `Example URL <https://docs.carpentries.org/404/>`__
 * `Configuration file <https://github.com/carpentries/handbook/blob/master/conf.py>`__
+
+
+
+
+attrs
+-----
+
+* https://www.attrs.org/
+* `Example URL <https://www.attrs.org/en/latest/404>`__
+* `Configuration file <https://github.com/python-attrs/attrs/blob/main/docs/conf.py>`__
