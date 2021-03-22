@@ -1,5 +1,5 @@
 sphinx==3.5.2
-sphinx-prompt==1.3.0
+sphinx-prompt==1.4.0
 sphinx-tabs==2.0.1
 sphinx-rtd-theme==0.5.1
 sphinxemoji==0.1.8
