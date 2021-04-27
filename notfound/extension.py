@@ -251,7 +251,7 @@ def validate_configs(app, *args, **kwargs):
 def setup(app):
     default_context = {
         'title': 'Page not found',
-        'body': '<h1>Page not found</h1>\n\nThanks for trying.',
+        'body': "<h1>Page not found</h1>\n\Unfortunately we couldn't find the content you were looking for.",
     }
 
     # https://github.com/sphinx-doc/sphinx/blob/master/sphinx/themes/basic/page.html
