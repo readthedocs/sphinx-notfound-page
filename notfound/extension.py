@@ -295,6 +295,12 @@ def setup(app):
         from sphinx.builders.html import setup_js_tag_helper
         app.connect('html-page-context', setup_js_tag_helper)
 
+    if sphinx.version_info >= (4, 0):
+        # CSS are now added via a ``css_tag``
+        # https://github.com/sphinx-doc/sphinx/pull/8643
+        from sphinx.builders.html import setup_css_tag_helper
+        app.connect('html-page-context', setup_css_tag_helper)
+
     app.add_env_collector(OrphanMetadataCollector)
 
     return {
