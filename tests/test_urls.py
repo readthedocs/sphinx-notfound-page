@@ -8,6 +8,8 @@ import shutil
 import subprocess
 import warnings
 
+from utils import _get_css_html_link_tag
+
 srcdir = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'examples',
@@ -60,8 +62,8 @@ def test_default_settings(app, status, warning):
         '<li><a href="/en/latest/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/en/latest/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('en', 'latest', 'alabaster.css'),
+        _get_css_html_link_tag('en', 'latest', 'pygments.css'),
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
 
@@ -123,8 +125,8 @@ def test_default_language_setting(app, status, warning):
         '<li><a href="/ja/latest/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/ja/latest/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/ja/latest/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('ja', 'latest', 'alabaster.css'),
+        _get_css_html_link_tag('ja', 'latest', 'pygments.css'),
         '<link rel="stylesheet" href="/ja/latest/_static/custom.css" type="text/css" />',
     ]
 
@@ -152,8 +154,8 @@ def test_default_version_setting(app, status, warning):
         '<li><a href="/en/customversion/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/en/customversion/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/en/customversion/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('en', 'customversion', 'alabaster.css'),
+        _get_css_html_link_tag('en', 'customversion', 'pygments.css'),
         '<link rel="stylesheet" href="/en/customversion/_static/custom.css" type="text/css" />',
     ]
 
@@ -181,8 +183,8 @@ def test_no_urls_prefix_setting(app, status, warning):
         '<li><a href="/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('', '', 'alabaster.css'),
+        _get_css_html_link_tag('', '', 'pygments.css'),
         '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
     ]
 
@@ -210,8 +212,8 @@ def test_urls_prefix_setting(app, status, warning):
         '<li><a href="/language/version/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/language/version/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/language/version/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('language', 'version', 'alabaster.css'),
+        _get_css_html_link_tag('language', 'version', 'pygments.css'),
         '<link rel="stylesheet" href="/language/version/_static/custom.css" type="text/css" />',
     ]
 
@@ -239,8 +241,8 @@ def test_urls_prefix_setting_none(app, status, warning):
         '<li><a href="/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('', '', 'alabaster.css'),
+        _get_css_html_link_tag('', '', 'pygments.css'),
         '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
     ]
 
@@ -270,8 +272,8 @@ def test_no_urls_prefix_setting_preference(app, status, warning):
         '<li><a href="/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('', '', 'alabaster.css'),
+        _get_css_html_link_tag('', '', 'pygments.css'),
         '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
     ]
 
@@ -300,8 +302,8 @@ def test_default_version_language_setting(app, status, warning):
         '<li><a href="/pt/v2.0.5/index.html">Documentation overview</a><ul>',
 
         # resource URLs
-        '<link rel="stylesheet" href="/pt/v2.0.5/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/pt/v2.0.5/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('pt', 'v2.0.5', 'alabaster.css'),
+        _get_css_html_link_tag('pt', 'v2.0.5', 'pygments.css'),
         '<link rel="stylesheet" href="/pt/v2.0.5/_static/custom.css" type="text/css" />',
     ]
 
@@ -364,8 +366,8 @@ def test_custom_404_rst_source(app, status, warning):
         '<li><a href="/en/latest/index.html">Documentation overview</a><ul>',
 
         # resources
-        '<link rel="stylesheet" href="/en/latest/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('en', 'latest', 'alabaster.css'),
+        _get_css_html_link_tag('en', 'latest', 'pygments.css'),
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
 
@@ -472,8 +474,8 @@ def test_urls_for_dirhtml_builder(app, status, warning):
         '<li class="toctree-l1"><a class="reference internal" href="/en/latest/chapter/">Chapter</a></li>',
 
         # resources
-        '<link rel="stylesheet" href="/en/latest/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/en/latest/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('en', 'latest', 'alabaster.css'),
+        _get_css_html_link_tag('en', 'latest', 'pygments.css'),
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
 
@@ -501,8 +503,8 @@ def test_no_prefix_urls_for_dirhtml_builder(app, status, warning):
         '<li class="toctree-l1"><a class="reference internal" href="/chapter/">Chapter</a></li>',
 
         # resources
-        '<link rel="stylesheet" href="/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('', '', 'alabaster.css'),
+        _get_css_html_link_tag('', '', 'pygments.css'),
         '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
     ]
 
@@ -571,8 +573,8 @@ def test_toctree_urls_notfound_default(app, status, warning):
         '<li class="toctree-l1"><a class="reference internal" href="/ja/default/chapter.html">Chapter</a></li>',
 
         # resources
-        '<link rel="stylesheet" href="/ja/default/_static/alabaster.css" type="text/css" />',
-        '<link rel="stylesheet" href="/ja/default/_static/pygments.css" type="text/css" />',
+        _get_css_html_link_tag('ja', 'default', 'alabaster.css'),
+        _get_css_html_link_tag('ja', 'default', 'pygments.css'),
         '<link rel="stylesheet" href="/ja/default/_static/custom.css" type="text/css" />',
     ]
 
