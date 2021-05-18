@@ -53,7 +53,7 @@ def test_default_settings(app, status, warning):
 
     chunks = [
         '<h1>Page not found</h1>',
-        'Thanks for trying.',
+        "Unfortunately we couldn't find the content you were looking for.",
         '<title>Page not found &#8212; Python  documentation</title>',
 
         # sidebar URLs
