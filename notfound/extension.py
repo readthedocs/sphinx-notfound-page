@@ -200,7 +200,7 @@ class OrphanMetadataCollector(EnvironmentCollector):
         # TODO: find an example about why this is strictly required for parallel read
         # https://github.com/readthedocs/sphinx-notfound-page/pull/112/files#r498219556
         env.metadata.update(other.metadata)
-            
+
 
 def handle_deprecated_configs(app, *args, **kwargs):
     """
@@ -251,7 +251,7 @@ def validate_configs(app, *args, **kwargs):
 def setup(app):
     default_context = {
         'title': 'Page not found',
-        'body': "<h1>Page not found</h1>\n\Unfortunately we couldn't find the content you were looking for.",
+        'body': "<h1>Page not found</h1>\n\nUnfortunately we couldn't find the content you were looking for.",
     }
 
     # https://github.com/sphinx-doc/sphinx/blob/master/sphinx/themes/basic/page.html
