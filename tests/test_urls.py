@@ -8,7 +8,7 @@ import shutil
 import subprocess
 import warnings
 
-from utils import _get_css_html_link_tag
+from utils import _get_css_html_link_tag, _get_js_html_link_tag
 
 srcdir = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -20,6 +20,12 @@ rstsrcdir = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     'examples',
     '404rst',
+)
+
+extensiondir = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    'examples',
+    'extension',
 )
 
 @pytest.fixture(autouse=True, scope='function')
@@ -520,34 +526,20 @@ def test_sphinx_resource_urls(app, status, warning):
 
     content = open(path).read()
 
-    if sphinx.version_info < (2, 4, 0):
-        chunks = [
-            # Sphinx's resources URLs
-            '<script type="text/javascript" src="/en/latest/_static/jquery.js"></script>',
-            '<script type="text/javascript" src="/en/latest/_static/underscore.js"></script>',
-            '<script type="text/javascript" src="/en/latest/_static/doctools.js"></script>',
-        ]
-    else:
-        # #6925: html: Remove redundant type="text/javascript" from <script> elements
-        chunks = [
-            # Sphinx's resources URLs
-            '<script src="/en/latest/_static/jquery.js"></script>',
-            '<script src="/en/latest/_static/underscore.js"></script>',
-            '<script src="/en/latest/_static/doctools.js"></script>',
-        ]
+    chunks = [
+        # Sphinx's resources URLs
+        _get_js_html_link_tag('en', 'latest', 'jquery.js'),
+        _get_js_html_link_tag('en', 'latest', 'underscore.js'),
+        _get_js_html_link_tag('en', 'latest', 'doctools.js'),
+    ]
 
     # This file was added to all the HTML pages in Sphinx>=1.8. However, it was
     # only required for search page. Sphinx>=3.4 fixes this and only adds it on
     # search. See (https://github.com/sphinx-doc/sphinx/blob/v3.4.0/CHANGES#L87)
     if (1, 8) <= sphinx.version_info < (3, 4, 0):
-        if sphinx.version_info < (2, 4, 0):
-            chunks.append(
-                '<script type="text/javascript" src="/en/latest/_static/language_data.js"></script>',
-            )
-        else:
-            chunks.append(
-                '<script src="/en/latest/_static/language_data.js"></script>',
-            )
+        chunks.append(
+            _get_js_html_link_tag('en', 'latest', 'language_data.js'),
+        )
 
     for chunk in chunks:
         assert chunk in content
@@ -688,3 +680,20 @@ def test_deprecation_warnings(app, status, warning):
 
     path = app.outdir / '404.html'
     assert path.exists()
+
+
+@pytest.mark.sphinx(srcdir=extensiondir)
+def test_resources_from_extension(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+    chunks = [
+        '<link rel="stylesheet" type="text/css" href="/en/latest/_static/css_added_by_extension.css" />',
+        '<link rel="stylesheet" type="text/css" href="/en/latest/_static/css_added_by_extension.css" />',
+        _get_js_html_link_tag('en', 'latest', 'js_added_by_extension.js'),
+    ]
+
+    for chunk in chunks:
+        assert chunk in content

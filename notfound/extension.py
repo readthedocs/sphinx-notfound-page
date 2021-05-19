@@ -141,6 +141,23 @@ def finalize_media(app, pagename, templatename, context, doctree):
         replace_uris(app, toc, docutils.nodes.reference, 'refuri')
         return app.builder.render_partial(toc)['fragment']
 
+    # Borrowed from Sphinx<4.x to backward compatibility
+    # https://github.com/sphinx-doc/sphinx/blob/v3.5.4/sphinx/builders/html/__init__.py#L1003-L1010
+    def css_tag(css):
+        attrs = []
+        for key in sorted(css.attributes):
+            value = css.attributes[key]
+            if value is not None:
+                if sphinx.version_info < (2, 0):
+                    # https://github.com/sphinx-doc/sphinx/blob/v1.8.5/sphinx/builders/html.py#L1144
+                    from sphinx.util.pycompat import htmlescape
+                    attrs.append('%s="%s"' % (key, htmlescape(value, True)))
+                else:
+                    import html
+                    attrs.append('%s="%s"' % (key, html.escape(value, True)))
+        attrs.append('href="%s"' % pathto(css.filename, resource=True))
+        return '<link %s />' % ' '.join(attrs)
+
     # Apply our custom manipulation to 404.html page only
     if pagename == app.config.notfound_pagename:
         # Override the ``pathto`` helper function from the context to use a custom ones
@@ -152,6 +169,9 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # https://www.sphinx-doc.org/en/master/templating.html#toctree
         # NOTE: not used on ``singlehtml`` builder for RTD Sphinx theme
         context['toctree'] = toctree
+
+        if sphinx.version_info < (4, 0):
+            context['css_tag'] = css_tag
 
 
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-doctree-resolved
