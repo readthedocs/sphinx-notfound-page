@@ -10,6 +10,13 @@ Changelog
     --header "Version 0.7" \
     --merged
 
+Version 0.7.1
+-------------
+
+:Date: May 20, 2021
+
+* Fix release issue. Didn't include some commits by mistake.
+
 Version 0.7
 -----------
 
