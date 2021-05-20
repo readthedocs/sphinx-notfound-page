@@ -20,7 +20,9 @@
 # -- Project information -----------------------------------------------------
 
 project = 'sphinx-notfound-page'
-copyright = '2019, Manuel Kaufmann'
+import datetime
+year = datetime.datetime.now().year
+copyright = f'{year}, Manuel Kaufmann'
 author = 'Manuel Kaufmann'
 
 # The short X.Y version
