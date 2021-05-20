@@ -13,7 +13,7 @@ setuptools.setup(
     description='Sphinx extension to build a 404 page with absolute URLs',
     url='https://github.com/readthedocs/sphinx-notfound-page',
     license='MIT',
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=["common*"]),
     long_description=long_description,
     long_description_content_type='text/x-rst',
     include_package_data=True,
