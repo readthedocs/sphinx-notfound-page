@@ -1,4 +1,4 @@
-sphinx==4.0.2
+sphinx==4.0.3
 sphinx-prompt==1.4.0
 sphinx-tabs==3.0.0
 sphinx-rtd-theme==0.5.2
