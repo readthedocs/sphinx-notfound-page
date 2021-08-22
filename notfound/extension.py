@@ -280,9 +280,10 @@ def setup(app):
     app.add_config_value('notfound_pagename', '404', 'html')
 
     # TODO: get these values from Project's settings
+    default_language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
     default_version = os.environ.get('READTHEDOCS_VERSION', 'latest')
 
-    app.add_config_value('notfound_default_language', 'en', 'html')
+    app.add_config_value('notfound_default_language', default_language, 'html')
     app.add_config_value('notfound_default_version', default_version, 'html')
     app.add_config_value('notfound_no_urls_prefix', False, 'html')
 
