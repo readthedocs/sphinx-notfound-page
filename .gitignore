@@ -106,3 +106,6 @@ venv.bak/
 /tests/examples/404rst/_build
 package-lock.json
 node_modules
+
+# vscode
+.vscode/
