@@ -63,7 +63,7 @@ For other use cases, you can customize these configuration options in your ``con
 
    Language used as default to generate all links to the resources.
 
-   Default: ``'en'``
+   Default: :envvar:`READTHEDOCS_LANGUAGE` environment variable, if set, else ``'en'``
 
    Type: string
 
@@ -80,7 +80,7 @@ For other use cases, you can customize these configuration options in your ``con
 
    Version used as default to generate all links to the resources.
 
-   Default: ``'latest'``
+   Default: :envvar:`READTHEDOCS_VERSION` environment variable, if set, else ``'latest'``
 
    Type: string
 
