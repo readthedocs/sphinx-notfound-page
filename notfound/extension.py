@@ -290,7 +290,8 @@ def setup(app):
     # This config should replace the previous three
     app.add_config_value(
         'notfound_urls_prefix',
-        '/en/{default_version}/'.format(
+        '/{default_language}/{default_version}/'.format(
+            default_language=default_language,
             default_version=default_version,
         ),
         'html',
