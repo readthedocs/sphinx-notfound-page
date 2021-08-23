@@ -642,6 +642,54 @@ def test_toctree_links_language_setting_version_environment(environ, app, status
         assert chunk in content
 
 
+@pytest.mark.environ(
+    READTHEDOCS_LANGUAGE='fr',
+)
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={
+        'notfound_default_version': 'master',
+    },
+)
+def test_toctree_links_version_setting_language_environment(environ, app, status, warning):
+    app.build()
+
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+
+    chunks = [
+        '<h3>Navigation</h3>',
+        '<li class="toctree-l1"><a class="reference internal" href="/fr/master/chapter-i.html">Chapter I</a></li>',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
+@pytest.mark.environ(
+    READTHEDOCS_VERSION='stable',
+    READTHEDOCS_LANGUAGE='ja',
+)
+@pytest.mark.sphinx(srcdir=srcdir)
+def test_toctree_links_version_language_environment(environ, app, status, warning):
+    app.build()
+
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+
+    chunks = [
+        '<h3>Navigation</h3>',
+        '<li class="toctree-l1"><a class="reference internal" href="/ja/stable/chapter-i.html">Chapter I</a></li>',
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+
 @pytest.mark.sphinx(
     srcdir=rstsrcdir,
 )
