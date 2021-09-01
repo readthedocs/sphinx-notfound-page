@@ -23,8 +23,15 @@ and then add ``permalink: /404.html`` in the `YAML front matter`_.
 
 If you are using the github provided domain, make sure to set the :confval:`notfound_urls_prefix` to your repository's name in between two forward slashes. For example if your repository is named ``MyRepo``, then ``notfound_urls_prefix = "/MyRepo/"``.
 
+Does this extension work with `Jupyter Book <https://jupyterbook.org/intro.html>`_?
+-------------------------------------------
 
-.. _YAML front matter: http://jekyllrb.com/docs/frontmatter/
+Yes.
+
+You will need to install the extension locally and add it to your Jupyter Book ``_config.yml`` as an extra extension, and you will likely need to set the :confval:`notfound_urls_prefix` to your repository's name in between two forward slashes. For example if your repository is named ``MyRepo``, then ``notfound_urls_prefix = "/MyRepo/"``.
+
+To see an example of a Jupyter Book ``_config.yml`` file that works with sphinx-notfound-page, see:
+https://github.com/melaniewalsh/Intro-Cultural-Analytics/blob/master/book/_config.yml
 
 Why is my local web server not showing a 404.html?
 --------------------------------------------------
