@@ -52,6 +52,9 @@ jobs:
     steps:
       - run-tox:
           version: py310
+          # Do not run tests for Python 3.10 and Sphinx3 because it's broken
+          # See https://github.com/sphinx-doc/sphinx/issues/9816
+          sphinx-version: '1,2,4,latest'
   docs:
     docker:
       - image: 'cimg/python:3.10'
