@@ -8,7 +8,7 @@ commands:
         type: string
       sphinx-version:
         type: string
-        default: "1,2,3,latest"
+        default: "1,2,3,4,latest"
     steps:
       - checkout
       - run: pip install --user tox
@@ -46,9 +46,18 @@ jobs:
     steps:
       - run-tox:
           version: py39
+  py310:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - run-tox:
+          version: py310
+          # Do not run tests for Python 3.10 and Sphinx3 because it's broken
+          # See https://github.com/sphinx-doc/sphinx/issues/9816
+          sphinx-version: '1,2,4,latest'
   docs:
     docker:
-      - image: 'cimg/python:3.9'
+      - image: 'cimg/python:3.10'
     steps:
       - checkout
       - run: pip install --user tox
@@ -59,6 +68,7 @@ workflows:
   tests:
     jobs:
       - docs
+      - py310
       - py39
       - py38
       - py37
