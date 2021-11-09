@@ -305,7 +305,16 @@ def setup(app):
         app.connect('builder-inited', validate_configs)
 
     app.connect('html-collect-pages', html_collect_pages)
-    app.connect('html-page-context', finalize_media)
+
+    if sphinx.version_info >= (3, 0, 0):
+        # Use ``priority=400`` argument here because we want to execute our function
+        # *before* Sphinx's ``setup_resource_paths`` where the ``logo_url`` and
+        # ``favicon_url`` are resolved.
+        # See https://github.com/readthedocs/sphinx-notfound-page/issues/180#issuecomment-959506037
+        app.connect('html-page-context', finalize_media, priority=400)
+    else:
+        app.connect('html-page-context', finalize_media)
+
     app.connect('doctree-resolved', doctree_resolved)
 
     # Sphinx injects some javascript files using ``add_js_file``. The path for

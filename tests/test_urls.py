@@ -62,6 +62,10 @@ def test_default_settings(app, status, warning):
         "Unfortunately we couldn't find the content you were looking for.",
         '<title>Page not found &#8212; Python  documentation</title>',
 
+        # favicon and logo
+        '<link rel="shortcut icon" href="/en/latest/_static/favicon.png"/>',
+        '<img class="logo" src="/en/latest/_static/logo.svg" alt="Logo"/>',
+
         # sidebar URLs
         '<h1 class="logo"><a href="/en/latest/index.html">Python</a></h1>',
         '<form class="search" action="/en/latest/search.html" method="get">',
@@ -130,6 +134,10 @@ def test_default_language_setting(app, status, warning):
         '<form class="search" action="/ja/latest/search.html" method="get">',
         '<li><a href="/ja/latest/index.html">Documentation overview</a><ul>',
 
+        # favicon and logo
+        '<link rel="shortcut icon" href="/ja/latest/_static/favicon.png"/>',
+        '<img class="logo" src="/ja/latest/_static/logo.svg" alt="Logo"/>',
+
         # resources
         _get_css_html_link_tag('ja', 'latest', 'alabaster.css'),
         _get_css_html_link_tag('ja', 'latest', 'pygments.css'),
@@ -158,6 +166,10 @@ def test_default_version_setting(app, status, warning):
         '<h1 class="logo"><a href="/en/customversion/index.html">Python</a></h1>',
         '<form class="search" action="/en/customversion/search.html" method="get">',
         '<li><a href="/en/customversion/index.html">Documentation overview</a><ul>',
+
+        # favicon and logo
+        '<link rel="shortcut icon" href="/en/customversion/_static/favicon.png"/>',
+        '<img class="logo" src="/en/customversion/_static/logo.svg" alt="Logo"/>',
 
         # resources
         _get_css_html_link_tag('en', 'customversion', 'alabaster.css'),
@@ -217,6 +229,10 @@ def test_urls_prefix_setting(app, status, warning):
         '<form class="search" action="/language/version/search.html" method="get">',
         '<li><a href="/language/version/index.html">Documentation overview</a><ul>',
 
+        # favicon and logo
+        '<link rel="shortcut icon" href="/language/version/_static/favicon.png"/>',
+        '<img class="logo" src="/language/version/_static/logo.svg" alt="Logo"/>',
+
         # resources
         _get_css_html_link_tag('language', 'version', 'alabaster.css'),
         _get_css_html_link_tag('language', 'version', 'pygments.css'),
@@ -245,6 +261,10 @@ def test_urls_prefix_setting_none(app, status, warning):
         '<h1 class="logo"><a href="/index.html">Python</a></h1>',
         '<form class="search" action="/search.html" method="get">',
         '<li><a href="/index.html">Documentation overview</a><ul>',
+
+        # favicon and logo
+        '<link rel="shortcut icon" href="/_static/favicon.png"/>',
+        '<img class="logo" src="/_static/logo.svg" alt="Logo"/>',
 
         # resources
         _get_css_html_link_tag('', '', 'alabaster.css'),
