@@ -80,7 +80,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
         Hack pathto to display absolute URL's.
 
         Instead of calling ``relative_url`` function, we call
-        ``app.builder.get_target_uri`` to get the absolut URL.
+        ``app.builder.get_target_uri`` to get the absolute URL.
 
         .. note::
 
@@ -321,7 +321,7 @@ def setup(app):
     # this file is rendered in the template using ``js_tag`` instead of
     # ``pathto``. The ``js_tag`` uses ``pathto`` internally to resolve these
     # paths, we call again the setup function for this tag *after* the context
-    # was overriden by our extension with the patched ``pathto`` function.
+    # was overridden by our extension with the patched ``pathto`` function.
     if sphinx.version_info >= (1, 8):
         from sphinx.builders.html import setup_js_tag_helper
         app.connect('html-page-context', setup_js_tag_helper)
