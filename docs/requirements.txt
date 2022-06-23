@@ -1,7 +1,9 @@
-sphinx==4.1.2
+sphinx==4.5.0
 sphinx-prompt==1.4.0
-sphinx-tabs==3.2.0
-sphinx-rtd-theme==0.5.2
-sphinxemoji==0.1.8
+sphinx-tabs==3.3.1
+sphinx-rtd-theme==1.0.0
+sphinxemoji==0.2.0
 sphinx-autoapi==1.8.4
-sphinx-notfound-page
+# We need to ignore upgrading it here, because we install it from the
+# repository when building the docs on Read the Docs
+sphinx-notfound-page  # pyup: ignore

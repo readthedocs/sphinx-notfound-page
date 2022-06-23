@@ -1,3 +1,28 @@
+Changelog
+=========
+
+Version 0.8
+-----------
+
+:Date: October 11, 2021
+
+* Update all Python dependencies via pyup bot
+* Update test suite to run tests on Python 3.10, test on Sphinx 4 and pin docutils
+* Fix issue with HTML logo/favicon on Sphinx 4.2.x
+
+
+Version 0.7.1
+-------------
+
+:Date: May 20, 2021
+
+
+Version 0.7
+-----------
+
+:Date: May 20, 2021
+
+
 Version 0.6
 -----------
 
@@ -20,9 +45,6 @@ Version 0.6
 * `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx to 3.2.1 (`#103 <https://github.com/readthedocs/sphinx-notfound-page/pull/103>`__)
 * `@humitos <https://github.com/humitos>`__: Update Sphinx==3.1.2 (`#99 <https://github.com/readthedocs/sphinx-notfound-page/pull/99>`__)
 * `@pyup-bot <https://github.com/pyup-bot>`__: Update sphinx-rtd-theme to 0.5.0 (`#98 <https://github.com/readthedocs/sphinx-notfound-page/pull/98>`__)
-
-Changelog
-=========
 
 Version 0.5
 -----------
