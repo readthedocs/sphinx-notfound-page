@@ -23,6 +23,8 @@ and then add ``permalink: /404.html`` in the `YAML front matter`_.
 
 If you are using the github provided domain, make sure to set the :confval:`notfound_urls_prefix` to your repository's name in between two forward slashes. For example if your repository is named ``MyRepo``, then ``notfound_urls_prefix = "/MyRepo/"``.
 
+.. _YAML front matter: http://jekyllrb.com/docs/frontmatter/
+
 
 Does this extension work with `Jupyter Book`_?
 ----------------------------------------------
