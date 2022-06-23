@@ -27,7 +27,7 @@ If you are using the github provided domain, make sure to set the :confval:`notf
 Does this extension work with `Jupyter Book`_?
 ----------------------------------------------
 
-.. _Jupyter Book: https://jupyterbook.org/intro.html
+.. _Jupyter Book: https://jupyterbook.org/
 
 Yes.
 
