@@ -15,7 +15,7 @@ Install the package
 
       .. prompt:: bash
 
-         pip install git+https://github.com/readthedocs/sphinx-notfound-page@master
+         pip install git+https://github.com/readthedocs/sphinx-notfound-page
 
 
 Once we have the package installed,
@@ -47,10 +47,3 @@ you can build your documentation again and you will see a new file called ``404.
    If you can't see the 404.html file using a local simple web server, it is
    most likely because they often don't support requests for 404 codes. Refer to
    the :doc:`faq` for more information.
-
-.. note::
-
-   This extension requires,
-
-   * Python 2.7+ or 3.x
-   * Sphinx 1.5+ or 2.x

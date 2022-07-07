@@ -1,7 +1,9 @@
 Configuration
 =============
 
-The default settings generate the most commonly-used URL pattern: if you have a resource at ``_static/js/logic.js`` and you generate a 404 page with the default settings, the URL for that resource will be ``/en/latest/_static/js/logic.js``.
+The default settings generate the most commonly-used URL pattern on `Read the Docs <https://readthedocs.org>`_:
+if you have a resource at ``_static/js/logic.js`` and you generate a 404 page with the default settings,
+the URL for that resource will be ``/en/latest/_static/js/logic.js``.
 
 For other use cases, you can customize these configuration options in your ``conf.py`` file:
 
