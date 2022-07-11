@@ -25,7 +25,7 @@ For other use cases, you can customize these configuration options in your ``con
 
       {
           'title': 'Page not found',
-          'body': '<h1>Page not found</h1>\n\nThanks for trying.',
+          'body': '<h1>Page not found</h1>\n\nUnfortunately we couldn't find the content you were looking for.',
       }
 
    Type: dict
@@ -35,6 +35,10 @@ For other use cases, you can customize these configuration options in your ``con
       If you prefer, you can create a file called ``404.rst`` and use reStructuredText to create the context of your ``404.html`` page.
       Add the ``:orphan:`` `metadata <https://www.sphinx-doc.org/en/master/usage/restructuredtext/field-lists.html#metadata>`__ to the top of ``404.rst``,
       to silence the spurious ``document isn't included in any toctree`` warning.
+
+   .. versionchanged:: 0.7
+
+      The default copy from the body was changed.
 
 .. confval:: notfound_pagename
 
