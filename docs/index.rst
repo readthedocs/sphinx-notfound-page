@@ -1,5 +1,5 @@
-sphinx-notfound-page - Automatically generate Not Found (404) pages
-===================================================================
+Generate 404 Not Found Pages Automatically for Sphinx Docs
+==========================================================
 
 ``sphinx-notfound-page`` is a Sphinx_ extension to create custom 404 pages and help you to generate proper resource links (js, css, images, etc) to render the page properly.
 
