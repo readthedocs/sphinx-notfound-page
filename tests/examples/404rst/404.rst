@@ -35,3 +35,7 @@ Including an image using an absolute URL should not be modified by the extension
 
 .. image:: https.png
    :alt: PATH looking as an URL
+
+
+Including a file pointing to the static files served by Read the Docs should not be modified:
+`readthedocs-doc-embed.js </_/static/javascript/readthedocs-doc-embed.js>`_

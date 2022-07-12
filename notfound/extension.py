@@ -48,7 +48,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
     Point media files at our media server.
 
     Generate absolute URLs for resources (js, images, css, etc) to point to the
-    right. For example, if a URL in the page is ``_static/js/custom.js`` it will
+    right URL. For example, if a URL in the page is ``_static/js/custom.js`` it will
     be replaced by ``<notfound_urls_prefix>/_static/js/custom.js``.
 
     On the other hand, if ``notfound_no_urls_prefix`` is set, it will be
@@ -57,6 +57,10 @@ def finalize_media(app, pagename, templatename, context, doctree):
     Also, all the links from the sidebar (toctree) are replaced with their
     absolute version. For example, ``../section/pagename.html`` will be replaced
     by ``/section/pagename.html``.
+
+    It handles a special case for Read the Docs and URLs starting with ``/_/``.
+    These URLs have a special meaning under Read the Docs and don't have to be changed.
+    (e.g. ``/_/static/javascript/readthedocs-doc-embed.js``)
 
     :param app: Sphinx Application
     :type app: sphinx.application.Sphinx
@@ -85,9 +89,16 @@ def finalize_media(app, pagename, templatename, context, doctree):
         .. note::
 
             If ``otheruri`` is a external ``resource`` it does not modify it.
+            If ``otheruri`` is a static file on Read the Docs it does not modify it.
         """
+        READTHEDOCS = os.environ.get('READTHEDOCS', False) == 'True'
+
         if resource and '://' in otheruri:
             # allow non-local resources given by scheme
+            return otheruri
+
+        if READTHEDOCS and otheruri.startswith('/_/'):
+            # special case on Read the Docs
             return otheruri
 
         if not resource:
@@ -160,7 +171,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
     # Apply our custom manipulation to 404.html page only
     if pagename == app.config.notfound_pagename:
-        # Override the ``pathto`` helper function from the context to use a custom ones
+        # Override the ``pathto`` helper function from the context to use a custom one
         # https://www.sphinx-doc.org/en/master/templating.html#pathto
         context['pathto'] = pathto
 
