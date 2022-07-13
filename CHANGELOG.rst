@@ -1,6 +1,22 @@
 Changelog
 =========
 
+
+Version 0.8.3
+-------------
+
+:Date: July 13, 2022
+
+Making the release properly and uploading it to PyPI.
+
+
+Version 0.8.2
+-------------
+
+:Date: July 13, 2022
+
+Mistake while releasing with bumpver.
+
 Version 0.8.1
 -------------
 
