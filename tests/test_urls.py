@@ -31,7 +31,7 @@ extensiondir = os.path.join(
 @pytest.fixture(autouse=True, scope='function')
 def remove_sphinx_build_output():
     """Remove _build/ folder, if exist."""
-    for path in (srcdir, rstsrcdir):
+    for path in (srcdir, rstsrcdir, extensiondir):
         build_path = os.path.join(path, '_build')
         if os.path.exists(build_path):
             shutil.rmtree(build_path)
@@ -762,6 +762,39 @@ def test_resources_from_extension(app, status, warning):
         '<link rel="stylesheet" type="text/css" href="/en/latest/_static/css_added_by_extension.css" />',
         _get_js_html_link_tag('en', 'latest', 'js_added_by_extension.js'),
     ]
+
+    for chunk in chunks:
+        assert chunk in content
+
+@pytest.mark.environ(
+    READTHEDOCS='True',
+)
+@pytest.mark.sphinx(srcdir=rstsrcdir)
+def test_special_readthedocs_urls(environ, app, status, warning):
+    if sphinx.version_info <= (1, 8, 0):
+        app.add_javascript('/_/static/javascript/readthedocs-doc-embed.js')
+    else:
+        app.add_js_file('/_/static/javascript/readthedocs-doc-embed.js')
+
+    app.build()
+
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = open(path).read()
+
+    chunks = [
+        # Link included manually
+        '<a class="reference external" href="/_/static/javascript/readthedocs-doc-embed.js">readthedocs-doc-embed.js</a>',
+    ]
+
+    # Javascript library loaded via Sphinx
+    if sphinx.version_info < (2, 4, 0):
+        chunks.append('<script type="text/javascript" src="/_/static/javascript/readthedocs-doc-embed.js"></script>')
+    else:
+        chunks.append('<script src="/_/static/javascript/readthedocs-doc-embed.js"></script>')
+
+
 
     for chunk in chunks:
         assert chunk in content
