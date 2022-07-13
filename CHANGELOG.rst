@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 0.8.1
+-------------
+
+:Date: July 13, 2022
+
+* Handle special case on Read the Docs URLs (https://github.com/readthedocs/sphinx-notfound-page/pull/200)
+
 Version 0.8
 -----------
 
