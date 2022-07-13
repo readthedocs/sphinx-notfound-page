@@ -15,13 +15,6 @@ commands:
       - run: tox -e "<<parameters.version>>-sphinx{<<parameters.sphinx-version>>}"
 
 jobs:
-  py27:
-    docker:
-      - image: 'cimg/python:2.7'
-    steps:
-      - run-tox:
-          version: py27
-          sphinx-version: '1'
   py38:
     docker:
       - image: 'cimg/python:3.8'
@@ -59,4 +52,3 @@ workflows:
       - py310
       - py39
       - py38
-      - py27
