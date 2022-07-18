@@ -65,7 +65,7 @@ sphinx-prompt==1.5.0
     # via sphinx-notfound-page (pyproject.toml)
 sphinx-rtd-theme==1.0.0
     # via sphinx-notfound-page (pyproject.toml)
-sphinx-tabs==3.3.1
+sphinx-tabs==3.4.1
     # via sphinx-notfound-page (pyproject.toml)
 sphinxcontrib-applehelp==1.0.2
     # via sphinx
