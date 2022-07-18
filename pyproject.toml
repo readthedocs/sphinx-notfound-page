@@ -41,7 +41,8 @@ test = [
 doc = [
     "sphinx",
     "sphinx-prompt",
-    "sphinx-tabs",
+    # Pin sphinx-tabs to avoid doctools version problem
+    "sphinx-tabs==3.3.1",
     "sphinx-rtd-theme",
     "sphinxemoji",
     "sphinx-autoapi",
