@@ -11,7 +11,7 @@ updates:
       interval: "weekly"
     assignees:
       - "humitos"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 0
     pull-request-branch-name:
       separator: "-"
     rebase-strategy: "auto"
