@@ -31,6 +31,22 @@ you will probably want to use this extension to avoid this headache
 and let the extension handle these URLs properly for you.
 
 
+.. tabs::
+
+   .. tab:: 404 page *using* this extension
+
+      .. figure:: 404-using-this-extension.png
+         :align: center
+
+         Example of 404 page *using* ``sphinx-notfound-page``.
+
+   .. tab:: 404 page *without* this extension
+
+      .. figure:: 404-without-this-extension.png
+         :align: center
+
+         Example of 404 page *without using* ``sphinx-notfound-page``.
+
 
 .. toctree::
    :maxdepth: 1
