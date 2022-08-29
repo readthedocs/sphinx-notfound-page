@@ -15,8 +15,8 @@ Badges:
     |Build| |PyPI version| |Docs badge| |License|
 
 
-Why I need this extension?
---------------------------
+Why do I need this extension?
+-----------------------------
 
 Sphinx does not create a 404 page by default.
 Although, you can create it by adding a simple ``404.rst`` file to your docs but...
