@@ -15,8 +15,8 @@ Badges:
     |Build| |PyPI version| |Docs badge| |License|
 
 
-Why I need this extension?
---------------------------
+Why do I need this extension?
+-----------------------------
 
 Sphinx does not create a 404 page by default.
 Although, you can create it by adding a simple ``404.rst`` file to your docs but...
@@ -30,6 +30,22 @@ So, if you want to have a nice custom 404 page,
 you will probably want to use this extension to avoid this headache
 and let the extension handle these URLs properly for you.
 
+
+.. tabs::
+
+   .. tab:: 404 page *using* this extension
+
+      .. figure:: 404-using-this-extension.png
+         :align: center
+
+         Example of 404 page *using* ``sphinx-notfound-page``.
+
+   .. tab:: 404 page *without* this extension
+
+      .. figure:: 404-without-this-extension.png
+         :align: center
+
+         Example of 404 page *without using* ``sphinx-notfound-page``.
 
 
 .. toctree::
