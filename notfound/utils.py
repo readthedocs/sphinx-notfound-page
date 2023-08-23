@@ -2,11 +2,7 @@ import docutils
 import re
 import sphinx
 
-# Sphinx <2 Compatibility
-if sphinx.version_info >= (2, 0):
-    from sphinx.builders.dirhtml import DirectoryHTMLBuilder
-else:
-    from sphinx.builders.html import DirectoryHTMLBuilder
+from sphinx.builders.dirhtml import DirectoryHTMLBuilder
 
 
 def replace_uris(app, doctree, nodetype, nodeattr):

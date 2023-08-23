@@ -1,3 +1,4 @@
+import html
 import docutils
 import os
 import sphinx
@@ -152,23 +153,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
         replace_uris(app, toc, docutils.nodes.reference, 'refuri')
         return app.builder.render_partial(toc)['fragment']
 
-    # Borrowed from Sphinx<4.x to backward compatibility
-    # https://github.com/sphinx-doc/sphinx/blob/v3.5.4/sphinx/builders/html/__init__.py#L1003-L1010
-    def css_tag(css):
-        attrs = []
-        for key in sorted(css.attributes):
-            value = css.attributes[key]
-            if value is not None:
-                if sphinx.version_info < (2, 0):
-                    # https://github.com/sphinx-doc/sphinx/blob/v1.8.5/sphinx/builders/html.py#L1144
-                    from sphinx.util.pycompat import htmlescape
-                    attrs.append('%s="%s"' % (key, htmlescape(value, True)))
-                else:
-                    import html
-                    attrs.append('%s="%s"' % (key, html.escape(value, True)))
-        attrs.append('href="%s"' % pathto(css.filename, resource=True))
-        return '<link %s />' % ' '.join(attrs)
-
     # Apply our custom manipulation to 404.html page only
     if pagename == app.config.notfound_pagename:
         # Override the ``pathto`` helper function from the context to use a custom one
@@ -180,9 +164,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # https://www.sphinx-doc.org/en/master/templating.html#toctree
         # NOTE: not used on ``singlehtml`` builder for RTD Sphinx theme
         context['toctree'] = toctree
-
-        if sphinx.version_info < (4, 0):
-            context['css_tag'] = css_tag
 
 
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-doctree-resolved
@@ -221,9 +202,7 @@ class OrphanMetadataCollector(EnvironmentCollector):
 
     def process_doc(self, app, doctree):
         metadata = app.env.metadata[app.config.notfound_pagename]
-        metadata.update({'orphan': True})
-        if sphinx.version_info >= (3, 0, 0):
-            metadata.update({'nosearch': True})
+        metadata.update({'orphan': True, 'nosearch': True})
 
     def merge_other(self, app, env, docnames, other):
         """Merge in specified data regarding docnames from a different `BuildEnvironment`
@@ -308,40 +287,18 @@ def setup(app):
         'html',
     )
 
-    if sphinx.version_info > (1, 8, 0):
-        app.connect('config-inited', handle_deprecated_configs)
-        app.connect('config-inited', validate_configs)
-    else:
-        app.connect('builder-inited', handle_deprecated_configs)
-        app.connect('builder-inited', validate_configs)
+    app.connect('config-inited', handle_deprecated_configs)
+    app.connect('config-inited', validate_configs)
 
     app.connect('html-collect-pages', html_collect_pages)
 
-    if sphinx.version_info >= (3, 0, 0):
-        # Use ``priority=400`` argument here because we want to execute our function
-        # *before* Sphinx's ``setup_resource_paths`` where the ``logo_url`` and
-        # ``favicon_url`` are resolved.
-        # See https://github.com/readthedocs/sphinx-notfound-page/issues/180#issuecomment-959506037
-        app.connect('html-page-context', finalize_media, priority=400)
-    else:
-        app.connect('html-page-context', finalize_media)
+    # Use ``priority=400`` argument here because we want to execute our function
+    # *before* Sphinx's ``setup_resource_paths`` where the ``logo_url`` and
+    # ``favicon_url`` are resolved.
+    # See https://github.com/readthedocs/sphinx-notfound-page/issues/180#issuecomment-959506037
+    app.connect('html-page-context', finalize_media, priority=400)
 
     app.connect('doctree-resolved', doctree_resolved)
-
-    # Sphinx injects some javascript files using ``add_js_file``. The path for
-    # this file is rendered in the template using ``js_tag`` instead of
-    # ``pathto``. The ``js_tag`` uses ``pathto`` internally to resolve these
-    # paths, we call again the setup function for this tag *after* the context
-    # was overridden by our extension with the patched ``pathto`` function.
-    if sphinx.version_info >= (1, 8):
-        from sphinx.builders.html import setup_js_tag_helper
-        app.connect('html-page-context', setup_js_tag_helper)
-
-    if sphinx.version_info >= (4, 0):
-        # CSS are now added via a ``css_tag``
-        # https://github.com/sphinx-doc/sphinx/pull/8643
-        from sphinx.builders.html import setup_css_tag_helper
-        app.connect('html-page-context', setup_css_tag_helper)
 
     app.add_env_collector(OrphanMetadataCollector)
 

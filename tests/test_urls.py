@@ -428,15 +428,7 @@ def test_image_on_404_rst_source(app, status, warning):
     ]
 
     # .. figure::
-    if sphinx.version_info < (2, 0):
-        chunks.append(
-            '<div class="figure" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span></p>\n</div>'
-        )
-    elif sphinx.version_info < (2, 1):
-        chunks.append(
-            u'<div class="figure align-center" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
-        )
-    elif docutils.__version_info__ < (0, 17, 0):
+    if docutils.__version_info__ < (0, 17, 0):
         chunks.append(
             u'<div class="figure align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
         )
@@ -552,14 +544,6 @@ def test_sphinx_resource_urls(app, status, warning):
         _get_js_html_link_tag('en', 'latest', 'underscore.js'),
         _get_js_html_link_tag('en', 'latest', 'doctools.js'),
     ]
-
-    # This file was added to all the HTML pages in Sphinx>=1.8. However, it was
-    # only required for search page. Sphinx>=3.4 fixes this and only adds it on
-    # search. See (https://github.com/sphinx-doc/sphinx/blob/v3.4.0/CHANGES#L87)
-    if (1, 8) <= sphinx.version_info < (3, 4, 0):
-        chunks.append(
-            _get_js_html_link_tag('en', 'latest', 'language_data.js'),
-        )
 
     for chunk in chunks:
         assert chunk in content
@@ -715,10 +699,7 @@ def test_toctree_links_version_language_environment(environ, app, status, warnin
 )
 def test_automatic_orphan(app, status, warning):
     app.build()
-    if sphinx.version_info >= (3, 0, 0):
-        assert app.env.metadata['404'] == {'orphan': True, 'nosearch': True}
-    else:
-        assert app.env.metadata['404'] == {'orphan': True}
+    assert app.env.metadata['404'] == {'orphan': True, 'nosearch': True}
 
 
 @pytest.mark.sphinx(
@@ -771,10 +752,7 @@ def test_resources_from_extension(app, status, warning):
 )
 @pytest.mark.sphinx(srcdir=rstsrcdir)
 def test_special_readthedocs_urls(environ, app, status, warning):
-    if sphinx.version_info <= (1, 8, 0):
-        app.add_javascript('/_/static/javascript/readthedocs-doc-embed.js')
-    else:
-        app.add_js_file('/_/static/javascript/readthedocs-doc-embed.js')
+    app.add_js_file('/_/static/javascript/readthedocs-doc-embed.js')
 
     app.build()
 
@@ -789,12 +767,7 @@ def test_special_readthedocs_urls(environ, app, status, warning):
     ]
 
     # Javascript library loaded via Sphinx
-    if sphinx.version_info < (2, 4, 0):
-        chunks.append('<script type="text/javascript" src="/_/static/javascript/readthedocs-doc-embed.js"></script>')
-    else:
-        chunks.append('<script src="/_/static/javascript/readthedocs-doc-embed.js"></script>')
-
-
+    chunks.append('<script src="/_/static/javascript/readthedocs-doc-embed.js"></script>')
 
     for chunk in chunks:
         assert chunk in content
