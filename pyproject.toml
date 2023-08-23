@@ -16,7 +16,7 @@ keywords=[
     "documentation",
 ]
 dependencies = [
-    "sphinx >=1.8",
+    "sphinx>=5",
 ]
 version = "0.8.3"
 readme = "README.rst"
@@ -29,6 +29,12 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Documentation :: Sphinx",
     "Topic :: Software Development :: Documentation",
 ]
@@ -39,14 +45,10 @@ test = [
 ]
 
 doc = [
-    "sphinx",
-    "sphinx-prompt",
-    # Pin sphinx-tabs to avoid doctools version problem
-    "sphinx-tabs==3.3.1",
+    "sphinx-tabs",
     "sphinx-rtd-theme",
     "sphinxemoji",
     "sphinx-autoapi",
-    "sphinx-notfound-page",
 ]
 
 [project.urls]

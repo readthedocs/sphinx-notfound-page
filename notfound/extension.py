@@ -1,6 +1,5 @@
 import docutils.nodes
 import os
-import sphinx
 import warnings
 
 import sphinx
