@@ -263,36 +263,6 @@ class OrphanMetadataCollector(EnvironmentCollector):
         env.metadata.update(other.metadata)
 
 
-def handle_deprecated_configs(app, *args, **kwargs):
-    """
-    Handle deprecated configurations.
-
-    Looks for old deprecated configurations, define the new ones and triggers
-    warnings for old configs.
-    """
-    default, rebuild, types = app.config.values.get('notfound_urls_prefix')
-    if app.config.notfound_urls_prefix == default:
-        language = app.config.notfound_default_language
-        version = app.config.notfound_default_version
-        app.config.notfound_urls_prefix = '/{language}/{version}/'.format(
-            language=language,
-            version=version,
-        )
-
-    deprecated_configs = [
-        'notfound_default_language',
-        'notfound_default_version',
-        'notfound_no_urls_prefix',
-    ]
-    for config in deprecated_configs:
-        default, rebuild, types = app.config.values.get(config)
-        if getattr(app.config, config) != default:
-            message = '{config} is deprecated. Use "notfound_urls_prefix" instead.'.format(
-                config=config,
-            )
-            warnings.warn(message, DeprecationWarning, stacklevel=2)
-
-
 def validate_configs(app, *args, **kwargs):
     """
     Validate configs.
@@ -338,7 +308,6 @@ def setup(app):
         'html',
     )
 
-    app.connect('config-inited', handle_deprecated_configs)
     app.connect('config-inited', validate_configs)
 
     app.connect('html-collect-pages', html_collect_pages)
