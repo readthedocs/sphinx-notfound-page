@@ -2,6 +2,18 @@ Changelog
 =========
 
 
+Version 1.0.0rc0
+----------------
+
+:Date: August 24, 2023
+
+* Add support for Sphinx 7.x
+* Drop support for older versions of Sphinx. Currently, only Sphinx>=5 is tested and supported.
+* Drop support for Python 2.7
+* Drop support for docutils < 0.17
+* Remove deprecated configs (``notfound_no_urls_prefix``, ``notfound_default_language``, ``notfound_default_version``)
+
+
 Version 0.8.3
 -------------
 
