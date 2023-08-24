@@ -18,7 +18,7 @@ keywords=[
 dependencies = [
     "sphinx>=5",
 ]
-version = "1.0.0"
+version = "0.8.3"
 readme = "README.rst"
 license = {file = "LICENSE"}
 classifiers = [
@@ -72,7 +72,7 @@ exclude = [
 ]
 
 [tool.bumpver]
-current_version = "1.0.0"
+current_version = "0.8.3"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "Release {new_version}"
 commit = true
