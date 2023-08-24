@@ -182,7 +182,10 @@ def finalize_media(app, pagename, templatename, context, doctree):
                     uri += f'?v={checksum}'
                 return f'<link {" ".join(sorted(attrs))} href="{uri}" />'
 
-            def js_tag(js: _JavaScript | str) -> str:
+            # NOTE: commented because it fails on Python 3.9
+            #
+            # def js_tag(js: _JavaScript | str) -> str:
+            def js_tag(js: _JavaScript) -> str:
                 if not isinstance(js, _JavaScript):
                     # str value (old styled)
                     return f'<script src="{pathto(js, resource=True)}"></script>'
