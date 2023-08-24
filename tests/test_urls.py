@@ -119,111 +119,6 @@ def test_pagename_setting(app, status, warning):
 @pytest.mark.sphinx(
     srcdir=srcdir,
     confoverrides={
-        'notfound_default_language': 'ja',
-    },
-)
-def test_default_language_setting(app, status, warning):
-    app.build()
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    if sphinx.version_info < (6, 0):
-        cssclass = "shortcut "
-    else:
-        cssclass = ""
-
-    chunks = [
-        # sidebar URLs
-        '<h1 class="logo"><a href="/ja/latest/index.html">Python</a></h1>',
-        '<form class="search" action="/ja/latest/search.html" method="get">',
-        '<li><a href="/ja/latest/index.html">Documentation overview</a><ul>',
-
-        # favicon and logo
-        f'<link rel="{cssclass}icon" href="/ja/latest/_static/favicon.png"/>',
-        '<img class="logo" src="/ja/latest/_static/logo.svg" alt="Logo"/>',
-
-        # resources
-        _get_css_html_link_tag('ja', 'latest', 'alabaster.css'),
-        _get_css_html_link_tag('ja', 'latest', 'pygments.css'),
-        '<link rel="stylesheet" href="/ja/latest/_static/custom.css" type="text/css" />',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
-        'notfound_default_version': 'customversion',
-    },
-)
-def test_default_version_setting(app, status, warning):
-    app.build()
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    if sphinx.version_info < (6, 0):
-        cssclass = "shortcut "
-    else:
-        cssclass = ""
-
-    chunks = [
-        # sidebar URLs
-        '<h1 class="logo"><a href="/en/customversion/index.html">Python</a></h1>',
-        '<form class="search" action="/en/customversion/search.html" method="get">',
-        '<li><a href="/en/customversion/index.html">Documentation overview</a><ul>',
-
-        # favicon and logo
-        f'<link rel="{cssclass}icon" href="/en/customversion/_static/favicon.png"/>',
-        '<img class="logo" src="/en/customversion/_static/logo.svg" alt="Logo"/>',
-
-        # resources
-        _get_css_html_link_tag('en', 'customversion', 'alabaster.css'),
-        _get_css_html_link_tag('en', 'customversion', 'pygments.css'),
-        '<link rel="stylesheet" href="/en/customversion/_static/custom.css" type="text/css" />',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
-        'notfound_no_urls_prefix': True,
-    },
-)
-def test_no_urls_prefix_setting(app, status, warning):
-    app.build()
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    chunks = [
-        # sidebar URLs
-        '<h1 class="logo"><a href="/index.html">Python</a></h1>',
-        '<form class="search" action="/search.html" method="get">',
-        '<li><a href="/index.html">Documentation overview</a><ul>',
-
-        # resources
-        _get_css_html_link_tag('', '', 'alabaster.css'),
-        _get_css_html_link_tag('', '', 'pygments.css'),
-        '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
         'notfound_urls_prefix': '/language/version/',
     },
 )
@@ -291,67 +186,6 @@ def test_urls_prefix_setting_none(app, status, warning):
         _get_css_html_link_tag('', '', 'alabaster.css'),
         _get_css_html_link_tag('', '', 'pygments.css'),
         '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
-        'notfound_default_language': 'es',
-        'notfound_default_version': 'customversion',
-        'notfound_no_urls_prefix': True,
-    },
-)
-def test_no_urls_prefix_setting_preference(app, status, warning):
-    app.build()
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    chunks = [
-        # sidebar URLs
-        '<h1 class="logo"><a href="/index.html">Python</a></h1>',
-        '<form class="search" action="/search.html" method="get">',
-        '<li><a href="/index.html">Documentation overview</a><ul>',
-
-        # resources
-        _get_css_html_link_tag('', '', 'alabaster.css'),
-        _get_css_html_link_tag('', '', 'pygments.css'),
-        '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
-        'notfound_default_version': 'v2.0.5',
-        'notfound_default_language': 'pt',
-    },
-)
-def test_default_version_language_setting(app, status, warning):
-    app.build()
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    chunks = [
-        # sidebar URLs
-        '<h1 class="logo"><a href="/pt/v2.0.5/index.html">Python</a></h1>',
-        '<form class="search" action="/pt/v2.0.5/search.html" method="get">',
-        '<li><a href="/pt/v2.0.5/index.html">Documentation overview</a><ul>',
-
-        # resource URLs
-        _get_css_html_link_tag('pt', 'v2.0.5', 'alabaster.css'),
-        _get_css_html_link_tag('pt', 'v2.0.5', 'pygments.css'),
-        '<link rel="stylesheet" href="/pt/v2.0.5/_static/custom.css" type="text/css" />',
     ]
 
     for chunk in chunks:
@@ -571,8 +405,7 @@ def test_sphinx_resource_urls(app, status, warning):
 @pytest.mark.sphinx(
     srcdir=srcdir,
     confoverrides={
-        'notfound_default_version': 'default',
-        'notfound_default_language': 'ja',
+        'notfound_urls_prefix': '/ja/default',
     },
 )
 def test_toctree_urls_notfound_default(app, status, warning):
@@ -619,8 +452,7 @@ def test_toctree_links(app, status, warning):
 @pytest.mark.sphinx(
     srcdir=srcdir,
     confoverrides={
-        'notfound_default_language': 'pt-br',
-        'notfound_default_version': 'stable',
+        'notfound_urls_prefix': '/pt-br/stable/',
     },
 )
 def test_toctree_links_custom_settings(app, status, warning):
@@ -639,115 +471,12 @@ def test_toctree_links_custom_settings(app, status, warning):
         assert chunk in content
 
 
-@pytest.mark.environ(
-    READTHEDOCS_VERSION='v2.0.5',
-)
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
-        'notfound_default_language': 'pt-br',
-    },
-)
-def test_toctree_links_language_setting_version_environment(environ, app, status, warning):
-    app.build()
-
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    chunks = [
-        '<h3>Navigation</h3>',
-        '<li class="toctree-l1"><a class="reference internal" href="/pt-br/v2.0.5/chapter-i.html">Chapter I</a></li>',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
-@pytest.mark.environ(
-    READTHEDOCS_LANGUAGE='fr',
-)
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
-        'notfound_default_version': 'master',
-    },
-)
-def test_toctree_links_version_setting_language_environment(environ, app, status, warning):
-    app.build()
-
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    chunks = [
-        '<h3>Navigation</h3>',
-        '<li class="toctree-l1"><a class="reference internal" href="/fr/master/chapter-i.html">Chapter I</a></li>',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
-@pytest.mark.environ(
-    READTHEDOCS_VERSION='stable',
-    READTHEDOCS_LANGUAGE='ja',
-)
-@pytest.mark.sphinx(srcdir=srcdir)
-def test_toctree_links_version_language_environment(environ, app, status, warning):
-    app.build()
-
-    path = app.outdir / '404.html'
-    assert path.exists()
-
-    content = open(path).read()
-
-    chunks = [
-        '<h3>Navigation</h3>',
-        '<li class="toctree-l1"><a class="reference internal" href="/ja/stable/chapter-i.html">Chapter I</a></li>',
-    ]
-
-    for chunk in chunks:
-        assert chunk in content
-
-
 @pytest.mark.sphinx(
     srcdir=rstsrcdir,
 )
 def test_automatic_orphan(app, status, warning):
     app.build()
     assert app.env.metadata['404'] == {'orphan': True, 'nosearch': True}
-
-
-@pytest.mark.sphinx(
-    srcdir=srcdir,
-    confoverrides={
-        'notfound_default_language': 'ja',
-        'notfound_default_version': 'stable',
-        'notfound_no_urls_prefix': True,
-    },
-)
-@pytest.mark.xfail(reason='Not sure how to capture warnings from events')
-def test_deprecation_warnings(app, status, warning):
-    messages = [
-        'notfound_default_language is deprecated. Use "notfound_urls_prefix" instead.',
-        'notfound_default_version is deprecated. Use "notfound_urls_prefix" instead.',
-        'notfound_no_urls_prefix is deprecated. Use "notfound_urls_prefix" instead.',
-    ]
-
-    with warnings.catch_warnings(record=True) as warn:
-        warnings.simplefilter('always')
-        app.build()
-
-        assert len(warn) == 3
-        assert issubclass(warn[-1].category, DeprecationWarning)
-        for w in warn:
-            assert w.message in messages
-
-    path = app.outdir / '404.html'
-    assert path.exists()
 
 
 @pytest.mark.sphinx(srcdir=extensiondir)

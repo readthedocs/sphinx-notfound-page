@@ -52,9 +52,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
     right URL. For example, if a URL in the page is ``_static/js/custom.js`` it will
     be replaced by ``<notfound_urls_prefix>/_static/js/custom.js``.
 
-    On the other hand, if ``notfound_no_urls_prefix`` is set, it will be
-    replaced by ``/_static/js/custom.js``.
-
     Also, all the links from the sidebar (toctree) are replaced with their
     absolute version. For example, ``../section/pagename.html`` will be replaced
     by ``/section/pagename.html``.
@@ -79,10 +76,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
     :type doctree: docutils.nodes.document
     """
 
-    if app.config.notfound_no_urls_prefix:
-        default_baseuri = '/'
-    else:
-        default_baseuri = app.config.notfound_urls_prefix or '/'
+    default_baseuri = app.config.notfound_urls_prefix or '/'
 
     # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1024-L1036
     def pathto(otheruri: str, resource: bool = False, baseuri: str = default_baseuri):
@@ -293,10 +287,6 @@ def setup(app):
     # TODO: get these values from Project's settings
     default_language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
     default_version = os.environ.get('READTHEDOCS_VERSION', 'latest')
-
-    app.add_config_value('notfound_default_language', default_language, 'html')
-    app.add_config_value('notfound_default_version', default_version, 'html')
-    app.add_config_value('notfound_no_urls_prefix', False, 'html')
 
     # This config should replace the previous three
     app.add_config_value(
