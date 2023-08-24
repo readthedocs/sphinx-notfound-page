@@ -1,12 +1,7 @@
 import docutils
 import re
-import sphinx
 
-# Sphinx <2 Compatibility
-if sphinx.version_info >= (2, 0):
-    from sphinx.builders.dirhtml import DirectoryHTMLBuilder
-else:
-    from sphinx.builders.html import DirectoryHTMLBuilder
+from sphinx.builders.dirhtml import DirectoryHTMLBuilder
 
 
 def replace_uris(app, doctree, nodetype, nodeattr):
@@ -31,7 +26,7 @@ def replace_uris(app, doctree, nodetype, nodeattr):
     :type nodeattr: str
     """
     # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
-    for node in doctree.traverse(nodetype):
+    for node in doctree.findall(nodetype):
         uri = olduri = node.attributes.get(nodeattr)  # somepage.html (or ../sompage.html)
 
         if isinstance(app.builder, DirectoryHTMLBuilder):
@@ -58,17 +53,12 @@ def replace_uris(app, doctree, nodetype, nodeattr):
             # correct link
             uri = olduri.split('/')[-1]
 
-        if app.config.notfound_no_urls_prefix:
-            uri = '/{imagedir}{filename}'.format(
-                filename=uri,
-                imagedir=imagedir,
-            )
-        else:
-            uri = '{prefix}{imagedir}{filename}'.format(
-                prefix=app.config.notfound_urls_prefix or '/',
-                imagedir=imagedir,
-                filename=uri,
-            )
+        uri = '{prefix}{imagedir}{filename}'.format(
+            prefix=app.config.notfound_urls_prefix or '/',
+            imagedir=imagedir,
+            filename=uri,
+        )
+
         node.replace_attr(nodeattr, uri)
 
         # Force adding the image to the builder so it's copied at ``Builder.copy_image_files``

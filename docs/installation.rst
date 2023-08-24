@@ -7,15 +7,15 @@ Install the package
 
    .. tab:: from PyPI
 
-      .. prompt:: bash
+      .. code:: console
 
-         pip install sphinx-notfound-page
+         $ pip install sphinx-notfound-page
 
    .. tab:: from GitHub
 
-      .. prompt:: bash
+      .. code:: console
 
-         pip install git+https://github.com/readthedocs/sphinx-notfound-page
+         $ pip install "sphinx-notfound-page @ git+https://github.com/readthedocs/sphinx-notfound-page"
 
 
 Once we have the package installed,

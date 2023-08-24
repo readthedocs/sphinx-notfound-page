@@ -41,8 +41,13 @@ html-page-context
 ~~~~~~~~~~~~~~~~~
 
 Immediately before the template is rendered with the context, this event is emitted.
-At this point, we override ``pathto`` [#pathto]_ function with our custom one that will generate the proper URLs.
-We also override ``toctree`` [#toctree]_ key with the same content of the regular toctree but with all the URLs fixed to find the resources from the 404 page.
+At this point, we override:
 
-.. [#pathto] https://www.sphinx-doc.org/page/templating.html#pathto
-.. [#toctree] https://www.sphinx-doc.org/page/templating.html#toctree
+* ``pathto`` [#pathto]_ function with our custom one that will generate the proper URLs.
+* ``toctree`` [#toctree]_ key with the same content of the regular toctree but with all the URLs fixed to find the resources from the 404 page.
+* ``js_tag`` [#js_tag]_ and ``css_tag`` [#css_tag]_ functions with the exact same code but using our own ``pathto``.
+
+.. [#pathto] https://www.sphinx-doc.org/page/development/templating.html#pathto
+.. [#toctree] https://www.sphinx-doc.org/page/development/templating.html#toctree
+.. [#js_tag] https://github.com/sphinx-doc/sphinx/blob/v7.2.2/sphinx/builders/html/__init__.py#L1057C1-L1068C1
+.. [#css_tag] https://github.com/sphinx-doc/sphinx/blob/v7.2.2/sphinx/builders/html/__init__.py#L1069C1-L1095C1

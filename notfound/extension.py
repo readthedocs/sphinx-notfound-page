@@ -1,8 +1,9 @@
-import docutils
+import html
+import docutils.nodes
 import os
-import sphinx
 import warnings
 
+import sphinx
 from sphinx.environment.collectors import EnvironmentCollector
 from sphinx.errors import ExtensionError
 
@@ -51,9 +52,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
     right URL. For example, if a URL in the page is ``_static/js/custom.js`` it will
     be replaced by ``<notfound_urls_prefix>/_static/js/custom.js``.
 
-    On the other hand, if ``notfound_no_urls_prefix`` is set, it will be
-    replaced by ``/_static/js/custom.js``.
-
     Also, all the links from the sidebar (toctree) are replaced with their
     absolute version. For example, ``../section/pagename.html`` will be replaced
     by ``/section/pagename.html``.
@@ -78,8 +76,10 @@ def finalize_media(app, pagename, templatename, context, doctree):
     :type doctree: docutils.nodes.document
     """
 
-    # https://github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py#L1054-L1065
-    def pathto(otheruri, resource=False, baseuri=None):
+    default_baseuri = app.config.notfound_urls_prefix or '/'
+
+    # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1024-L1036
+    def pathto(otheruri: str, resource: bool = False, baseuri: str = default_baseuri):
         """
         Hack pathto to display absolute URL's.
 
@@ -104,19 +104,11 @@ def finalize_media(app, pagename, templatename, context, doctree):
         if not resource:
             otheruri = app.builder.get_target_uri(otheruri)
 
-        if baseuri is None:
-            if app.config.notfound_no_urls_prefix:
-                baseuri = '/'
-            else:
-                baseuri = '{prefix}'.format(
-                    prefix=app.config.notfound_urls_prefix or '/',
-                )
-
         if not baseuri.startswith('/'):
             raise BaseURIError('"baseuri" must be absolute')
 
         if otheruri and not otheruri.startswith('/'):
-            otheruri = '/' + otheruri
+            otheruri = f'/{otheruri}'
 
         if otheruri:
             if baseuri.endswith('/'):
@@ -126,24 +118,30 @@ def finalize_media(app, pagename, templatename, context, doctree):
         uri = otheruri or '#'
         return uri
 
-    # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/builders/html.py#L1081
+    # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1048
     def toctree(*args, **kwargs):
-        try:
-            # Sphinx >= 1.6
-            from sphinx.environment.adapters.toctree import TocTree
-            get_toctree_for = TocTree(app.env).get_toctree_for
-        except ImportError:
-            # Sphinx < 1.6
-            get_toctree_for = app.env.get_toctree_for
+        collapse = kwargs.pop('collapse', False)
+        includehidden = kwargs.pop('includehidden', False)
 
-        toc = get_toctree_for(
-            app.config.notfound_pagename,
-            app.builder,
-            collapse=kwargs.pop('collapse', False),
-            includehidden=kwargs.pop('includehidden', False),
-            **kwargs  # not using trailing comma here makes this compatible with
-                      # Python2 syntax
-        )
+        if sphinx.version_info >= (7, 2):
+            from sphinx.environment.adapters.toctree import global_toctree_for_doc
+            toc = global_toctree_for_doc(
+                app.env,
+                app.config.notfound_pagename,
+                app.builder,
+                collapse=collapse,
+                includehidden=includehidden,
+                **kwargs,
+            )
+        else:
+            from sphinx.environment.adapters.toctree import TocTree
+            toc = TocTree(app.env).get_toctree_for(
+                app.config.notfound_pagename,
+                app.builder,
+                collapse=collapse,
+                includehidden=includehidden,
+                **kwargs,
+            )
 
         # If no TOC is found, just return ``None`` instead of failing here
         if not toc:
@@ -151,23 +149,6 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
         replace_uris(app, toc, docutils.nodes.reference, 'refuri')
         return app.builder.render_partial(toc)['fragment']
-
-    # Borrowed from Sphinx<4.x to backward compatibility
-    # https://github.com/sphinx-doc/sphinx/blob/v3.5.4/sphinx/builders/html/__init__.py#L1003-L1010
-    def css_tag(css):
-        attrs = []
-        for key in sorted(css.attributes):
-            value = css.attributes[key]
-            if value is not None:
-                if sphinx.version_info < (2, 0):
-                    # https://github.com/sphinx-doc/sphinx/blob/v1.8.5/sphinx/builders/html.py#L1144
-                    from sphinx.util.pycompat import htmlescape
-                    attrs.append('%s="%s"' % (key, htmlescape(value, True)))
-                else:
-                    import html
-                    attrs.append('%s="%s"' % (key, html.escape(value, True)))
-        attrs.append('href="%s"' % pathto(css.filename, resource=True))
-        return '<link %s />' % ' '.join(attrs)
 
     # Apply our custom manipulation to 404.html page only
     if pagename == app.config.notfound_pagename:
@@ -181,8 +162,56 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # NOTE: not used on ``singlehtml`` builder for RTD Sphinx theme
         context['toctree'] = toctree
 
-        if sphinx.version_info < (4, 0):
+
+        # Sphinx 7.2 uses `css_tag` and `js_tag` functions in the HTML template from the context.
+        # We have to overwrite them here to use our own `pathto` function.
+        # The code is borrowed exactly from Sphinx 7.2.2, there is no changes.
+        if sphinx.version_info >= (7, 2):
+            from sphinx.builders.html._assets import _CascadingStyleSheet, _file_checksum, _JavaScript
+
+            outdir = app.outdir
+
+            # https://github.com/sphinx-doc/sphinx/blob/v7.2.2/sphinx/builders/html/__init__.py#L1057C1-L1094C31
+            def css_tag(css: _CascadingStyleSheet) -> str:
+                attrs = []
+                for key, value in css.attributes.items():
+                    if value is not None:
+                        attrs.append(f'{key}="{html.escape(value, quote=True)}"')
+                uri = pathto(os.fspath(css.filename), resource=True)
+                if checksum := _file_checksum(outdir, css.filename):
+                    uri += f'?v={checksum}'
+                return f'<link {" ".join(sorted(attrs))} href="{uri}" />'
+
+            # NOTE: commented because it fails on Python 3.9
+            #
+            # def js_tag(js: _JavaScript | str) -> str:
+            def js_tag(js: _JavaScript) -> str:
+                if not isinstance(js, _JavaScript):
+                    # str value (old styled)
+                    return f'<script src="{pathto(js, resource=True)}"></script>'
+
+                attrs = []
+                body = js.attributes.get('body', '')
+                for key, value in js.attributes.items():
+                    if key == 'body':
+                        continue
+                    if value is not None:
+                        attrs.append(f'{key}="{html.escape(value, quote=True)}"')
+
+                if not js.filename:
+                    if attrs:
+                        return f'<script {" ".join(sorted(attrs))}>{body}</script>'
+                    return f'<script>{body}</script>'
+
+                uri = pathto(os.fspath(js.filename), resource=True)
+                if checksum := _file_checksum(outdir, js.filename):
+                    uri += f'?v={checksum}'
+                if attrs:
+                    return f'<script {" ".join(sorted(attrs))} src="{uri}"></script>'
+                return f'<script src="{uri}"></script>'
+
             context['css_tag'] = css_tag
+            context['js_tag'] = js_tag
 
 
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-doctree-resolved
@@ -221,9 +250,7 @@ class OrphanMetadataCollector(EnvironmentCollector):
 
     def process_doc(self, app, doctree):
         metadata = app.env.metadata[app.config.notfound_pagename]
-        metadata.update({'orphan': True})
-        if sphinx.version_info >= (3, 0, 0):
-            metadata.update({'nosearch': True})
+        metadata.update({'orphan': True, 'nosearch': True})
 
     def merge_other(self, app, env, docnames, other):
         """Merge in specified data regarding docnames from a different `BuildEnvironment`
@@ -231,36 +258,6 @@ class OrphanMetadataCollector(EnvironmentCollector):
         # TODO: find an example about why this is strictly required for parallel read
         # https://github.com/readthedocs/sphinx-notfound-page/pull/112/files#r498219556
         env.metadata.update(other.metadata)
-
-
-def handle_deprecated_configs(app, *args, **kwargs):
-    """
-    Handle deprecated configurations.
-
-    Looks for old deprecated configurations, define the new ones and triggers
-    warnings for old configs.
-    """
-    default, rebuild, types = app.config.values.get('notfound_urls_prefix')
-    if app.config.notfound_urls_prefix == default:
-        language = app.config.notfound_default_language
-        version = app.config.notfound_default_version
-        app.config.notfound_urls_prefix = '/{language}/{version}/'.format(
-            language=language,
-            version=version,
-        )
-
-    deprecated_configs = [
-        'notfound_default_language',
-        'notfound_default_version',
-        'notfound_no_urls_prefix',
-    ]
-    for config in deprecated_configs:
-        default, rebuild, types = app.config.values.get(config)
-        if getattr(app.config, config) != default:
-            message = '{config} is deprecated. Use "notfound_urls_prefix" instead.'.format(
-                config=config,
-            )
-            warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 
 def validate_configs(app, *args, **kwargs):
@@ -294,10 +291,6 @@ def setup(app):
     default_language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
     default_version = os.environ.get('READTHEDOCS_VERSION', 'latest')
 
-    app.add_config_value('notfound_default_language', default_language, 'html')
-    app.add_config_value('notfound_default_version', default_version, 'html')
-    app.add_config_value('notfound_no_urls_prefix', False, 'html')
-
     # This config should replace the previous three
     app.add_config_value(
         'notfound_urls_prefix',
@@ -308,40 +301,17 @@ def setup(app):
         'html',
     )
 
-    if sphinx.version_info > (1, 8, 0):
-        app.connect('config-inited', handle_deprecated_configs)
-        app.connect('config-inited', validate_configs)
-    else:
-        app.connect('builder-inited', handle_deprecated_configs)
-        app.connect('builder-inited', validate_configs)
+    app.connect('config-inited', validate_configs)
 
     app.connect('html-collect-pages', html_collect_pages)
 
-    if sphinx.version_info >= (3, 0, 0):
-        # Use ``priority=400`` argument here because we want to execute our function
-        # *before* Sphinx's ``setup_resource_paths`` where the ``logo_url`` and
-        # ``favicon_url`` are resolved.
-        # See https://github.com/readthedocs/sphinx-notfound-page/issues/180#issuecomment-959506037
-        app.connect('html-page-context', finalize_media, priority=400)
-    else:
-        app.connect('html-page-context', finalize_media)
+    # Use ``priority=400`` argument here because we want to execute our function
+    # *before* Sphinx's ``setup_resource_paths`` where the ``logo_url`` and
+    # ``favicon_url`` are resolved.
+    # See https://github.com/readthedocs/sphinx-notfound-page/issues/180#issuecomment-959506037
+    app.connect('html-page-context', finalize_media, priority=400)
 
     app.connect('doctree-resolved', doctree_resolved)
-
-    # Sphinx injects some javascript files using ``add_js_file``. The path for
-    # this file is rendered in the template using ``js_tag`` instead of
-    # ``pathto``. The ``js_tag`` uses ``pathto`` internally to resolve these
-    # paths, we call again the setup function for this tag *after* the context
-    # was overridden by our extension with the patched ``pathto`` function.
-    if sphinx.version_info >= (1, 8):
-        from sphinx.builders.html import setup_js_tag_helper
-        app.connect('html-page-context', setup_js_tag_helper)
-
-    if sphinx.version_info >= (4, 0):
-        # CSS are now added via a ``css_tag``
-        # https://github.com/sphinx-doc/sphinx/pull/8643
-        from sphinx.builders.html import setup_css_tag_helper
-        app.connect('html-page-context', setup_css_tag_helper)
 
     app.add_env_collector(OrphanMetadataCollector)
 

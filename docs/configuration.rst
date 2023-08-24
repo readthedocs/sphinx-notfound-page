@@ -48,7 +48,9 @@ For other use cases, you can customize these configuration options in your ``con
 
    Prefix added to all the URLs generated in the 404 page.
 
-   Default: ``'/en/latest/'``
+   Default: ``'/<language>/<version>/'`` where ``<language>`` is ``READTHEDOCS_LANGUAGE`` environment variable
+            and ``<version>`` is ``READTHEDOCS_VERSION`` environment variable.
+            In case these variables are not defined, it defaults to ``/en/latest/``.
 
    Type: string
 
@@ -60,54 +62,3 @@ For other use cases, you can customize these configuration options in your ``con
    .. tip::
 
       The prefix can be completely removed by setting it to ``None``.
-
-.. confval:: notfound_default_language
-
-   Language used as default to generate all links to the resources.
-
-   Default: :envvar:`READTHEDOCS_LANGUAGE` environment variable, if set, else ``'en'``
-
-   Type: string
-
-   .. note::
-
-      All links generated will have this prefix (e.g. ``/en/``).
-      This setting works with ``notfound_default_version`` to create a prefix for all URLs.
-
-   .. deprecated:: 0.5
-
-      ``notfound_default_language`` is deprecated.  Use :confval:`notfound_urls_prefix` instead
-
-.. confval:: notfound_default_version
-
-   Version used as default to generate all links to the resources.
-
-   Default: :envvar:`READTHEDOCS_VERSION` environment variable, if set, else ``'latest'``
-
-   Type: string
-
-   .. note::
-
-      All links generated will have this prefix (e.g. ``/latest/``).
-      This setting works with ``notfound_default_language`` to create a prefix for all URLs.
-
-   .. deprecated:: 0.5
-
-      ``notfound_default_version`` is deprecated.  Use :confval:`notfound_urls_prefix` instead
-
-.. confval:: notfound_no_urls_prefix
-
-   URL prefixes skipped or included.
-
-   Default: ``False``.
-
-   Type: bool
-
-   .. note::
-
-      If this option is set to ``True``, the extension omits any prefix values from the URLs,
-      including explicit values for ``notfound_default_language`` and ``notfound_default_version``.
-
-   .. deprecated:: 0.5
-
-      ``notfound_no_urls_prefix`` is deprecated.  Use :confval:`notfound_urls_prefix` instead
