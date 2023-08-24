@@ -73,7 +73,7 @@ exclude = [
 
 [tool.bumpver]
 current_version = "0.8.3"
-version_pattern = "MAJOR.MINOR.PATCH"
+version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
 commit_message = "Release {new_version}"
 commit = true
 tag = true
