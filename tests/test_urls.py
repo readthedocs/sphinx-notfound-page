@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-
 import os
-import docutils
 import pytest
 import sphinx
 import shutil
@@ -449,17 +446,11 @@ def test_image_on_404_rst_source(app, status, warning):
         # .. image::
         '<img alt="An image" src="/en/latest/_images/test.png" />',
         '<img alt="Image from folder" src="/en/latest/_images/loudly-crying-face.png" />',
+
+        # .. figure::
+        '<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>\n</figcaption>\n</figure>',
     ]
 
-    # .. figure::
-    if docutils.__version_info__ < (0, 17, 0):
-        chunks.append(
-            '<div class="figure align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>\n</div>',
-        )
-    else:
-        chunks.append(
-            '<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>\n</figcaption>\n</figure>',
-        )
 
     for chunk in chunks:
         assert chunk in content
