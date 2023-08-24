@@ -41,12 +41,6 @@ jobs:
     steps:
       - run-tox:
           version: py311
-  py312:
-    docker:
-      - image: 'cimg/python:3.12'
-    steps:
-      - run-tox:
-          version: py312
   docs:
     docker:
       - image: 'cimg/python:3.11'
@@ -60,7 +54,6 @@ workflows:
   tests:
     jobs:
       - docs
-      - py312
       - py311
       - py310
       - py39
