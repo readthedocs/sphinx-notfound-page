@@ -57,13 +57,18 @@ def test_default_settings(app, status, warning):
     assert path.exists()
     content = open(path).read()
 
+    if sphinx.version_info < (6, 0):
+        cssclass = "shortcut "
+    else:
+        cssclass = ""
+
     chunks = [
         '<h1>Page not found</h1>',
         "Unfortunately we couldn't find the content you were looking for.",
         '<title>Page not found &#8212; Python  documentation</title>',
 
         # favicon and logo
-        '<link rel="shortcut icon" href="/en/latest/_static/favicon.png"/>',
+        f'<link rel="{cssclass}icon" href="/en/latest/_static/favicon.png"/>',
         '<img class="logo" src="/en/latest/_static/logo.svg" alt="Logo"/>',
 
         # sidebar URLs
@@ -79,7 +84,6 @@ def test_default_settings(app, status, warning):
 
     for chunk in chunks:
         assert chunk in content
-
 
 @pytest.mark.sphinx(
     srcdir=srcdir,
@@ -128,6 +132,11 @@ def test_default_language_setting(app, status, warning):
 
     content = open(path).read()
 
+    if sphinx.version_info < (6, 0):
+        cssclass = "shortcut "
+    else:
+        cssclass = ""
+
     chunks = [
         # sidebar URLs
         '<h1 class="logo"><a href="/ja/latest/index.html">Python</a></h1>',
@@ -135,7 +144,7 @@ def test_default_language_setting(app, status, warning):
         '<li><a href="/ja/latest/index.html">Documentation overview</a><ul>',
 
         # favicon and logo
-        '<link rel="shortcut icon" href="/ja/latest/_static/favicon.png"/>',
+        f'<link rel="{cssclass}icon" href="/ja/latest/_static/favicon.png"/>',
         '<img class="logo" src="/ja/latest/_static/logo.svg" alt="Logo"/>',
 
         # resources
@@ -161,6 +170,11 @@ def test_default_version_setting(app, status, warning):
 
     content = open(path).read()
 
+    if sphinx.version_info < (6, 0):
+        cssclass = "shortcut "
+    else:
+        cssclass = ""
+
     chunks = [
         # sidebar URLs
         '<h1 class="logo"><a href="/en/customversion/index.html">Python</a></h1>',
@@ -168,7 +182,7 @@ def test_default_version_setting(app, status, warning):
         '<li><a href="/en/customversion/index.html">Documentation overview</a><ul>',
 
         # favicon and logo
-        '<link rel="shortcut icon" href="/en/customversion/_static/favicon.png"/>',
+        f'<link rel="{cssclass}icon" href="/en/customversion/_static/favicon.png"/>',
         '<img class="logo" src="/en/customversion/_static/logo.svg" alt="Logo"/>',
 
         # resources
@@ -223,6 +237,11 @@ def test_urls_prefix_setting(app, status, warning):
 
     content = open(path).read()
 
+    if sphinx.version_info < (6, 0):
+        cssclass = "shortcut "
+    else:
+        cssclass = ""
+
     chunks = [
         # sidebar URLs
         '<h1 class="logo"><a href="/language/version/index.html">Python</a></h1>',
@@ -230,7 +249,7 @@ def test_urls_prefix_setting(app, status, warning):
         '<li><a href="/language/version/index.html">Documentation overview</a><ul>',
 
         # favicon and logo
-        '<link rel="shortcut icon" href="/language/version/_static/favicon.png"/>',
+        f'<link rel="{cssclass}icon" href="/language/version/_static/favicon.png"/>',
         '<img class="logo" src="/language/version/_static/logo.svg" alt="Logo"/>',
 
         # resources
@@ -256,6 +275,11 @@ def test_urls_prefix_setting_none(app, status, warning):
 
     content = open(path).read()
 
+    if sphinx.version_info < (6, 0):
+        cssclass = "shortcut "
+    else:
+        cssclass = ""
+
     chunks = [
         # sidebar URLs
         '<h1 class="logo"><a href="/index.html">Python</a></h1>',
@@ -263,7 +287,7 @@ def test_urls_prefix_setting_none(app, status, warning):
         '<li><a href="/index.html">Documentation overview</a><ul>',
 
         # favicon and logo
-        '<link rel="shortcut icon" href="/_static/favicon.png"/>',
+        f'<link rel="{cssclass}icon" href="/_static/favicon.png"/>',
         '<img class="logo" src="/_static/logo.svg" alt="Logo"/>',
 
         # resources
@@ -430,11 +454,11 @@ def test_image_on_404_rst_source(app, status, warning):
     # .. figure::
     if docutils.__version_info__ < (0, 17, 0):
         chunks.append(
-            u'<div class="figure align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</div>',
+            '<div class="figure align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<p class="caption"><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>\n</div>',
         )
     else:
         chunks.append(
-            u'<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</figcaption>\n</figure>',
+            '<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>\n</figcaption>\n</figure>',
         )
 
     for chunk in chunks:
@@ -540,10 +564,14 @@ def test_sphinx_resource_urls(app, status, warning):
 
     chunks = [
         # Sphinx's resources URLs
-        _get_js_html_link_tag('en', 'latest', 'jquery.js'),
-        _get_js_html_link_tag('en', 'latest', 'underscore.js'),
         _get_js_html_link_tag('en', 'latest', 'doctools.js'),
     ]
+
+    if sphinx.version_info < (6, 0):
+        chunks.extend([
+            _get_js_html_link_tag('en', 'latest', 'underscore.js'),
+            _get_js_html_link_tag('en', 'latest', 'jquery.js'),
+        ])
 
     for chunk in chunks:
         assert chunk in content

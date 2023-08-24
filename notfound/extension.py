@@ -1,3 +1,4 @@
+import html
 import docutils.nodes
 import os
 import warnings
@@ -81,7 +82,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
     if app.config.notfound_no_urls_prefix:
         default_baseuri = '/'
     else:
-        default_baseuri = f'{app.config.notfound_urls_prefix}' or '/'
+        default_baseuri = app.config.notfound_urls_prefix or '/'
 
     # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1024-L1036
     def pathto(otheruri: str, resource: bool = False, baseuri: str = default_baseuri):
@@ -125,20 +126,28 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
     # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1048
     def toctree(*args, **kwargs):
-        if sphinx.version_info[:2] >= (7, 2):
+        collapse = kwargs.pop('collapse', False)
+        includehidden = kwargs.pop('includehidden', False)
+
+        if sphinx.version_info >= (7, 2):
             from sphinx.environment.adapters.toctree import global_toctree_for_doc
+            toc = global_toctree_for_doc(
+                app.env,
+                app.config.notfound_pagename,
+                app.builder,
+                collapse=collapse,
+                includehidden=includehidden,
+                **kwargs,
+            )
         else:
             from sphinx.environment.adapters.toctree import TocTree
-            global_toctree_for_doc = TocTree.get_toctree_for
-
-        toc = global_toctree_for_doc(
-            app.env,
-            app.config.notfound_pagename,
-            app.builder,
-            collapse=kwargs.pop('collapse', False),
-            includehidden=kwargs.pop('includehidden', False),
-            **kwargs,
-        )
+            toc = TocTree(app.env).get_toctree_for(
+                app.config.notfound_pagename,
+                app.builder,
+                collapse=collapse,
+                includehidden=includehidden,
+                **kwargs,
+            )
 
         # If no TOC is found, just return ``None`` instead of failing here
         if not toc:
@@ -158,6 +167,54 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # https://www.sphinx-doc.org/en/master/templating.html#toctree
         # NOTE: not used on ``singlehtml`` builder for RTD Sphinx theme
         context['toctree'] = toctree
+
+
+        # Sphinx 7.2 uses `css_tag` and `js_tag` functions in the HTML template from the context.
+        # We have to overwrite them here to use our own `pathto` function.
+        # The code is borrowed exactly from Sphinx 7.2.2, there is no changes.
+        if sphinx.version_info >= (7, 2):
+            from sphinx.builders.html._assets import _CascadingStyleSheet, _file_checksum, _JavaScript
+
+            outdir = app.outdir
+
+            # https://github.com/sphinx-doc/sphinx/blob/v7.2.2/sphinx/builders/html/__init__.py#L1057C1-L1094C31
+            def css_tag(css: _CascadingStyleSheet) -> str:
+                attrs = []
+                for key, value in css.attributes.items():
+                    if value is not None:
+                        attrs.append(f'{key}="{html.escape(value, quote=True)}"')
+                uri = pathto(os.fspath(css.filename), resource=True)
+                if checksum := _file_checksum(outdir, css.filename):
+                    uri += f'?v={checksum}'
+                return f'<link {" ".join(sorted(attrs))} href="{uri}" />'
+
+            def js_tag(js: _JavaScript | str) -> str:
+                if not isinstance(js, _JavaScript):
+                    # str value (old styled)
+                    return f'<script src="{pathto(js, resource=True)}"></script>'
+
+                attrs = []
+                body = js.attributes.get('body', '')
+                for key, value in js.attributes.items():
+                    if key == 'body':
+                        continue
+                    if value is not None:
+                        attrs.append(f'{key}="{html.escape(value, quote=True)}"')
+
+                if not js.filename:
+                    if attrs:
+                        return f'<script {" ".join(sorted(attrs))}>{body}</script>'
+                    return f'<script>{body}</script>'
+
+                uri = pathto(os.fspath(js.filename), resource=True)
+                if checksum := _file_checksum(outdir, js.filename):
+                    uri += f'?v={checksum}'
+                if attrs:
+                    return f'<script {" ".join(sorted(attrs))} src="{uri}"></script>'
+                return f'<script src="{uri}"></script>'
+
+            context['css_tag'] = css_tag
+            context['js_tag'] = js_tag
 
 
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-doctree-resolved
