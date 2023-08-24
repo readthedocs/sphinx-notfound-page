@@ -1,9 +1,9 @@
-import html
-import docutils
+import docutils.nodes
 import os
 import sphinx
 import warnings
 
+import sphinx
 from sphinx.environment.collectors import EnvironmentCollector
 from sphinx.errors import ExtensionError
 
@@ -79,8 +79,13 @@ def finalize_media(app, pagename, templatename, context, doctree):
     :type doctree: docutils.nodes.document
     """
 
-    # https://github.com/sphinx-doc/sphinx/blob/7138d03ba033e384f1e7740f639849ba5f2cc71d/sphinx/builders/html.py#L1054-L1065
-    def pathto(otheruri, resource=False, baseuri=None):
+    if app.config.notfound_no_urls_prefix:
+        default_baseuri = '/'
+    else:
+        default_baseuri = f'{app.config.notfound_urls_prefix}' or '/'
+
+    # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1024-L1036
+    def pathto(otheruri: str, resource: bool = False, baseuri: str = default_baseuri):
         """
         Hack pathto to display absolute URL's.
 
@@ -105,19 +110,11 @@ def finalize_media(app, pagename, templatename, context, doctree):
         if not resource:
             otheruri = app.builder.get_target_uri(otheruri)
 
-        if baseuri is None:
-            if app.config.notfound_no_urls_prefix:
-                baseuri = '/'
-            else:
-                baseuri = '{prefix}'.format(
-                    prefix=app.config.notfound_urls_prefix or '/',
-                )
-
         if not baseuri.startswith('/'):
             raise BaseURIError('"baseuri" must be absolute')
 
         if otheruri and not otheruri.startswith('/'):
-            otheruri = '/' + otheruri
+            otheruri = f'/{otheruri}'
 
         if otheruri:
             if baseuri.endswith('/'):
@@ -127,23 +124,21 @@ def finalize_media(app, pagename, templatename, context, doctree):
         uri = otheruri or '#'
         return uri
 
-    # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/builders/html.py#L1081
+    # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1048
     def toctree(*args, **kwargs):
-        try:
-            # Sphinx >= 1.6
+        if sphinx.version_info[:2] >= (7, 2):
+            from sphinx.environment.adapters.toctree import global_toctree_for_doc
+        else:
             from sphinx.environment.adapters.toctree import TocTree
-            get_toctree_for = TocTree(app.env).get_toctree_for
-        except ImportError:
-            # Sphinx < 1.6
-            get_toctree_for = app.env.get_toctree_for
+            global_toctree_for_doc = TocTree.get_toctree_for
 
-        toc = get_toctree_for(
+        toc = global_toctree_for_doc(
+            app.env,
             app.config.notfound_pagename,
             app.builder,
             collapse=kwargs.pop('collapse', False),
             includehidden=kwargs.pop('includehidden', False),
-            **kwargs  # not using trailing comma here makes this compatible with
-                      # Python2 syntax
+            **kwargs,
         )
 
         # If no TOC is found, just return ``None`` instead of failing here

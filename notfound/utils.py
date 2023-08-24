@@ -1,6 +1,5 @@
 import docutils
 import re
-import sphinx
 
 from sphinx.builders.dirhtml import DirectoryHTMLBuilder
 
@@ -27,7 +26,7 @@ def replace_uris(app, doctree, nodetype, nodeattr):
     :type nodeattr: str
     """
     # https://github.com/sphinx-doc/sphinx/blob/2adeb68af1763be46359d5e808dae59d708661b1/sphinx/environment/adapters/toctree.py#L260-L266
-    for node in doctree.traverse(nodetype):
+    for node in doctree.findall(nodetype):
         uri = olduri = node.attributes.get(nodeattr)  # somepage.html (or ../sompage.html)
 
         if isinstance(app.builder, DirectoryHTMLBuilder):
