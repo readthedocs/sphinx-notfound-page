@@ -11,7 +11,7 @@ def _get_css_html_link_tag(language, version, filename):
             filename=filename,
         )
 
-    if sphinx.version_info >= (7, 2):
+    if sphinx.version_info >= (7, 1):
         # it requires `?v={hash}`
         hashes = {
             "pygments.css": "4f649999",
@@ -34,7 +34,7 @@ def _get_js_html_link_tag(language, version, filename):
             filename=filename,
         )
 
-    if sphinx.version_info >= (7, 2):
+    if sphinx.version_info >= (7, 1):
         # it requires `?v={hash}`
         hashes = {
             "documentation_options.js": "5929fcd5",

@@ -283,7 +283,7 @@ def test_image_on_404_rst_source(app, status, warning):
 
     ]
 
-    if sphinx.version_info < (7, 0):
+    if sphinx.version_info < (7, 2):
         chunks.extend([
             # .. figure::
             '<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</figcaption>\n</figure>',
