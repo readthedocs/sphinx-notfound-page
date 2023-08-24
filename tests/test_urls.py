@@ -281,9 +281,18 @@ def test_image_on_404_rst_source(app, status, warning):
         '<img alt="An image" src="/en/latest/_images/test.png" />',
         '<img alt="Image from folder" src="/en/latest/_images/loudly-crying-face.png" />',
 
-        # .. figure::
-        '<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>\n</figcaption>\n</figure>',
     ]
+
+    if sphinx.version_info < (7, 0):
+        chunks.extend([
+            # .. figure::
+            '<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>\n</figcaption>\n</figure>',
+        ])
+    else:
+        chunks.extend([
+            # .. figure::
+            '<figure class="align-default" id="id1">\n<img alt="/en/latest/_images/test.png" src="/en/latest/_images/test.png" />\n<figcaption>\n<p><span class="caption-text">Description.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>\n</figcaption>\n</figure>',
+        ])
 
 
     for chunk in chunks:
