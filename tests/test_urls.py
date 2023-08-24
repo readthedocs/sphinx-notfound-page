@@ -405,7 +405,7 @@ def test_sphinx_resource_urls(app, status, warning):
 @pytest.mark.sphinx(
     srcdir=srcdir,
     confoverrides={
-        'notfound_urls_prefix': '/ja/default',
+        'notfound_urls_prefix': '/ja/default/',
     },
 )
 def test_toctree_urls_notfound_default(app, status, warning):
