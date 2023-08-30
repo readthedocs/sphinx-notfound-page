@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+Version 1.0.0
+-------------
+
+:Date: August 30, 2023
+
+
 Version 1.0.0rc0
 ----------------
 
