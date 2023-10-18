@@ -25,7 +25,7 @@ For other use cases, you can customize these configuration options in your ``con
 
       {
           'title': 'Page not found',
-          'body': '<h1>Page not found</h1>\n\nUnfortunately we couldn't find the content you were looking for.',
+          'body': "<h1>Page not found</h1>\n\nUnfortunately we couldn't find the content you were looking for.",
       }
 
    Type: dict
