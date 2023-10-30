@@ -74,8 +74,8 @@ def test_default_settings(app, status, warning):
         '<li><a href="/en/latest/index.html">Documentation overview</a><ul>',
 
         # resources
-        _get_css_html_link_tag('en', 'latest', 'alabaster.css'),
-        _get_css_html_link_tag('en', 'latest', 'pygments.css'),
+        _get_css_html_link_tag(app, 'en', 'latest', 'alabaster.css'),
+        _get_css_html_link_tag(app, 'en', 'latest', 'pygments.css'),
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
 
@@ -145,8 +145,8 @@ def test_urls_prefix_setting(app, status, warning):
         '<img class="logo" src="/language/version/_static/logo.svg" alt="Logo"/>',
 
         # resources
-        _get_css_html_link_tag('language', 'version', 'alabaster.css'),
-        _get_css_html_link_tag('language', 'version', 'pygments.css'),
+        _get_css_html_link_tag(app, 'language', 'version', 'alabaster.css'),
+        _get_css_html_link_tag(app, 'language', 'version', 'pygments.css'),
         '<link rel="stylesheet" href="/language/version/_static/custom.css" type="text/css" />',
     ]
 
@@ -183,8 +183,8 @@ def test_urls_prefix_setting_none(app, status, warning):
         '<img class="logo" src="/_static/logo.svg" alt="Logo"/>',
 
         # resources
-        _get_css_html_link_tag('', '', 'alabaster.css'),
-        _get_css_html_link_tag('', '', 'pygments.css'),
+        _get_css_html_link_tag(app, '', '', 'alabaster.css'),
+        _get_css_html_link_tag(app, '', '', 'pygments.css'),
         '<link rel="stylesheet" href="/_static/custom.css" type="text/css" />',
     ]
 
@@ -247,8 +247,8 @@ def test_custom_404_rst_source(app, status, warning):
         '<li><a href="/en/latest/index.html">Documentation overview</a><ul>',
 
         # resources
-        _get_css_html_link_tag('en', 'latest', 'alabaster.css'),
-        _get_css_html_link_tag('en', 'latest', 'pygments.css'),
+        _get_css_html_link_tag(app, 'en', 'latest', 'alabaster.css'),
+        _get_css_html_link_tag(app, 'en', 'latest', 'pygments.css'),
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
 
@@ -350,8 +350,8 @@ def test_urls_for_dirhtml_builder(app, status, warning):
         '<li class="toctree-l1"><a class="reference internal" href="/en/latest/chapter/">Chapter</a></li>',
 
         # resources
-        _get_css_html_link_tag('en', 'latest', 'alabaster.css'),
-        _get_css_html_link_tag('en', 'latest', 'pygments.css'),
+        _get_css_html_link_tag(app, 'en', 'latest', 'alabaster.css'),
+        _get_css_html_link_tag(app, 'en', 'latest', 'pygments.css'),
         '<link rel="stylesheet" href="/en/latest/_static/custom.css" type="text/css" />',
     ]
 
@@ -369,13 +369,13 @@ def test_sphinx_resource_urls(app, status, warning):
 
     chunks = [
         # Sphinx's resources URLs
-        _get_js_html_link_tag('en', 'latest', 'doctools.js'),
+        _get_js_html_link_tag(app, 'en', 'latest', 'doctools.js'),
     ]
 
     if sphinx.version_info < (6, 0):
         chunks.extend([
-            _get_js_html_link_tag('en', 'latest', 'underscore.js'),
-            _get_js_html_link_tag('en', 'latest', 'jquery.js'),
+            _get_js_html_link_tag(app, 'en', 'latest', 'underscore.js'),
+            _get_js_html_link_tag(app, 'en', 'latest', 'jquery.js'),
         ])
 
     for chunk in chunks:
@@ -401,8 +401,8 @@ def test_toctree_urls_notfound_default(app, status, warning):
         '<li class="toctree-l1"><a class="reference internal" href="/ja/default/chapter.html">Chapter</a></li>',
 
         # resources
-        _get_css_html_link_tag('ja', 'default', 'alabaster.css'),
-        _get_css_html_link_tag('ja', 'default', 'pygments.css'),
+        _get_css_html_link_tag(app, 'ja', 'default', 'alabaster.css'),
+        _get_css_html_link_tag(app, 'ja', 'default', 'pygments.css'),
         '<link rel="stylesheet" href="/ja/default/_static/custom.css" type="text/css" />',
     ]
 
@@ -469,7 +469,7 @@ def test_resources_from_extension(app, status, warning):
     chunks = [
         '<link rel="stylesheet" type="text/css" href="/en/latest/_static/css_added_by_extension.css" />',
         '<link rel="stylesheet" type="text/css" href="/en/latest/_static/css_added_by_extension.css" />',
-        _get_js_html_link_tag('en', 'latest', 'js_added_by_extension.js'),
+        _get_js_html_link_tag(app, 'en', 'latest', 'js_added_by_extension.js'),
     ]
 
     for chunk in chunks:
