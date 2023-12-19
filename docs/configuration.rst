@@ -49,8 +49,8 @@ For other use cases, you can customize these configuration options in your ``con
    Prefix added to all the URLs generated in the 404 page.
 
    Default: ``'/<language>/<version>/'`` where ``<language>`` is ``READTHEDOCS_LANGUAGE`` environment variable
-            and ``<version>`` is ``READTHEDOCS_VERSION`` environment variable.
-            In case these variables are not defined, it defaults to ``/en/latest/``.
+   and ``<version>`` is ``READTHEDOCS_VERSION`` environment variable.
+   In case these variables are not defined, it defaults to ``/en/latest/``.
 
    Type: string
 
