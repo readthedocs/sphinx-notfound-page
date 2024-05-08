@@ -3,7 +3,6 @@ import pytest
 import sphinx
 import shutil
 import subprocess
-import warnings
 
 from utils import _get_css_html_link_tag, _get_js_html_link_tag
 
@@ -52,7 +51,7 @@ def test_default_settings(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
     assert path.exists()
-    content = open(path).read()
+    content = path.read_text()
 
     if sphinx.version_info < (6, 0):
         cssclass = "shortcut "
@@ -92,7 +91,7 @@ def test_context_settings(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
     assert path.exists()
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         '<h1>Boo!</h1>',
@@ -127,7 +126,7 @@ def test_urls_prefix_setting(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     if sphinx.version_info < (6, 0):
         cssclass = "shortcut "
@@ -165,7 +164,7 @@ def test_urls_prefix_setting_none(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     if sphinx.version_info < (6, 0):
         cssclass = "shortcut "
@@ -208,7 +207,7 @@ def test_template_setting(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         'Custom title',
@@ -232,7 +231,7 @@ def test_custom_404_rst_source(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         # custom 404.rst file content
@@ -274,7 +273,7 @@ def test_image_on_404_rst_source(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         # .. image::
@@ -308,7 +307,7 @@ def test_image_looks_like_absolute_url(app, status, warning):
 
     path = app.outdir / '404.html'
     assert path.exists()
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         '<img alt="PATH looking as an URL" src="/en/latest/_images/https.png" />',
@@ -322,8 +321,8 @@ def test_image_looks_like_absolute_url(app, status, warning):
 def test_image_absolute_url(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
-    content = open(path).read()
+    assert path.exists()
+    content = path.read_text()
 
     chunks = [
         '<img alt="Read the Docs Logo" src="https://read-the-docs-guidelines.readthedocs-hosted.com/_images/logo-dark.png" />',
@@ -342,7 +341,7 @@ def test_urls_for_dirhtml_builder(app, status, warning):
     path = app.outdir / '404' / 'index.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         # sidebar URLs
@@ -365,7 +364,7 @@ def test_sphinx_resource_urls(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         # Sphinx's resources URLs
@@ -393,7 +392,7 @@ def test_toctree_urls_notfound_default(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         # sidebar URLs
@@ -418,7 +417,7 @@ def test_toctree_links(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         '<h3>Navigation</h3>',
@@ -440,7 +439,7 @@ def test_toctree_links_custom_settings(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         '<h3>Navigation</h3>',
@@ -465,7 +464,7 @@ def test_resources_from_extension(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
     chunks = [
         '<link rel="stylesheet" type="text/css" href="/en/latest/_static/css_added_by_extension.css" />',
         '<link rel="stylesheet" type="text/css" href="/en/latest/_static/css_added_by_extension.css" />',
@@ -487,7 +486,7 @@ def test_special_readthedocs_urls(environ, app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
-    content = open(path).read()
+    content = path.read_text()
 
     chunks = [
         # Link included manually
