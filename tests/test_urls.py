@@ -40,6 +40,13 @@ def test_parallel_build():
     # https://github.com/sphinx-doc/sphinx/pull/8257
     subprocess.check_call('sphinx-build -j 2 -W -b html tests/examples/parallel-build build', shell=True)
 
+
+@pytest.mark.sphinx(srcdir=srcdir)
+def test_notfound_urls_prefix_can_be_none():
+    """Note: Sphinx warnings being treated as errors, if the test contains any warning, it will fail then."""
+    subprocess.check_call('sphinx-build -W -b html tests/examples/conf-urls-prefix-none build', shell=True)
+
+
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()

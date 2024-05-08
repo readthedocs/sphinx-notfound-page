@@ -299,6 +299,7 @@ def setup(app):
             default_version=default_version,
         ),
         'html',
+        types=[str, type(None)],
     )
 
     app.connect('config-inited', validate_configs)
