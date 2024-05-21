@@ -2,6 +2,14 @@ Changelog
 =========
 
 
+Version 1.0.1
+-------------
+
+:Date: May 21, 2024
+
+* Do not create 404 page for embedded
+* Small documentation improvements
+
 Version 1.0.0
 -------------
 
