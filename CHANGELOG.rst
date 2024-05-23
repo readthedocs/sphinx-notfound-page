@@ -2,6 +2,16 @@ Changelog
 =========
 
 
+Version 1.0.2
+-------------
+
+:Date: May 23, 2024
+
+* Add tests for Python 3.12
+* Remove warning about unclosed files
+* Allow ``str`` and ``None`` types on ``notfound_urls_prefix``
+* Run ``pyupgrade`` and ``ruff`` on the codebase
+
 Version 1.0.1
 -------------
 
