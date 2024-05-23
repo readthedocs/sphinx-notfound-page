@@ -39,7 +39,6 @@ def test_parallel_build():
     # https://github.com/sphinx-doc/sphinx/pull/8257
     subprocess.check_call('sphinx-build -j 2 -W -b html tests/examples/parallel-build build', shell=True)
 
-
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()
@@ -158,6 +157,7 @@ def test_urls_prefix_setting(app, status, warning):
 
     for chunk in chunks:
         assert chunk in content
+
 
 @pytest.mark.sphinx(
     srcdir=srcdir,
