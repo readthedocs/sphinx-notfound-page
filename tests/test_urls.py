@@ -45,6 +45,12 @@ def test_404_page_created(app, status, warning):
     path = app.outdir / '404.html'
     assert path.exists()
 
+@pytest.mark.sphinx('epub', srcdir=srcdir)
+def test_404_page_not_created(app, status, warning):
+    assert app.builder.embedded
+    app.build()
+    path = app.outdir / '404.html'
+    assert not path.exists()
 
 @pytest.mark.sphinx(srcdir=srcdir)
 def test_default_settings(app, status, warning):

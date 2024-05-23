@@ -18,7 +18,7 @@ keywords=[
 dependencies = [
     "sphinx>=5",
 ]
-version = "1.0.0"
+version = "1.0.1"
 readme = "README.rst"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
@@ -73,7 +73,7 @@ exclude = [
 ]
 
 [tool.bumpver]
-current_version = "1.0.0"
+current_version = "1.0.1"
 version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
 commit_message = "Release {new_version}"
 commit = true
