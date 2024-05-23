@@ -196,6 +196,8 @@ def test_urls_prefix_setting_none(app, status, warning):
     for chunk in chunks:
         assert chunk in content
 
+    assert "The config value `notfound_urls_prefix' has type `NoneType', defaults to `str'" not in warning.getvalue()
+    assert "build succeeded." in status.getvalue()
 
 @pytest.mark.sphinx(
     srcdir=srcdir,
