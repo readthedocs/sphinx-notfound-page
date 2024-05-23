@@ -3,7 +3,6 @@ import pytest
 import sphinx
 import shutil
 import subprocess
-import warnings
 
 from utils import _get_css_html_link_tag, _get_js_html_link_tag
 
@@ -328,7 +327,7 @@ def test_image_looks_like_absolute_url(app, status, warning):
 def test_image_absolute_url(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
-    assert path.exists() == True
+    assert path.exists() is True
     content = open(path).read()
 
     chunks = [
