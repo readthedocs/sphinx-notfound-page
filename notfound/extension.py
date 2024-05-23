@@ -1,8 +1,8 @@
 import html
-import docutils.nodes
 import os
 import warnings
 
+import docutils.nodes
 import sphinx
 from sphinx.environment.collectors import EnvironmentCollector
 from sphinx.errors import ExtensionError
@@ -13,7 +13,6 @@ from .utils import replace_uris
 
 class BaseURIError(ExtensionError):
     """Exception for malformed base URI."""
-    pass
 
 
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-html-collect-pages
@@ -167,7 +166,11 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # We have to overwrite them here to use our own `pathto` function.
         # The code is borrowed exactly from Sphinx 7.2.2, there is no changes.
         if sphinx.version_info >= (7, 2):
-            from sphinx.builders.html._assets import _CascadingStyleSheet, _file_checksum, _JavaScript
+            from sphinx.builders.html._assets import (
+                _CascadingStyleSheet,
+                _file_checksum,
+                _JavaScript,
+            )
 
             outdir = app.outdir
 
@@ -266,14 +269,22 @@ def validate_configs(app, *args, **kwargs):
 
     Shows a warning if one of the configs is not valid.
     """
-    default, rebuild, types = app.config.values.get('notfound_urls_prefix')
-    if app.config.notfound_urls_prefix != default:
-        if app.config.notfound_urls_prefix and not all([
-                app.config.notfound_urls_prefix.startswith('/'),
-                app.config.notfound_urls_prefix.endswith('/'),
-        ]):
-            message = 'notfound_urls_prefix should start and end with "/" (slash)'
-            warnings.warn(message, UserWarning, stacklevel=2)
+    notfound_urls_prefix = app.config.notfound_urls_prefix
+    default = (
+        app.config.values.get("notfound_urls_prefix").default
+        if sphinx.version_info >= (7, 2)
+        else app.config.values.get("notfound_urls_prefix")[0]
+    )
+
+    if (
+        notfound_urls_prefix != default
+        and notfound_urls_prefix
+        and not (
+            notfound_urls_prefix.startswith("/") or notfound_urls_prefix.endswith("/")
+        )
+    ):
+        message = 'notfound_urls_prefix should start and end with "/" (slash)'
+        warnings.warn(message, UserWarning, stacklevel=2)
 
 
 def setup(app):
