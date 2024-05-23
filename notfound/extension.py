@@ -31,9 +31,9 @@ def html_collect_pages(app):
     :param app: Sphinx Application
     :type app: sphinx.application.Sphinx
     """
-    if app.config.notfound_pagename in app.env.titles:
-        # There is already a ``404.rst`` file rendered.
-        # Skip generating our default one.
+    if app.builder.embedded or app.config.notfound_pagename in app.env.titles:
+        # Building embedded (e.g. htmlhelp or ePub) or there is already a ``404.rst``
+        # file rendered. Skip generating our default one.
         return []
 
     return [(
