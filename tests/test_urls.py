@@ -41,12 +41,6 @@ def test_parallel_build():
 
 
 @pytest.mark.sphinx(srcdir=srcdir)
-def test_notfound_urls_prefix_can_be_none():
-    """Note: Sphinx warnings being treated as errors, if the test contains any warning, it will fail then."""
-    subprocess.check_call('sphinx-build -W -b html tests/examples/conf-urls-prefix-none build', shell=True)
-
-
-@pytest.mark.sphinx(srcdir=srcdir)
 def test_404_page_created(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
@@ -202,6 +196,9 @@ def test_urls_prefix_setting_none(app, status, warning):
 
     for chunk in chunks:
         assert chunk in content
+
+    assert "The config value `notfound_urls_prefix' has type `NoneType', defaults to `str'" not in warning.getvalue()
+    assert "build succeeded." in status.getvalue()
 
 
 @pytest.mark.sphinx(
