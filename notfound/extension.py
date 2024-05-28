@@ -280,7 +280,7 @@ def validate_configs(app, *args, **kwargs):
         notfound_urls_prefix != default
         and notfound_urls_prefix
         and not (
-            notfound_urls_prefix.startswith("/") or notfound_urls_prefix.endswith("/")
+            notfound_urls_prefix.startswith("/") and notfound_urls_prefix.endswith("/")
         )
     ):
         message = 'notfound_urls_prefix should start and end with "/" (slash)'
