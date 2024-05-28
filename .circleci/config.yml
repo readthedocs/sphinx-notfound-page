@@ -49,7 +49,7 @@ jobs:
           version: py312
   docs:
     docker:
-      - image: 'cimg/python:3.11'
+      - image: 'cimg/python:3.12'
     steps:
       - checkout
       - run: pip install --user tox
