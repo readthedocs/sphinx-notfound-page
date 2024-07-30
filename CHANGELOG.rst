@@ -2,6 +2,14 @@ Changelog
 =========
 
 
+Version 1.0.3
+-------------
+
+:Date: Jul 30, 2024
+
+* Fix ``_Opt`` deprecation warning
+
+
 Version 1.0.2
 -------------
 
