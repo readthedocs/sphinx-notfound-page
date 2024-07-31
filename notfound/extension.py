@@ -272,7 +272,7 @@ def validate_configs(app, *args, **kwargs):
     notfound_urls_prefix = app.config.notfound_urls_prefix
     default = (
         app.config.values.get("notfound_urls_prefix").default
-        if sphinx.version_info >= (7, 2)
+        if sphinx.version_info >= (7, 3)
         else app.config.values.get("notfound_urls_prefix")[0]
     )
 
