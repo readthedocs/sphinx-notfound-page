@@ -2,6 +2,14 @@ Changelog
 =========
 
 
+Version 1.0.4
+-------------
+
+:Date: Jul 31, 2024
+
+* Fix issue when installing with Sphinx 7.2.x and ``notfound_urls_prefix=None``
+
+
 Version 1.0.3
 -------------
 
