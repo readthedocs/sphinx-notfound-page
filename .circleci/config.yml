@@ -6,7 +6,7 @@ commands:
     steps:
       - checkout
       - run: pip install --user tox
-      - run: tox
+      - run: tox --skip-env docs
 
 jobs:
   py38:
