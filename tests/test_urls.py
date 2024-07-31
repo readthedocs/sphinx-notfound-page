@@ -64,6 +64,11 @@ def test_default_settings(app, status, warning):
     else:
         cssclass = ""
 
+    if sphinx.version_info < (7, 3):
+        alt = "Logo"
+    else:
+        alt = "Logo of Python"
+
     chunks = [
         '<h1>Page not found</h1>',
         "Unfortunately we couldn't find the content you were looking for.",
@@ -71,7 +76,7 @@ def test_default_settings(app, status, warning):
 
         # favicon and logo
         f'<link rel="{cssclass}icon" href="/en/latest/_static/favicon.png"/>',
-        '<img class="logo" src="/en/latest/_static/logo.svg" alt="Logo"/>',
+        f'<img class="logo" src="/en/latest/_static/logo.svg" alt="{alt}"/>',
 
         # sidebar URLs
         '<h1 class="logo"><a href="/en/latest/index.html">Python</a></h1>',
@@ -139,6 +144,11 @@ def test_urls_prefix_setting(app, status, warning):
     else:
         cssclass = ""
 
+    if sphinx.version_info < (7, 3):
+        alt = "Logo"
+    else:
+        alt = "Logo of Python"
+
     chunks = [
         # sidebar URLs
         '<h1 class="logo"><a href="/language/version/index.html">Python</a></h1>',
@@ -147,7 +157,7 @@ def test_urls_prefix_setting(app, status, warning):
 
         # favicon and logo
         f'<link rel="{cssclass}icon" href="/language/version/_static/favicon.png"/>',
-        '<img class="logo" src="/language/version/_static/logo.svg" alt="Logo"/>',
+        f'<img class="logo" src="/language/version/_static/logo.svg" alt="{alt}"/>',
 
         # resources
         _get_css_html_link_tag(app, 'language', 'version', 'alabaster.css'),
@@ -177,6 +187,12 @@ def test_urls_prefix_setting_none(app, status, warning):
     else:
         cssclass = ""
 
+    if sphinx.version_info < (7, 3):
+        alt = "Logo"
+    else:
+        alt = "Logo of Python"
+
+
     chunks = [
         # sidebar URLs
         '<h1 class="logo"><a href="/index.html">Python</a></h1>',
@@ -185,7 +201,7 @@ def test_urls_prefix_setting_none(app, status, warning):
 
         # favicon and logo
         f'<link rel="{cssclass}icon" href="/_static/favicon.png"/>',
-        '<img class="logo" src="/_static/logo.svg" alt="Logo"/>',
+        f'<img class="logo" src="/_static/logo.svg" alt="{alt}"/>',
 
         # resources
         _get_css_html_link_tag(app, '', '', 'alabaster.css'),
