@@ -64,7 +64,7 @@ def test_default_settings(app, status, warning):
     else:
         cssclass = ""
 
-    if sphinx.version_info < (7, 3):
+    if sphinx.version_info < (7, 4):
         alt = "Logo"
     else:
         alt = "Logo of Python"
@@ -144,7 +144,7 @@ def test_urls_prefix_setting(app, status, warning):
     else:
         cssclass = ""
 
-    if sphinx.version_info < (7, 3):
+    if sphinx.version_info < (7, 4):
         alt = "Logo"
     else:
         alt = "Logo of Python"
@@ -187,7 +187,7 @@ def test_urls_prefix_setting_none(app, status, warning):
     else:
         cssclass = ""
 
-    if sphinx.version_info < (7, 3):
+    if sphinx.version_info < (7, 4):
         alt = "Logo"
     else:
         alt = "Logo of Python"
