@@ -52,7 +52,13 @@ def test_404_page_not_created(app, status, warning):
     path = app.outdir / '404.html'
     assert not path.exists()
 
-@pytest.mark.sphinx(srcdir=srcdir)
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    # Sphinx changed the default theme to basic in version 8.1.0
+    # (https://github.com/sphinx-doc/sphinx/pull/12776), but our
+    # tests depend heavily on the specifics of alabaster.
+    confoverrides={'html_theme': 'alabaster'},
+)
 def test_default_settings(app, status, warning):
     app.build()
     path = app.outdir / '404.html'
@@ -130,6 +136,7 @@ def test_pagename_setting(app, status, warning):
     srcdir=srcdir,
     confoverrides={
         'notfound_urls_prefix': '/language/version/',
+        'html_theme': 'alabaster',
     },
 )
 def test_urls_prefix_setting(app, status, warning):
@@ -173,6 +180,7 @@ def test_urls_prefix_setting(app, status, warning):
     srcdir=srcdir,
     confoverrides={
         'notfound_urls_prefix': None,
+        'html_theme': 'alabaster',
     },
 )
 def test_urls_prefix_setting_none(app, status, warning):
@@ -248,6 +256,7 @@ def test_template_setting(app, status, warning):
     srcdir=rstsrcdir,
     confoverrides={
         'version': '2.5.1',
+        'html_theme': 'alabaster',
     },
 )
 def test_custom_404_rst_source(app, status, warning):
@@ -359,6 +368,7 @@ def test_image_absolute_url(app, status, warning):
 @pytest.mark.sphinx(
     srcdir=srcdir,
     buildername='dirhtml',
+    confoverrides={'html_theme': 'alabaster'},
 )
 def test_urls_for_dirhtml_builder(app, status, warning):
     app.build()
@@ -409,6 +419,7 @@ def test_sphinx_resource_urls(app, status, warning):
     srcdir=srcdir,
     confoverrides={
         'notfound_urls_prefix': '/ja/default/',
+        'html_theme': 'alabaster',
     },
 )
 def test_toctree_urls_notfound_default(app, status, warning):
@@ -435,6 +446,7 @@ def test_toctree_urls_notfound_default(app, status, warning):
 
 @pytest.mark.sphinx(
     srcdir=srcdir,
+    confoverrides={'html_theme': 'alabaster'},
 )
 def test_toctree_links(app, status, warning):
     app.build()
@@ -456,6 +468,7 @@ def test_toctree_links(app, status, warning):
     srcdir=srcdir,
     confoverrides={
         'notfound_urls_prefix': '/pt-br/stable/',
+        'html_theme': 'alabaster',
     },
 )
 def test_toctree_links_custom_settings(app, status, warning):
