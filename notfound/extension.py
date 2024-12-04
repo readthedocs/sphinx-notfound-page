@@ -249,9 +249,17 @@ class OrphanMetadataCollector(EnvironmentCollector):
     """
 
     def clear_doc(self, app, env, docname):
+        """Remove specified data of a document.
+
+        This method is called on the removal of the document.
+        """
         return None
 
     def process_doc(self, app, doctree):
+        """Process a document and gather specific data from it.
+
+        This method is called after the document is read.
+        """
         metadata = app.env.metadata[app.config.notfound_pagename]
         metadata.update({'orphan': True, 'nosearch': True})
 
