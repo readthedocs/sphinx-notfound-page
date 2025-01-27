@@ -1,6 +1,7 @@
 import html
 import os
 import warnings
+from urllib.parse import urlparse
 
 import docutils.nodes
 import sphinx
@@ -302,22 +303,14 @@ def setup(app):
     }
 
     # https://github.com/sphinx-doc/sphinx/blob/master/sphinx/themes/basic/page.html
-    app.add_config_value('notfound_template', 'page.html', 'html')
-    app.add_config_value('notfound_context', default_context, 'html')
-    app.add_config_value('notfound_pagename', '404', 'html')
+    app.add_config_value("notfound_template", "page.html", "html")
+    app.add_config_value("notfound_context", default_context, "html")
+    app.add_config_value("notfound_pagename", "404", "html")
 
-    # TODO: get these values from Project's settings
-    default_language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
-    default_version = os.environ.get('READTHEDOCS_VERSION', 'latest')
-
-    # This config should replace the previous three
     app.add_config_value(
-        'notfound_urls_prefix',
-        '/{default_language}/{default_version}/'.format(
-            default_language=default_language,
-            default_version=default_version,
-        ),
-        'html',
+        "notfound_urls_prefix",
+        urlparse(os.environ.get("READTHEDOCS_CANONICAL_URL", "/en/latest/")).path,
+        "html",
         types=[str, type(None)],
     )
 

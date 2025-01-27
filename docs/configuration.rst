@@ -48,9 +48,8 @@ For other use cases, you can customize these configuration options in your ``con
 
    Prefix added to all the URLs generated in the 404 page.
 
-   Default: ``'/<language>/<version>/'`` where ``<language>`` is ``READTHEDOCS_LANGUAGE`` environment variable
-   and ``<version>`` is ``READTHEDOCS_VERSION`` environment variable.
-   In case these variables are not defined, it defaults to ``/en/latest/``.
+   Default: The path from the `READTHEDOCS_CANONICAL_URL <https://docs.readthedocs.com/platform/stable/reference/environment-variables.html#envvar-READTHEDOCS_CANONICAL_URL>`__ environment variable.
+   In case that variables is not defined, it defaults to ``/en/latest/``.
 
    Type: string
 
