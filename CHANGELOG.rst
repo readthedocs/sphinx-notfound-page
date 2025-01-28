@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 1.1.0
+-------------
+
+:Date: Jan 28, 2025
+
+* Use the path from the `READTHEDOCS_CANONICAL_URL` environment variable as default for `notfound_urls_prefix`.
 
 Version 1.0.4
 -------------
