@@ -49,6 +49,7 @@ doc = [
     "sphinx-rtd-theme",
     "sphinxemoji",
     "sphinx-autoapi",
+    "sphinx-notfound-page",
 ]
 
 [project.urls]
