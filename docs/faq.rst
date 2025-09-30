@@ -45,6 +45,18 @@ It would look like similar to the following:
 .. _custom extension: https://jupyterbook.org/en/stable/advanced/sphinx.html#custom-sphinx-extensions
 
 
+Why is my web server not showing a 404.html?
+--------------------------------------------
+
+You need to set a custom error handling on your web server.
+
+* For nginx you can do it with `error_page`_ directive.
+* For Apache server you can do it with `ErrorDocument`_ directive.
+
+.. _error_page: https://nginx.org/en/docs/http/ngx_http_core_module.html#error_page
+.. _ErrorDocument: https://httpd.apache.org/docs/2.4/custom-error.html
+
+
 Why is my local web server not showing a 404.html?
 --------------------------------------------------
 
