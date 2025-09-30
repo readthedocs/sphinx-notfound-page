@@ -135,8 +135,9 @@ def test_pagename_setting(app, status, warning):
 @pytest.mark.sphinx(
     srcdir=srcdir,
     confoverrides={
-        'notfound_urls_prefix': '/language/version/',
+        'notfound_urls_prefix': '/{language}/version/',
         'html_theme': 'alabaster',
+        'language': 'pt_BR',
     },
 )
 def test_urls_prefix_setting(app, status, warning):
@@ -154,22 +155,22 @@ def test_urls_prefix_setting(app, status, warning):
     if sphinx.version_info < (7, 4):
         alt = "Logo"
     else:
-        alt = "Logo of Python"
+        alt = "Logo de Python"
 
     chunks = [
         # sidebar URLs
-        '<h1 class="logo"><a href="/language/version/index.html">Python</a></h1>',
-        '<form class="search" action="/language/version/search.html" method="get">',
-        '<li><a href="/language/version/index.html">Documentation overview</a><ul>',
+        '<h1 class="logo"><a href="/pt-br/version/index.html">Python</a></h1>',
+        '<form class="search" action="/pt-br/version/search.html" method="get">',
+        '<li><a href="/pt-br/version/index.html">Documentation overview</a><ul>',
 
         # favicon and logo
-        f'<link rel="{cssclass}icon" href="/language/version/_static/favicon.png"/>',
-        f'<img class="logo" src="/language/version/_static/logo.svg" alt="{alt}"/>',
+        f'<link rel="{cssclass}icon" href="/pt-br/version/_static/favicon.png"/>',
+        f'<img class="logo" src="/pt-br/version/_static/logo.svg" alt="{alt}"/>',
 
         # resources
-        _get_css_html_link_tag(app, 'language', 'version', 'alabaster.css'),
-        _get_css_html_link_tag(app, 'language', 'version', 'pygments.css'),
-        '<link rel="stylesheet" href="/language/version/_static/custom.css" type="text/css" />',
+        _get_css_html_link_tag(app, 'pt-br', 'version', 'alabaster.css'),
+        _get_css_html_link_tag(app, 'pt-br', 'version', 'pygments.css'),
+        '<link rel="stylesheet" href="/pt-br/version/_static/custom.css" type="text/css" />',
     ]
 
     for chunk in chunks:

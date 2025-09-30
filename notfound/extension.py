@@ -76,7 +76,11 @@ def finalize_media(app, pagename, templatename, context, doctree):
     :type doctree: docutils.nodes.document
     """
 
-    default_baseuri = app.config.notfound_urls_prefix or '/'
+    language_uri = app.config.language.lower().replace('_', '-').replace('@', '-')
+    if app.config.notfound_urls_prefix:
+        default_baseuri = app.config.notfound_urls_prefix.format(language=language_uri)
+    else:
+        default_baseuri = '/'
 
     # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1024-L1036
     def pathto(otheruri: str, resource: bool = False, baseuri: str = default_baseuri):
@@ -294,6 +298,12 @@ def validate_configs(app, *args, **kwargs):
     ):
         message = 'notfound_urls_prefix should start and end with "/" (slash)'
         warnings.warn(message, UserWarning, stacklevel=2)
+
+    if notfound_urls_prefix != default and notfound_urls_prefix:
+        no_language = notfound_urls_prefix.replace('{language}', '')
+        if '{' in no_language and '}' in no_language:
+            message = 'notfound_urls_prefix supports only "{language}" substitution'
+            warnings.warn(message, UserWarning, stacklevel=2)
 
 
 def setup(app):
