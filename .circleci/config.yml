@@ -8,7 +8,7 @@ commands:
         type: string
       sphinx-version:
         type: string
-        default: "5,6,7,8,latest,dev"
+        default: "5,6,7,8,9,latest,dev"
     steps:
       - checkout
       # NOTE: use Tox 3.x until I understand the syntax for generative environments:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - run-tox:
           version: py38
-          sphinx-version: "5,6"
+          sphinx-version: "5,6,7"
   py39:
     docker:
       - image: 'cimg/python:3.9'
@@ -44,12 +44,28 @@ jobs:
     steps:
       - run-tox:
           version: py311
+          sphinx-version: "5,6,7,8,9"
   py312:
     docker:
       - image: 'cimg/python:3.12'
     steps:
       - run-tox:
           version: py312
+          sphinx-version: "7,8,9"
+  py313:
+    docker:
+      - image: 'cimg/python:3.13'
+    steps:
+      - run-tox:
+          version: py313
+          sphinx-version: "8,9"
+  py314:
+    docker:
+      - image: 'cimg/python:3.14'
+    steps:
+      - run-tox:
+          version: py314
+          sphinx-version: "8,9"
   docs:
     docker:
       - image: 'cimg/python:3.12'
@@ -63,6 +79,8 @@ workflows:
   tests:
     jobs:
       - docs
+      - py314
+      - py313
       - py312
       - py311
       - py310
