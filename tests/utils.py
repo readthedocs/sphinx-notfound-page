@@ -3,13 +3,9 @@ import sphinx
 
 def _get_css_html_link_tag(app, language, version, filename):
     if not language and not version:
-        href = '/_static/{filename}'.format(filename=filename)
+        href = f'/_static/{filename}'
     else:
-        href = '/{language}/{version}/_static/{filename}'.format(
-            language=language,
-            version=version,
-            filename=filename,
-        )
+        href = f'/{language}/{version}/_static/{filename}'
 
     if sphinx.version_info >= (7, 1):
         # it requires `?v={hash}`
@@ -21,18 +17,14 @@ def _get_css_html_link_tag(app, language, version, filename):
         if filehash:
             href = f"{href}?v={filehash}"
 
-    return '<link rel="stylesheet" type="text/css" href="{href}" />'.format(href=href)
+    return f'<link rel="stylesheet" type="text/css" href="{href}" />'
 
 
 def _get_js_html_link_tag(app, language, version, filename):
     if not language and not version:
-        src = '/_static/{filename}'.format(filename=filename)
+        src = f'/_static/{filename}'
     else:
-        src = '/{language}/{version}/_static/{filename}'.format(
-            language=language,
-            version=version,
-            filename=filename,
-        )
+        src = f'/{language}/{version}/_static/{filename}'
 
     if sphinx.version_info >= (7, 1):
         # it requires `?v={hash}`
@@ -45,5 +37,5 @@ def _get_js_html_link_tag(app, language, version, filename):
             src = f"{src}?v={filehash}"
 
     # #6925: html: Remove redundant type="text/javascript" from <script> elements
-    return '<script src="{src}"></script>'.format(src=src)
+    return f'<script src="{src}"></script>'
 

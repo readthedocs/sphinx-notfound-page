@@ -44,20 +44,15 @@ def replace_uris(app, doctree, nodetype, nodeattr):
         if nodetype is docutils.nodes.image:
             # Prefix the URL with ``Builder.imagedir`` to use the internal's
             # Sphinx image handling if the node is an image
-            imagedir = '{imagedir}/'.format(
-                imagedir=app.builder.imagedir,
-            )
+            imagedir = f'{app.builder.imagedir}/'
 
             # The image is copied into ``app.builder.imagedir`` without keeping
             # the directory structure, so we need only the filename for the
             # correct link
             uri = olduri.split('/')[-1]
 
-        uri = '{prefix}{imagedir}{filename}'.format(
-            prefix=app.config.notfound_urls_prefix or '/',
-            imagedir=imagedir,
-            filename=uri,
-        )
+        prefix = app.config.notfound_urls_prefix or '/'
+        uri = f'{prefix}{imagedir}{uri}'
 
         node.replace_attr(nodeattr, uri)
 
