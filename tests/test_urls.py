@@ -1,35 +1,23 @@
-import os
 import pytest
 import sphinx
 import shutil
 import subprocess
 
+from pathlib import Path
 from utils import _get_css_html_link_tag, _get_js_html_link_tag
 
-srcdir = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    'examples',
-    'default',
-)
+srcdir = Path(__file__).resolve().parent / 'examples' / 'default'
 
-rstsrcdir = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    'examples',
-    '404rst',
-)
+rstsrcdir = Path(__file__).resolve().parent / 'examples' / '404rst'
 
-extensiondir = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    'examples',
-    'extension',
-)
+extensiondir = Path(__file__).resolve().parent / 'examples' / 'extension'
 
 @pytest.fixture(autouse=True, scope='function')
 def remove_sphinx_build_output():
     """Remove _build/ folder, if exist."""
     for path in (srcdir, rstsrcdir, extensiondir):
-        build_path = os.path.join(path, '_build')
-        if os.path.exists(build_path):
+        build_path = path / '_build'
+        if build_path.exists():
             shutil.rmtree(build_path)
 
 
