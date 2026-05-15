@@ -125,6 +125,8 @@ def finalize_media(app, pagename, templatename, context, doctree):
 
         if sphinx.version_info >= (7, 2):
             from sphinx.environment.adapters.toctree import global_toctree_for_doc
+            if sphinx.version_info >= (9, 0):
+                kwargs.setdefault('tags', app.builder.tags)
             toc = global_toctree_for_doc(
                 app.env,
                 app.config.notfound_pagename,
