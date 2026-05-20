@@ -101,8 +101,12 @@ def finalize_media(app, pagename, templatename, context, doctree):
             # special case on Read the Docs
             return otheruri
 
+        requested_uri = otheruri
+
         if not resource:
             otheruri = app.builder.get_target_uri(otheruri)
+            if not otheruri and requested_uri == app.config.root_doc:
+                otheruri = '/'
 
         if not baseuri.startswith('/'):
             raise BaseURIError('"baseuri" must be absolute')

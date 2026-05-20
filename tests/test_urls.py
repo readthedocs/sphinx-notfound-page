@@ -367,7 +367,10 @@ def test_urls_for_dirhtml_builder(app, status, warning):
 
     chunks = [
         # sidebar URLs
+        '<p class="logo"><a href="/en/latest/">',
+        '<h1 class="logo"><a href="/en/latest/">Python</a></h1>',
         '<form class="search" action="/en/latest/search/" method="get">',
+        '<li><a href="/en/latest/">Documentation overview</a><ul>',
         '<li class="toctree-l1"><a class="reference internal" href="/en/latest/chapter/">Chapter</a></li>',
 
         # resources
