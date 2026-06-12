@@ -86,6 +86,33 @@ def test_default_settings(app, status, warning):
     for chunk in chunks:
         assert chunk in content
 
+
+@pytest.mark.environ(
+    READTHEDOCS='True',
+    READTHEDOCS_CANONICAL_URL='https://docs.example.com/en/latest/',
+)
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={'html_theme': 'alabaster'},
+)
+def test_readthedocs_title_links_use_current_version_root(environ, app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = path.read_text()
+
+    chunks = [
+        '<h1 class="logo"><a href="/en/latest/index.html">Python</a></h1>',
+        '<form class="search" action="/en/latest/search.html" method="get">',
+        "document.querySelectorAll('h1.logo > a, p.logo > a')",
+        "path.slice(0, 2).join('/')",
+        "link.href = root;",
+    ]
+
+    for chunk in chunks:
+        assert chunk in content
+
 @pytest.mark.sphinx(
     srcdir=srcdir,
     confoverrides={
