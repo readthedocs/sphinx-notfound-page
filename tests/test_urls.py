@@ -2,6 +2,7 @@ import pytest
 import sphinx
 import shutil
 import subprocess
+import warnings
 
 from pathlib import Path
 from utils import _get_css_html_link_tag, _get_js_html_link_tag
@@ -475,6 +476,23 @@ def test_toctree_links_custom_settings(app, status, warning):
 
     for chunk in chunks:
         assert chunk in content
+
+
+@pytest.mark.skipif(
+    sphinx.version_info < (9, 0),
+    reason='`tags` argument was added in Sphinx 9',
+)
+@pytest.mark.sphinx(
+    srcdir=srcdir,
+    confoverrides={'html_theme': 'alabaster'},
+)
+def test_toctree_no_tags_deprecation_warning(app, status, warning):
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter('always')
+        app.build()
+
+    messages = [str(w.message) for w in caught]
+    assert not [m for m in messages if "'tags' will become a required" in m]
 
 
 @pytest.mark.sphinx(srcdir=emptytoctreedir)
