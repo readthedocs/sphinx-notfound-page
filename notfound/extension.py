@@ -16,6 +16,29 @@ class BaseURIError(ExtensionError):
     """Exception for malformed base URI."""
 
 
+def _readthedocs_current_version_root_script(baseuri):
+    path_depth = len([segment for segment in baseuri.split('/') if segment])
+    if path_depth == 0:
+        return ''
+
+    script = """
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var path = window.location.pathname.split('/').filter(Boolean);
+    if (path.length < {depth}) {
+        return;
+    }
+
+    var root = '/' + path.slice(0, {depth}).join('/') + '/';
+    document.querySelectorAll('h1.logo > a, p.logo > a').forEach(function (link) {
+        link.href = root;
+    });
+});
+</script>
+"""
+    return script.replace('{depth}', str(path_depth))
+
+
 # https://www.sphinx-doc.org/en/stable/extdev/appapi.html#event-html-collect-pages
 def html_collect_pages(app):
     """
@@ -77,6 +100,7 @@ def finalize_media(app, pagename, templatename, context, doctree):
     """
 
     default_baseuri = app.config.notfound_urls_prefix or '/'
+    readthedocs = os.environ.get('READTHEDOCS', False) == 'True'
 
     # https://github.com/sphinx-doc/sphinx/blob/v7.2.3/sphinx/builders/html/__init__.py#L1024-L1036
     def pathto(otheruri: str, resource: bool = False, baseuri: str = default_baseuri):
@@ -91,13 +115,11 @@ def finalize_media(app, pagename, templatename, context, doctree):
             If ``otheruri`` is a external ``resource`` it does not modify it.
             If ``otheruri`` is a static file on Read the Docs it does not modify it.
         """
-        READTHEDOCS = os.environ.get('READTHEDOCS', False) == 'True'
-
         if resource and '://' in otheruri:
             # allow non-local resources given by scheme
             return otheruri
 
-        if READTHEDOCS and otheruri.startswith('/_/'):
+        if readthedocs and otheruri.startswith('/_/'):
             # special case on Read the Docs
             return otheruri
 
@@ -155,6 +177,11 @@ def finalize_media(app, pagename, templatename, context, doctree):
         # Override the ``pathto`` helper function from the context to use a custom one
         # https://www.sphinx-doc.org/en/master/templating.html#pathto
         context['pathto'] = pathto
+        if readthedocs:
+            context['metatags'] = (
+                (context.get('metatags') or '')
+                + _readthedocs_current_version_root_script(default_baseuri)
+            )
 
         # Override the ``toctree`` helper function from context to use a custom
         # one and generate valid links on not found page.
