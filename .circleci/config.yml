@@ -11,33 +11,10 @@ commands:
         default: "5,6,7,8,9,latest,dev"
     steps:
       - checkout
-      # NOTE: use Tox 3.x until I understand the syntax for generative environments:
-      # https://tox.wiki/en/stable/user_guide.html#generative-environment-list
-      - run: pip install --user "tox<4"
+      - run: pip install --user tox
       - run: tox -e "<<parameters.version>>-sphinx{<<parameters.sphinx-version>>}"
 
 jobs:
-  py38:
-    docker:
-      - image: 'cimg/python:3.8'
-    steps:
-      - run-tox:
-          version: py38
-          sphinx-version: "5,6,7"
-  py39:
-    docker:
-      - image: 'cimg/python:3.9'
-    steps:
-      - run-tox:
-          version: py39
-          sphinx-version: "5,6,7"
-  py310:
-    docker:
-      - image: 'cimg/python:3.10'
-    steps:
-      - run-tox:
-          version: py310
-          sphinx-version: "5,6,7,8"
   py311:
     docker:
       - image: 'cimg/python:3.11'
@@ -66,6 +43,13 @@ jobs:
       - run-tox:
           version: py314
           sphinx-version: "8,9"
+  py315:
+    docker:
+      - image: 'cimg/python:3.15'
+    steps:
+      - run-tox:
+          version: py315
+          sphinx-version: "8,9"
   docs:
     docker:
       - image: 'cimg/python:3.12'
@@ -79,10 +63,8 @@ workflows:
   tests:
     jobs:
       - docs
+      - py315
       - py314
       - py313
       - py312
       - py311
-      - py310
-      - py39
-      - py38
