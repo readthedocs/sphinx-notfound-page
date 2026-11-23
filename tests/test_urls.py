@@ -13,10 +13,12 @@ rstsrcdir = Path(__file__).resolve().parent / 'examples' / '404rst'
 
 extensiondir = Path(__file__).resolve().parent / 'examples' / 'extension'
 
+emptytoctreedir = Path(__file__).resolve().parent / 'examples' / 'empty-toctree'
+
 @pytest.fixture(autouse=True, scope='function')
 def remove_sphinx_build_output():
     """Remove _build/ folder, if exist."""
-    for path in (srcdir, rstsrcdir, extensiondir):
+    for path in (srcdir, rstsrcdir, extensiondir, emptytoctreedir):
         build_path = path / '_build'
         if build_path.exists():
             shutil.rmtree(build_path)
@@ -491,6 +493,16 @@ def test_toctree_no_tags_deprecation_warning(app, status, warning):
 
     messages = [str(w.message) for w in caught]
     assert not [m for m in messages if "'tags' will become a required" in m]
+
+
+@pytest.mark.sphinx(srcdir=emptytoctreedir)
+def test_empty_toctree_returns_empty_string(app, status, warning):
+    app.build()
+    path = app.outdir / '404.html'
+    assert path.exists()
+
+    content = path.read_text()
+    assert '<div id="toctree-result"></div>' in content
 
 
 @pytest.mark.sphinx(

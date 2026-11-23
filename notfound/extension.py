@@ -145,9 +145,9 @@ def finalize_media(app, pagename, templatename, context, doctree):
                 **kwargs,
             )
 
-        # If no TOC is found, just return ``None`` instead of failing here
+        # Match Sphinx's toctree helper return type when no TOC is found.
         if not toc:
-            return None
+            return ''
 
         replace_uris(app, toc, docutils.nodes.reference, 'refuri')
         return app.builder.render_partial(toc)['fragment']
