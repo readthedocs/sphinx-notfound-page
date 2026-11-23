@@ -51,6 +51,9 @@ For other use cases, you can customize these configuration options in your ``con
    Default: The path from the `READTHEDOCS_CANONICAL_URL <https://docs.readthedocs.com/platform/stable/reference/environment-variables.html#envvar-READTHEDOCS_CANONICAL_URL>`__ environment variable.
    In case that variables is not defined, it defaults to ``/en/latest/``.
 
+   You can use `{language}` substitution to include the build's language urified (lowercased, with `_` and `@` converted
+   to `-`).
+
    Type: string
 
    .. warning::
